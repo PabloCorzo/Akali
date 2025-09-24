@@ -1,4 +1,4 @@
-from src.model.hobby import Hobby
+from ..src.model.hobby import Hobby
 
 # Verificar inicialización del objeto y sus métodos
 
