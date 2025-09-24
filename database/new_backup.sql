@@ -176,6 +176,15 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE IF NOT EXISTS peliculas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title    VARCHAR(200) NOT NULL,
+    director VARCHAR(200),
+    actors   TEXT,
+    synopsis TEXT
+);
+
+
 --
 -- Dumping data for table `users`
 --

@@ -1,13 +1,14 @@
 from typing import Iterable, Optional
 from .movie import Movie
-from .db import MySQLConnection
+from .films.app.db import MySQLConnection
+from .db import Db
 
 class MovieRepository:
     """
     Encapsulates operations on the 'peliculas' table.
     """
     def __init__(self, db: MySQLConnection) -> None:
-        self._db = db
+        self._db = Db.connect()
 
     def insert(self, title: str, director: Optional[str], actors: Optional[str], synopsis: Optional[str]) -> Movie:
         sql = """

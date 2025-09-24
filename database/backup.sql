@@ -126,6 +126,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
+CREATE TABLE IF NOT EXISTS peliculas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title    VARCHAR(200) NOT NULL,
+    director VARCHAR(200),
+    actors   TEXT,
+    synopsis TEXT
+);
+
+
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

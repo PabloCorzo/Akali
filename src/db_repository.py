@@ -47,3 +47,15 @@ def selectAll(self) -> list:
         return rows
     except Error as e:
         raise e
+    
+def fetchQuery(self,query):
+    try:
+        connection = Db.connect()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return rows
+    except Error as e:
+        raise e

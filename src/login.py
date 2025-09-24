@@ -1,7 +1,7 @@
 import hashlib
 
 
-class Parser:
+class Login:
 
     def __init__(self):
         pass
@@ -10,5 +10,5 @@ class Parser:
         return hashlib.sha256(password.encode()).hexdigest()
 
 if __name__ == "__main__":
-    parser = Parser()
-    print(parser.hashPassword(input("Introduce password:\n")))
+    connector = Login()
+    print(connector.hashPassword(input("Introduce password:\n")))
