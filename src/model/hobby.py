@@ -10,7 +10,7 @@ class Hobby:
         self.time = time
 
     def to_tuple(self) -> tuple:
-        return (self.user_id, self.name, self.satisfaction_level, self.hability, self.time)
+        return self.user_id, self.name, self.satisfaction_level, self.hability, self.time
 
 
     def _to_dict(self):
