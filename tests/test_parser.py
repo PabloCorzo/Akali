@@ -1,4 +1,4 @@
-from src.parser import Parser
+from ..src.parser import Parser
 
 def test_encryption():
     s = "test1"

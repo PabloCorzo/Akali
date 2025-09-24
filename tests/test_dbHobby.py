@@ -1,5 +1,5 @@
 
-from src.dbHobby import dbHobby
+from ..src.dbHobby import dbHobby
 from dotenv import load_dotenv
 
 load_dotenv()

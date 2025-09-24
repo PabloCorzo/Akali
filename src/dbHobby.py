@@ -2,7 +2,7 @@ import os
 import mysql.connector
 from mysql.connector import Error
 
-from src.model.hobby import Hobby
+from model.hobby import Hobby
 
 
 # Carga sencilla de variables: permite definir DB_* en el entorno del sistema
