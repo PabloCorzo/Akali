@@ -2,15 +2,12 @@ import os
 import mysql.connector
 from mysql.connector import Error
 
-from src.model.hobby import Hobby
-from src.model.model import Model
-
 
 # Carga sencilla de variables: permite definir DB_* en el entorno del sistema
 # o, si prefieres archivo, usa python-dotenv (opcional). Para mantener el
 # repositorio simple, no auto-cargamos archivos aquí.
 
-class db:
+class Db:
 
     @staticmethod
     def connect():
@@ -37,6 +34,8 @@ class db:
         except Error as e:
             # Re-lanzamos para que los tests puedan capturarlo si falla la conexión
             raise e
+
+
 
 
 

@@ -1,11 +1,11 @@
 from mysql.connector import Error
 from src.model.model import Model
-
+from src.db import Db
 
 
 def insert(self, model: Model, db: str):
     try:
-        connection = self.connect()
+        connection = Db.connect()
         cursor = connection.cursor()
         sql_query = f"""
                     INSERT INTO {db}.hobby (name, user_id, satisfaction_level, hability, time)
@@ -21,7 +21,7 @@ def insert(self, model: Model, db: str):
 
 def delete(self, id: int, db: str):
     try:
-        connection = self.connect()
+        connection = Db.connect()
         cursor = connection.cursor()
         cursor.execute(f"DELETE FROM {db} WHERE id = %s", (id,))
         connection.commit()
@@ -38,7 +38,7 @@ def selectAll(self) -> list:
     Retorna una lista de diccionarios con las columnas como claves.
     """
     try:
-        connection = self.connect()
+        connection = Db.connect()
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM hobby")
         rows = cursor.fetchall()
