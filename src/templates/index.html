@@ -1,0 +1,15 @@
+{% extends  'base.html'%}
+{% block head%}
+
+{% endblock%}
+
+{% block body %}
+Welcome to Akali
+
+<a href="{{ url_for('signup') }}">
+    Sign up
+</a>
+<a href="{{ url_for('login') }}">
+    Log in
+</a>
+{% endblock %}
