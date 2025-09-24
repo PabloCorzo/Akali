@@ -1,12 +1,12 @@
 
-from src.dbHobby import dbHobby
+from src.db import db
 from dotenv import load_dotenv
 
 load_dotenv()
 def test_connect_success_or_skip():
 
     try:
-        con = dbHobby.connect()
+        con = db.connect()
         try:
             assert con.is_connected()
         finally:

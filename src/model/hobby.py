@@ -1,5 +1,7 @@
+from src.model.model import Model
 
-class Hobby:
+
+class Hobby(Model):
 
     def __init__(self,user_id,name:str,satisfaction_level:int,hability,time:float,id = None):
         self.id = id
