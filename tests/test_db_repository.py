@@ -1,11 +1,12 @@
 
-
+from dotenv import load_dotenv
 from unittest.mock import Mock
 import pytest
 
 from src import db_repository as repo
 from src.model.hobby import Hobby
 
+load_dotenv()
 
 def make_mocks():
     # Create mock connection and cursor with the methods used
