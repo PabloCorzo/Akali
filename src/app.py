@@ -1,9 +1,7 @@
 from flask import Flask,render_template,request, redirect
-from dotenv import load_dotenv
 import os
 app = Flask(__name__)
 
-load_dotenv()
 
 
 #get to see a route, post to send the data
@@ -26,4 +24,4 @@ def signup():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = True,host = '0.0.0.0')
