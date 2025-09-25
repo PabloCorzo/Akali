@@ -1,4 +1,4 @@
-from .model import Model
+from src.model.models import Model
 
 
 class Hobby(Model):
