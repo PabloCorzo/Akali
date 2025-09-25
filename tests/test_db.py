@@ -1,5 +1,5 @@
 
-from src.db import Db
+from ..src.db import Db
 from dotenv import load_dotenv
 
 load_dotenv()

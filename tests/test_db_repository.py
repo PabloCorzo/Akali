@@ -3,8 +3,11 @@ from dotenv import load_dotenv
 from unittest.mock import Mock
 import pytest
 
-from src import db_repository as repo
-from src.model.hobby import Hobby
+from ..src import db_repository as repo
+from ..src.model.hobby import Hobby
+from mysql.connector import Error
+from ..src.model.model import Model
+from ..src.db import Db
 
 load_dotenv()
 
