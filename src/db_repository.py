@@ -1,6 +1,6 @@
 from mysql.connector import Error
-from model.model import Model
-from db import Db
+from src.model.model import Model
+from .db import Db
 
 
 def insert(self, model: Model, db: str):
