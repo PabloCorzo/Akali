@@ -48,17 +48,20 @@ def selectAll() -> list:
     except Error as e:
         raise e
     
-def fetchQuery(query):
-    try:
-        connection = Db.connect()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return rows
-    except Error as e:
-        raise e
+def fetchQuery(query: str, type: str = "one"):
+        try:
+            connection = Db.connect()
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query)
+            if type == 'one':
+                rows = cursor.fetchone()
+            elif type == 'all':
+                rows = cursor.fetchall()
+            cursor.close()
+            connection.close()
+            return rows
+        except Error as e:
+            raise e
 
 def createUser(username : str, password :str, mail : str):
     query = f'INSERT INTO users VALUES({username},{mail},{password}")'

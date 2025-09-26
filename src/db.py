@@ -23,7 +23,7 @@ class Db:
           - DB_NAME (akali_hobby)
         """
         try:
-            connection = mysql.connector.ect(
+            connection = mysql.connector.connect(
                 host=os.getenv("DB_HOST", "%"),
                 port=int(os.getenv("DB_PORT", "3306")),
                 user=os.getenv("DB_USER", "akali"),
