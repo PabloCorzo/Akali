@@ -3,7 +3,7 @@ from src.model.models import Model
 from src.db import Db
 
 
-def insert(self, model: Model, db: str):
+def insert(model: Model, db: str):
     try:
         connection = Db.connect()
         cursor = connection.cursor()
@@ -19,7 +19,7 @@ def insert(self, model: Model, db: str):
         raise e
 
 
-def delete(self, id: int, db: str):
+def delete(id: int, db: str):
     try:
         connection = Db.connect()
         cursor = connection.cursor()
@@ -32,7 +32,7 @@ def delete(self, id: int, db: str):
         raise e
 
 
-def selectAll(self) -> list:
+def selectAll() -> list:
     """
     Consulta y devuelve todas las filas de la tabla 'hobby' de la base de datos akali_hobby.
     Retorna una lista de diccionarios con las columnas como claves.
@@ -48,7 +48,7 @@ def selectAll(self) -> list:
     except Error as e:
         raise e
     
-def fetchQuery(self,query):
+def fetchQuery(query):
     try:
         connection = Db.connect()
         cursor = connection.cursor(dictionary=True)
@@ -57,5 +57,17 @@ def fetchQuery(self,query):
         cursor.close()
         connection.close()
         return rows
+    except Error as e:
+        raise e
+
+def createUser(username : str, password :str, mail : str):
+    query = f'INSERT INTO users VALUES({username},{mail},{password}")'
+    try:
+        connection = Db.connect()
+        cursor = connection.cursor()
+        cursor.execute(query)
+        connection.commit()
+        cursor.close()
+        connection.close()
     except Error as e:
         raise e

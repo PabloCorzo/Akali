@@ -5,7 +5,9 @@ FROM python:3.11
 WORKDIR /app
 
 # Copy project files into the container
-COPY ./* .  
+COPY ./src/ src/
+COPY ./database database/
+COPY ./src/app.py .
 COPY requirements.txt .
 # Install dependencies
 RUN pip install -r requirements.txt  
