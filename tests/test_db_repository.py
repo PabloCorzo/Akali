@@ -24,7 +24,7 @@ def test_insert_hobby_builds_correct_query_and_commits(monkeypatch):
     hobby = Hobby(user_id=1, name="Chess", satisfaction_level=5, hability="medium", time=2.5)
 
     # When calling insert
-    repo.insert(None, hobby, db="akali_hobby")
+    repo.insert(None, hobby, db="akali")
 
     # Then it should prepare SQL and execute with the tuple from model
     assert cursor.execute.call_count == 1

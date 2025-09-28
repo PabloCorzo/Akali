@@ -3,44 +3,44 @@ from src.model.models import Model
 from src.db import Db
 
 
-def insert(model: Model, db: str):
+# def insert(model: Model, tb: str):
+#     try:
+#         connection = Db.connect()
+#         cursor = connection.cursor()
+#         sql_query = f"""
+#                     INSERT INTO {tb} (name, user_id, satisfaction_level, hability, time)
+#                     VALUES (%s, %s, %s, %s, %s)
+#                 """
+#         cursor.execute(sql_query, model.to_tuple())
+#         connection.commit()
+#         cursor.close()
+#         connection.close()
+#     except Error as e:
+#         raise e
+
+
+def delete(id: int, tb: str):
     try:
         connection = Db.connect()
         cursor = connection.cursor()
-        sql_query = f"""
-                    INSERT INTO {db}.hobby (name, user_id, satisfaction_level, hability, time)
-                    VALUES (%s, %s, %s, %s, %s)
-                """
-        cursor.execute(sql_query, model.to_tuple())
+        cursor.execute(f"DELETE FROM {tb} WHERE id = %s", (id,))
         connection.commit()
         cursor.close()
         connection.close()
+
     except Error as e:
         raise e
 
 
-def delete(id: int, db: str):
-    try:
-        connection = Db.connect()
-        cursor = connection.cursor()
-        cursor.execute(f"DELETE FROM {db} WHERE id = %s", (id,))
-        connection.commit()
-        cursor.close()
-        connection.close()
-
-    except Error as e:
-        raise e
-
-
-def selectAll() -> list:
+def selectAll(tb) -> list:
     """
-    Consulta y devuelve todas las filas de la tabla 'hobby' de la base de datos akali_hobby.
+    Consulta y devuelve todas las filas de una tbala' de la base de datos akali.
     Retorna una lista de diccionarios con las columnas como claves.
     """
     try:
         connection = Db.connect()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM hobby")
+        cursor.execute(f"SELECT * FROM {tb}")
         rows = cursor.fetchall()
         cursor.close()
         connection.close()

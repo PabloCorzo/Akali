@@ -35,20 +35,20 @@ class Db:
             # Re-lanzamos para que los tests puedan capturarlo si falla la conexión
             raise e
 
-    def insert(self, model: Model, db: str):
-        try:
-            connection = Db.connect()
-            cursor = connection.cursor()
-            sql_query = f"""
-                        INSERT INTO {db}.hobby (name, user_id, satisfaction_level, hability, time)
-                        VALUES (%s, %s, %s, %s, %s)
-                    """
-            cursor.execute(sql_query, model.to_tuple())
-            connection.commit()
-            cursor.close()
-            connection.close()
-        except Error as e:
-            raise e
+    # def insert(self, model: Model, db: str):
+    #     try:
+    #         connection = Db.connect()
+    #         cursor = connection.cursor()
+    #         sql_query = f"""
+    #                     INSERT INTO {db}.hobby (name, user_id, satisfaction_level, hability, time)
+    #                     VALUES (%s, %s, %s, %s, %s)
+    #                 """
+    #         cursor.execute(sql_query, model.to_tuple())
+    #         connection.commit()
+    #         cursor.close()
+    #         connection.close()
+    #     except Error as e:
+    #         raise e
 
 
     def delete(self, id: int, db: str):
@@ -64,15 +64,11 @@ class Db:
             raise e
 
 
-    def selectAll(self) -> list:
-        """
-        Consulta y devuelve todas las filas de la tabla 'hobby' de la base de datos akali_hobby.
-        Retorna una lista de diccionarios con las columnas como claves.
-        """
+    def selectAll(self,tb) -> list:
         try:
             connection = Db.connect()
             cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM hobby")
+            cursor.execute(f"SELECT * FROM {tb}")
             rows = cursor.fetchall()
             cursor.close()
             connection.close()
