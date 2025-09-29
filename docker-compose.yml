@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'akali_usuarios'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'admin'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: '1234'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '1234'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - 3309:3306
+    expose:
+      # Opens port 3306 on the container
+      - '80'
+      - '3306'
+      # Where our data will be persisted
+    #SHOULD INCLUDE VOLUMES IN THE FUTURE IN ORDER FOR IT TO CONTAIN INFO PROPERLY
+      #volumes:
+     # - my-db:/var/lib/mysql
+# Names our volume
