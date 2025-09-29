@@ -1,64 +1,78 @@
-from flask import Flask,render_template,request, session,redirect,url_for
-import src.db_repository as db
-import src.login as login
+from flask import Flask,render_template,request,flash, session,redirect,url_for
+from flask_sqlalchemy import SQLAlchemy
+# import src.db_repository as db
 import re
+import hashlib
+
+def hashPassword(password : str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
 
 app = Flask(__name__,template_folder='src/templates',static_folder = 'src/static')
-def getApp() -> Flask:
-    return app
 
-#get to see a route, post to send the data
+app.secret_key = 'key1'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class Users(db.Model):
+    _id = db.Column('id',db.Integer,primary_key = True)
+    username = db.Column(db.String(32),unique = True,nullable = False)
+    mail = db.Column(db.String(32),unique = True,nullable = True)
+    password = db.Column(db.String(32),nullable = False)
+
+    def __init__(self,username,email,password):
+        self.username = username
+        self.email = email
+        self.password = hashPassword(password)
+        
+    def checkPassword(self):
+        return Users.query.filter_by(username = self.username, password = self.password)
+
 @app.route('/',methods = ['POST','GET'])
-def index():
-    if request.method == 'POST':
-        pass
-    else:
-        return render_template('index.html'),200
+def home():
+    return redirect(url_for('register'))
 
-@app.route("/login",methods = ['POST','GET'])
+@app.route('/login', methods = ['GET','POST'])
 def login():
-    msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    if request.method == 'Post':
         username = request.form['username']
-        password = login.hashPassword(request.form['password'])
-        account = db.fetchQuery(query=f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")
-        if account:
-            session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            return render_template('index.html', msg='Logged in successfully!')
+        password = request.form['password']
+        # email = request.form['email']
+
+        user = Users.query.filter_by(username = username).first()
+        if user and user.checkPassword(password):
+            session['username'] = user.username
+            # session['email'] = user.email
+            session['password'] = user.password
+            return redirect(url_for('dashboard'))
         else:
-            msg = 'Usuario o contraseña inválidos.'
-    return render_template('login.html', msg=msg)
-
-@app.route("/logout")
-def logout():
-    session.pop('loggedin',None)
-    session.pop('id',None)
-    session.pop('username',None)
-    return redirect(url_for('login'))
-
-@app.route("/signup",methods = ['POST','GET'])
-def signup():
-    msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+            return render_template("login.html",error = "Invalid user")
+    else:
+        return render_template('login.html')
+    
+@app.route('/register', methods = ['GET','POST'])
+def register():
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        account = db.fetchQuery(query=f"SELECT * FROM users WHERE username = '{username}'")
-        if account:
-            msg = 'Cuenta ya existe'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Correo inválido'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Cuenta debe contener carácteres alfanuméricos'
-        elif not username or not password or not email:
-            msg = 'Información incompleta'
+        if email is None:
+            email = ""
+        user = Users.query.filter_by(username = username).first()
+        if user:
+            return render_template('index.html',error = 'user already registered')
         else:
-            db.createUser(username,password,email)
-            msg = 'Cuenta creada con éxito'
-    return render_template('signup.html',msg = msg)
+            user = Users(username = username, password = password, email = email)
+            db.session.add(user)
+            db.session.commit()
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+    return render_template('index.html')
 
-
+@app.route('/dashboard',methods = ['POST','GET'])
+def dashboard():
+    return f"<h1>Dashboard</h1>"
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug = True,host = '0.0.0.0')
