@@ -1,26 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Hobby</title>
-</head>
-<body>
-<h1>Hobby</h1>
-<h2>En este apartado puedes agregar los hobbies que realizas en tu dia a dia</h2>
-<form action="{{ url_for('hobby_new') }}" method="post">
-  <label>Nombre</label>
-  <input class="textbox" type="text" name="name" placeholder="p.ej. Pintar" required>
+{% extends "base.html" %}
 
-  <label>Nivel de satisfacción (1-10)</label>
-  <input class="textbox" type="number" name="satisfaction_level" min="1" max="10" required>
+{% block head %}
+<title>Hobby</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
 
-  <label>Habilidad</label>
-  <input class="textbox" type="text" name="hability" placeholder="bajo / medio / alto" required>
+{% block body %}
+  <div class="container">
+    <h1>Hobby</h1>
+    <p>En este apartado puedes agregar los hobbies que realizas en tu día a día.</p>
 
-  <label>Tiempo (horas/semana)</label>
-  <input class="textbox" type="number" step="0.25" name="time" min="0" required>
+    <form action="{{  url_for('create_hobby')  }}" method="post">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input class="textbox" id="name" type="text" name="name" placeholder="p.ej. Pintar" required>
+      </div>
 
-  <button class="btn" type="submit">Guardar</button>
+      <div class="form-group">
+        <label for="satisfaction_level">Nivel de satisfacción (1-10)</label>
+        <input class="textbox" id="satisfaction_level" type="number" name="satisfaction_level" min="1" max="10" required>
+      </div>
+
+      <div class="form-group">
+        <label for="hability">Habilidad</label>
+        <input class="textbox" id="hability" type="text" name="hability" placeholder="bajo / medio / alto" required>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Tiempo (horas/semana)</label>
+        <input class="textbox" id="time" type="number" step="0.10" name="time" min="0" required>
+      </div>
+
+      <button class="btn" type="submit">Guardar</button>
     </form>
-</body>
-</html>
+  </div>
+{% endblock %}
