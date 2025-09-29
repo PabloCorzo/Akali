@@ -3,7 +3,7 @@ import src.db_repository as db
 import src.login as login
 import re
 
-app = Flask(__name__,template_folder='src/templates')
+app = Flask(__name__,template_folder='src/templates',static_folder = 'src/static')
 def getApp() -> Flask:
     return app
 
