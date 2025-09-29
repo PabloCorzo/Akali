@@ -1,2 +1,3 @@
 /db_hobby.env
 __pycache__/
+.env
