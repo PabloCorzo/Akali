@@ -3,8 +3,7 @@ from flask import Flask,render_template,session,request,redirect,url_for
 import src.db_repository as db
 import re
 
-    
-def hashPassword(self,password : str) -> str:
+def hashPassword(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
 def login():

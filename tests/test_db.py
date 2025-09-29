@@ -1,8 +1,6 @@
 
-from ..src.db import Db
-from dotenv import load_dotenv
+from src.db import Db
 
-load_dotenv()
 def test_connect_success_or_skip():
 
     try:

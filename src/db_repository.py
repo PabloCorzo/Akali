@@ -5,21 +5,6 @@ from src.db import Db
 from typing import Any, Dict, List, Tuple, Optional
 
 
-def insert(model: Model, tb: str):
-    try:
-        connection = Db.connect()
-        cursor = connection.cursor()
-        sql_query = f"""
-                    INSERT INTO {tb} (name, user_id, satisfaction_level, hability, time)
-                    VALUES (%s, %s, %s, %s, %s)
-                """
-        cursor.execute(sql_query, model.to_tuple())
-        connection.commit()
-        cursor.close()
-        connection.close()
-    except Error as e:
-        raise e
-
 
 def delete(id: int, tb: str):
     try:

@@ -35,21 +35,6 @@ class Db:
             # Re-lanzamos para que los tests puedan capturarlo si falla la conexión
             raise e
 
-    # def insert(self, model: Model, db: str):
-    #     try:
-    #         connection = Db.connect()
-    #         cursor = connection.cursor()
-    #         sql_query = f"""
-    #                     INSERT INTO {db}.hobby (name, user_id, satisfaction_level, hability, time)
-    #                     VALUES (%s, %s, %s, %s, %s)
-    #                 """
-    #         cursor.execute(sql_query, model.to_tuple())
-    #         connection.commit()
-    #         cursor.close()
-    #         connection.close()
-    #     except Error as e:
-    #         raise e
-
 
     def delete(self, id: int, db: str):
         try:

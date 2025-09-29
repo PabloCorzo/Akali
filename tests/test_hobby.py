@@ -1,8 +1,5 @@
 from ..src.model.hobby import Hobby
-from dotenv import load_dotenv
 # Verificar inicialización del objeto y sus métodos
-
-load_dotenv()
 
 def test__to_dict():
     h = Hobby(user_id=1, name="pintar", satisfaction_level=8, hability="intermedio", time=2.5, id=42)
