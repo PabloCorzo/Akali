@@ -1,6 +1,5 @@
 # Akali
 Requisitos - Validación:
-https://ceu365-my.sharepoint.com/:x:/g/personal/angel_martintrejo_usp_ceu_es/EXNSQM_2kyJCoU6zlYLEAw0BcsQdRv37SI2oHxX8BluYFQ?e=Yfyc2Y
 
 Almacenar y promocionar buenos hábitos del usuario en su cuenta - Al registrarse, el usuario meterá su cuenta y contraseña. Si son válidas,la cuenta quedará registrada en el dispositivo, junto con todos sus datos 
 internos al software
