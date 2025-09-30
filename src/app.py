@@ -4,8 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import re
 import hashlib
 
-def hashPassword(password : str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+
 
 app = Flask(__name__,template_folder='src/templates',static_folder = 'src/static')
 
@@ -43,7 +42,7 @@ def login():
         if user and user.checkPassword(password):
             session['username'] = user.username
             # session['email'] = user.email
-            session['password'] = user.password
+            session['id'] = user._id
             return redirect(url_for('dashboard'))
         else:
             return render_template("login.html",error = "Invalid user")
@@ -65,9 +64,14 @@ def register():
             user = Users(username = username, password = password, email = email)
             db.session.add(user)
             db.session.commit()
-            session['username'] = username
             return redirect(url_for('dashboard'))
     return render_template('index.html')
+
+@app.route('/logout', methods = ['POST','GET'])
+def logout():
+    session['id'] = None
+    session['username'] = None
+    return redirect(url_for('/'))
 
 @app.route('/dashboard',methods = ['POST','GET'])
 def dashboard():
