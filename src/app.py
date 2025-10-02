@@ -4,28 +4,39 @@ from flask_sqlalchemy import SQLAlchemy
 import re
 import hashlib
 
+import sys 
+sys.path.append("../src") 
 
 
-app = Flask(__name__,template_folder='src/templates',static_folder = 'src/static')
+from model.dbModel import Users
+# import src.model.dbModel as DB
+# from src.model.dbModel import Users
+
+
+
+app = Flask(__name__,template_folder='templates',static_folder = 'static')
 
 app.secret_key = 'key1'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
-class Users(db.Model):
-    _id = db.Column('id',db.Integer,primary_key = True)
-    username = db.Column(db.String(32),unique = True,nullable = False)
-    mail = db.Column(db.String(32),unique = True,nullable = True)
-    password = db.Column(db.String(32),nullable = False)
+import model.dbModel as DB
 
-    def __init__(self,username,email,password):
-        self.username = username
-        self.email = email
-        self.password = hashPassword(password)
+# class Users(db.Model):
+#     _id = db.Column('id',db.Integer,primary_key = True)
+#     username = db.Column(db.String(32),unique = True,nullable = False)
+#     mail = db.Column(db.String(32),unique = True,nullable = True)
+#     password = db.Column(db.String(32),nullable = False)
 
-    def checkPassword(self):
-        return Users.query.filter_by(username = self.username, password = self.password)
+#     def __init__(self,username,email,password):
+#         self.username = username
+#         self.email = email
+#         self.password = hashPassword(password)
+
+#     def checkPassword(self):
+#         return Users.query.filter_by(username = self.username, password = self.password)
 
 @app.route('/',methods = ['POST','GET'])
 def home():

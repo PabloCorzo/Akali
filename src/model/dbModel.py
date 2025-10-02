@@ -5,6 +5,7 @@ import hashlib
 
 db : SQLAlchemy
 
+
 # ------COMO VA MYSQLALCHEMY------
 
     #cada clase es una tabla, cada atributo es una columna de la tabla
@@ -17,6 +18,7 @@ def createDb(app : Flask):
     db = SQLAlchemy(app)
 
 class Users(db.Model):
+    __tablename__= 'Users'
     _id = db.Column('id',db.Integer,primary_key = True)
     username = db.Column(db.String(32),unique = True,nullable = False)
     mail = db.Column(db.String(32),unique = True,nullable = True)
@@ -34,7 +36,7 @@ class Users(db.Model):
         return hashlib.sha256(password.encode()).hexdigest()
     
 class Peliculas(db.Model):
-
+    __tablename___ = "Films"
     _id = db.Column('id',db.Integer,primary_key = True)
     title = db.Column(db.String(200),nullable = False)
     director = db.Column(db.String(200))
