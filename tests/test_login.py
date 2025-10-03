@@ -1,4 +1,4 @@
-from ..src.login import Login
+from ..src.loginscripts import Login
 
 def test_encryption():
     s = "test1"
