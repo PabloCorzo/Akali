@@ -16,12 +16,66 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `akali_usuarios`
+-- Table structure for table `films`
+--
+CREATE DATABASE IF NOT EXISTS `akali` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `akali`;
+
+DROP TABLE IF EXISTS `films`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `films` (
+  `film_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `director` varchar(100) DEFAULT NULL,
+  `actors` text,
+  `synopsis` text,
+  PRIMARY KEY (`film_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `films_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `films`
 --
 
-CREATE DATABASE IF NOT EXISTS `akali_usuarios` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+LOCK TABLES `films` WRITE;
+/*!40000 ALTER TABLE `films` DISABLE KEYS */;
+/*!40000 ALTER TABLE `films` ENABLE KEYS */;
+UNLOCK TABLES;
 
-USE `akali_usuarios`;
+--
+-- Table structure for table `hobby`
+--
+
+DROP TABLE IF EXISTS `hobby`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `hobby` (
+  `hobby_id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `satisfaction_level` int DEFAULT NULL,
+  `hability` varchar(100) DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  PRIMARY KEY (`hobby_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `hobby_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `hobby_chk_1` CHECK ((`satisfaction_level` between 1 and 10))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hobby`
+--
+
+LOCK TABLES `hobby` WRITE;
+/*!40000 ALTER TABLE `hobby` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hobby` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `permissions`
@@ -112,19 +166,15 @@ CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `email` varchar(254) NOT NULL,
-  `password` varchar(64),
-  `email_verified` TINYINT(1) NOT NULL DEFAULT 0,
+  `password` varchar(64) DEFAULT NULL,
+  `email_verified` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
 
 CREATE TABLE IF NOT EXISTS peliculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -135,14 +185,17 @@ CREATE TABLE IF NOT EXISTS peliculas (
 );
 
 
+--
+-- Dumping data for table `users`
+--
+
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin','admin@admin.com','1234',1,'2025-09-24 16:03:46','2025-09-24 16:03:46'),(2,'PepitoLagrimitas','pepito@lagrimitas.com','raulflaco67',0,'2025-09-24 16:06:42','2025-09-24 16:06:42');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-CREATE USER "akali"@"%" IDENFIED BY "desarollo123";
-GRANT ALL PRIVILEGES ON *.* TO "akali"@"%" WITH GRANT OPTION;
-FLUSH PRIVILEGES;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -151,4 +204,4 @@ FLUSH PRIVILEGES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-23 12:47:42
+-- Dump completed on 2025-09-24 18:23:36
