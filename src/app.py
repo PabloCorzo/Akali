@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
+from flask import Flask,render_template,request,flash, session,redirect,url_for
+from flask_sqlalchemy import SQLAlchemy
+# import src.db_repository as db
+import loginscripts,hobby
 import os
 import sys
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
-
+import re
 import hashlib
 
+import sys
 sys.path.append("../src")
+
 
 
 load_dotenv()
@@ -28,150 +33,47 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-
-
-# ------COMO VA MYSQLALCHEMY------
-
-    #cada clase es una tabla, cada atributo es una columna de la tabla
-    #id es autoincrement aunque no lo indiquen los parametros
-        #porque es la primera columna que es INT y PK de las tablas
-    #si no se pone parametro de nombre, toma el de la variable
-        #EJEMPLO: director = db.Column(db.String(200))
-
 class Users(db.Model):
+    _id = db.Column('id',db.Integer,primary_key = True)
+    username = db.Column(db.String(32),unique = True,nullable = False)
+    mail = db.Column(db.String(32),unique = True,nullable = True)
+    password = db.Column(db.String(32),nullable = False)
 
-    __tablename__= 'users'
-    _id = db.Column('id' ,db.Integer ,primary_key = True)
-    username = db.Column(db.String(32) ,unique = True ,nullable = False)
-    email = db.Column(db.String(32) ,unique = True ,nullable = True)
-    password = db.Column(db.String(64) ,nullable = False)
-
-    def __init__(self ,username ,email ,password):
+    def __init__(self,username,email,password):
         self.username = username
         self.email = email
         self.password = self.hashPassword(password)
 
-    def checkPassword(self, password):
-        return self.password == self.hashPassword(password)
-
-    def hashPassword(self ,password : str) -> str:
+    def hashPassword(self,password : str) -> str:
         return hashlib.sha256(password.encode()).hexdigest()
+    def checkPassword(self):
+        return Users.query.filter_by(username = self.username, password = self.password)
 
-class Peliculas(db.Model):
-    __tablename___ = "films"
-    _id = db.Column('id' ,db.Integer ,primary_key = True)
-    title = db.Column(db.String(200) ,nullable = False)
-    director = db.Column(db.String(200))
-    actors = db.Column(db.String(200))
-    synopsis = db.Column(db.String(1000))
-
-    def __init__(self ,title, director ,actors ,synopsis):
-        self.title = title
-        self.director = director
-        self.actors = actors
-        self.synopsis = synopsis
-
-
-
-
-
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/',methods = ['POST','GET'])
 def home():
     return redirect(url_for('register'))
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods = ['GET','POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        #email = request.form['email']
+    return loginscripts.login(app = app, request = request, session = session)
 
-        user = Users.query.filter_by(username=username).first()
-        if user and user.checkPassword(password):
-            session['username'] = user.username
-            session['email'] = user.email
-            session['id'] = user._id
-            return redirect(url_for('dashboard'))
-        else:
-            flash("Usuario o contraseña incorrectos.", "error")
-            return redirect(url_for('login'))
-    else:
-        return render_template('login.html')
-
-
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods = ['GET','POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        if email is None:
-            email = ""
-        user = Users.query.filter_by(username=username).first()
-        if user:
-            return render_template('index.html', error='user already registered')
-        else:
-            user = Users(username=username, password=password, email=email)
-            db.session.add(user)
-            db.session.commit()
-            return redirect(url_for('dashboard'))
-    return render_template('index.html')
+    return loginscripts.register(app = app, request = request,db = db)
 
-
-@app.route('/logout', methods=['POST', 'GET'])
+@app.route('/logout', methods = ['POST','GET'])
 def logout():
-    session['id'] = None
-    session['username'] = None
-    return redirect(url_for('home'))
+    return loginscripts.logout(app = app, request = request, session = session)
 
-
-@app.route('/dashboard', methods=['POST', 'GET'])
+@app.route('/dashboard',methods = ['POST','GET'])
 def dashboard():
     return f"<h1>Dashboard</h1>"
 
-
-@app.route("/hobby", methods=["POST", "GET"])
+@app.route("/hobby",methods = ["POST","GET"])
 def create_hobby():
-    errors = []
-    #
-    # if not session.get('loggedin'):
-    #     return redirect(url_for('login'))
-    #
-    # user_id = session['id']
-    # if not user_id:
-    #     return redirect(url_for('login'))
-
-    if request.method == "POST":
-        name = request.form["name"].strip()
-        satisfaction_level = request.form["satisfaction_level"].strip()
-        hability = request.form["hability"].strip()
-        time = request.form["time"].strip()
-
-        if not name:
-            errors.append("Campo nombre requerido")
-        elif not satisfaction_level:
-            errors.append("Campo nivel de satisfaccion requerido")
-        elif not hability:
-            errors.append("Campo habilidad requerido")
-        elif not time:
-            errors.append("Campo tiempo requerido")
-        elif int(satisfaction_level) > 10 or int(satisfaction_level) < 0:
-            errors.append("Nivel de satisfaccion debe estar entre 0 y 10")
-
-        if errors:
-            return render_template('hobby.html', errors=errors)
-
-        hobby = db.fetchQuery(query=f"SELECT * FROM hobbies WHERE user_id = {user_id} AND name = '{name}'")
-        if hobby:
-            errors.append("Hobby ya existe")
-            return render_template('hobby.html', errors=errors)
-        db.fetchQuery(
-            query=f"iNSERT INTO hobbies (user_id,name,satisfaction_level,hability,time) VALUES ({user_id},'{name}','{satisfaction_level}','{hability}','{time}')")
-    return render_template('hobby.html', msg="Hobby añadido")
-
+    return hobby.create_hobby(app = app, request = request, session = session, db = db)
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug = True,host = '0.0.0.0')
