@@ -49,6 +49,21 @@ class Users(db.Model):
     def checkPassword(self,username, password):
         return Users.query.filter_by(username = username, password = password)
 
+class Hobby(db.Model):
+    _hobby_id = db.Column('hobby_id',db.Integer,primary_key = True)
+    name = db.Column('name',db.String(100),unique = False,nullable = False)
+    user_id = db.Column('user_id',db.Integer,unique = False,nullable = True)
+    satisfaction_level = db.Column('satisfaction_level',db.Integer,nullable = True)
+    ability = db.Column('ability',db.String(100),nullable = True)
+    time = db.Column('time',db.Time,nullable = True)
+
+    def __init__(self,name,user_id,satisfaction_level,ability,time):
+        self.name = name
+        self.user_id = user_id
+        self.satisfaction_level = satisfaction_level
+        self.ability = ability
+        self.time = time
+
 @app.route('/',methods = ['POST','GET'])
 def home():
     return redirect(url_for('login'))
@@ -106,24 +121,25 @@ def dashboard():
 @app.route("/hobby",methods = ["POST","GET"])
 def create_hobby():
     errors = []
-    if not session.get('loggedin'):
-        return redirect(url_for('login'))
+    # if not session.get('loggedin'):
+    #     return redirect(url_for('login'))
+    #
 
-    user_id = session['id']
-    if not user_id:
-        return redirect(url_for('login'))
+    # if not user_id:
+    #     return redirect(url_for('login'))
 
     if request.method == "POST":
         name = request.form["name"].strip()
         satisfaction_level = request.form["satisfaction_level"].strip()
-        hability = request.form["hability"].strip()
+        ability = request.form["ability"].strip()
         time = request.form["time"].strip()
+        user_id = session['id']
 
         if not name:
             errors.append("Campo nombre requerido")
         elif not satisfaction_level:
             errors.append("Campo nivel de satisfaccion requerido")
-        elif not hability:
+        elif not ability:
             errors.append("Campo habilidad requerido")
         elif not time:
             errors.append("Campo tiempo requerido")
@@ -133,11 +149,16 @@ def create_hobby():
         if errors:
             return render_template('hobby.html',errors = errors)
 
-        hobby = db.fetchQuery(query=f"SELECT * FROM hobbies WHERE user_id = {user_id} AND name = '{name}'")
+
+        hobby = Hobby.query.filter_by(name=name,user_id = user_id ).first()
         if hobby:
             errors.append("Hobby ya existe")
             return render_template('hobby.html',errors = errors)
-        db.fetchQuery(query= f"iNSERT INTO hobbies (user_id,name,satisfaction_level,hability,time) VALUES ({user_id},'{name}','{satisfaction_level}','{hability}','{time}')")
+        else:
+            hobby = Hobby(name, user_id, satisfaction_level, ability, time)
+            db.session.add(hobby)
+            db.session.commit()
+
     return render_template('hobby.html', msg="Hobby añadido")
 
 if __name__ == "__main__":

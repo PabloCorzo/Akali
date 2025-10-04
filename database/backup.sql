@@ -56,7 +56,7 @@ CREATE TABLE `hobby` (
   `name` varchar(100) NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
   `satisfaction_level` int DEFAULT NULL,
-  `hability` varchar(100) DEFAULT NULL,
+  `ability` varchar(100) DEFAULT NULL,
   `time` time DEFAULT NULL,
   PRIMARY KEY (`hobby_id`),
   KEY `user_id` (`user_id`),
