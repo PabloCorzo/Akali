@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Películas</title>
+</head>
+<body>
+
+<div class="container">
+  <h1>Películas</h1>
+
+  <!-- Añadir nueva -->
+  <h2>Añadir nueva</h2>
+  <form action="{{ url_for('create_movie') }}" method="post">
+    <label for="title">Título *</label><br>
+    <input id="title" name="title" type="text"><br><br>
+
+    <label for="director">Director</label><br>
+    <input id="director" name="director" type="text"><br><br>
+
+    <label for="actors">Actores</label><br>
+    <input id="actors" name="actors" type="text"><br><br>
+
+    <label for="synopsis">Sinopsis</label><br>
+    <textarea id="synopsis" name="synopsis" rows="3"></textarea><br><br>
+
+    <button type="submit">Guardar</button>
+  </form>
+
+  <hr>
+
+  <!-- Buscar / Filtrar -->
+  <h2>Buscar</h2>
+  <form action="{{ url_for('movies') }}" method="get">
+    <label for="q_title">Título</label>
+    <input id="q_title" name="title" type="text"><br><br>
+
+    <label for="q_director">Director</label>
+    <input id="q_director" name="director" type="text"><br><br>
+
+    <label for="q_actor">Actor</label>
+    <input id="q_actor" name="actor" type="text"><br><br>
+
+    <button type="submit">Buscar</button>
+  </form>
+
+  <hr>
+
+  <!-- Resultados -->
+  <h2>Resultados</h2>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Director</th>
+        <th>Actores</th>
+        <th>Sinopsis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if movies and movies|length %}
+        {% for m in movies %}
+        <tr>
+          <td>{{ m.id }}</td>
+          <td>{{ m.title }}</td>
+          <td>{{ m.director or '-' }}</td>
+          <td>{{ m.actors or '-' }}</td>
+          <td>{{ m.synopsis or '-' }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" style="text-align:center; color: gray;">No hay resultados</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+</div>
+
+</body>
+</html>

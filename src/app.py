@@ -64,6 +64,21 @@ class Hobby(db.Model):
         self.ability = ability
         self.time = time
 
+class Movie(db.Model):
+    __tablename__ = 'movies'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    director = db.Column(db.String(255), nullable=True)
+    actors = db.Column(db.String(500), nullable=True)
+    synopsis = db.Column(db.Text, nullable=True)
+
+    def __init__(self, title, director=None, actors=None, synopsis=None):
+        self.title = title
+        self.director = director
+        self.actors = actors
+        self.synopsis = synopsis
+
+
 @app.route('/',methods = ['POST','GET'])
 def home():
     return redirect(url_for('login'))
@@ -160,6 +175,43 @@ def create_hobby():
             db.session.commit()
 
     return render_template('hobby.html', msg="Hobby añadido")
+
+@app.route("/dashboard/movies", methods=["GET"])
+def movies():
+    # parámetros de búsqueda
+    q_title = (request.args.get("title") or "").strip()
+    q_director = (request.args.get("director") or "").strip()
+    q_actor = (request.args.get("actor") or "").strip()
+
+    query = Movie.query
+    if q_title:
+        query = query.filter(Movie.title.ilike(f"%{q_title}%"))
+    if q_director:
+        query = query.filter(Movie.director.ilike(f"%{q_director}%"))
+    if q_actor:
+        # búsqueda simple de substring dentro del campo actors
+        query = query.filter(Movie.actors.ilike(f"%{q_actor}%"))
+
+    results = query.order_by(Movie.id.desc()).all()
+    return render_template("movies.html", movies=results)
+
+@app.route("/dashboard/movies/create", methods=["POST"])
+def create_movie():
+    title = (request.form.get("title") or "").strip()
+    director = (request.form.get("director") or "").strip() or None
+    actors = (request.form.get("actors") or "").strip() or None
+    synopsis = (request.form.get("synopsis") or "").strip() or None
+
+    if not title:
+        flash("El título es obligatorio", "error")
+        return redirect(url_for("movies"))
+
+    m = Movie(title=title, director=director, actors=actors, synopsis=synopsis)
+    db.session.add(m)
+    db.session.commit()
+    flash("Película guardada", "success")
+    return redirect(url_for("movies"))
+
 
 if __name__ == "__main__":
     with app.app_context():
