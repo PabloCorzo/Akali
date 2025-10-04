@@ -51,7 +51,7 @@ class Users(db.Model):
 
 @app.route('/',methods = ['POST','GET'])
 def home():
-    return redirect(url_for('register'))
+    return redirect(url_for('login'))
 
 @app.route('/login', methods = ['GET','POST'])
 def login():

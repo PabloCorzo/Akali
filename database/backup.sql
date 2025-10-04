@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
--- Host: localhost    Database: akali_usuarios
+-- Host: localhost    Database: akali
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
@@ -18,9 +18,6 @@
 --
 -- Table structure for table `films`
 --
-CREATE DATABASE IF NOT EXISTS `akali` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `akali`;
 
 DROP TABLE IF EXISTS `films`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -75,6 +72,32 @@ CREATE TABLE `hobby` (
 LOCK TABLES `hobby` WRITE;
 /*!40000 ALTER TABLE `hobby` DISABLE KEYS */;
 /*!40000 ALTER TABLE `hobby` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `peliculas`
+--
+
+DROP TABLE IF EXISTS `peliculas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `peliculas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `director` varchar(200) DEFAULT NULL,
+  `actors` varchar(200) DEFAULT NULL,
+  `synopsis` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `peliculas`
+--
+
+LOCK TABLES `peliculas` WRITE;
+/*!40000 ALTER TABLE `peliculas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `peliculas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -173,17 +196,8 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-CREATE TABLE IF NOT EXISTS peliculas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title    VARCHAR(200) NOT NULL,
-    director VARCHAR(200),
-    actors   TEXT,
-    synopsis TEXT
-);
-
 
 --
 -- Dumping data for table `users`
@@ -191,7 +205,7 @@ CREATE TABLE IF NOT EXISTS peliculas (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin@admin.com','1234',1,'2025-09-24 16:03:46','2025-09-24 16:03:46'),(2,'PepitoLagrimitas','pepito@lagrimitas.com','raulflaco67',0,'2025-09-24 16:06:42','2025-09-24 16:06:42');
+INSERT INTO `users` VALUES (1,'admin','admin@admin.com','1234',1,'2025-09-24 16:03:46','2025-09-24 16:03:46'),(2,'PepitoLagrimitas','pepito@lagrimitas.com','raulflaco67',0,'2025-09-24 16:06:42','2025-09-24 16:06:42'),(3,'admin1','admin1@admin1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-04 17:49:52','2025-10-04 17:49:52');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -204,4 +218,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-24 18:23:36
+-- Dump completed on 2025-10-04 19:51:04
