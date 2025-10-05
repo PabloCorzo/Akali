@@ -131,9 +131,9 @@ def logout():
 
 @app.route('/dashboard',methods = ['POST','GET'])
 def dashboard():
-    return f"<h1>Dashboard</h1>"
+    return render_template('dashboard.html')
 
-@app.route("/hobby",methods = ["POST","GET"])
+@app.route("/dashboard/hobby",methods = ["POST","GET"])
 def create_hobby():
     errors = []
     # if not session.get('loggedin'):
