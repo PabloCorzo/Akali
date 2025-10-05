@@ -48,13 +48,6 @@ def isLogged() -> bool:
 
 
 class Users(db.Model):
-    _id = db.Column('id',db.Integer,primary_key = True)
-    username = db.Column('username',db.String(32),unique = True,nullable = False)
-    email = db.Column('email',db.String(32),unique = True,nullable = True)
-    password = db.Column('password',db.String(32),nullable = False)
-
-
-class Users(db.Model):
     _id = db.Column('id', db.Integer, primary_key=True)
     username = db.Column('username', db.String(32), unique=True, nullable=False)
     email = db.Column('email', db.String(32), unique=True, nullable=True)
@@ -163,9 +156,6 @@ def dashboard():
         return redirect(url_for('login'))
     return render_template('dashboard.html')
 
-@app.route('/dashboard', methods=['POST', 'GET'])
-def dashboard():
-    return f"<h1>Dashboard</h1>"
 
 
 @app.route("/dashboard/hobby", methods=["POST", "GET"])
