@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 
-body {
+body{
   height: 100vh;
   display: flex;
   align-items: center;
@@ -114,3 +114,93 @@ body {
   font-weight: bold;
   text-decoration: none;
 }
+
+/* css hobby*/
+.container-hobby-all{
+    display: flex;
+  justify-content: center;
+    flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px;
+  min-height: 100vh;
+}
+
+.container-hobby {
+
+    background: #fdf3d9; /* color pergamino */
+  padding: 35px 30px;
+  border-radius: 12px;
+  border: 2px solid #a9744f;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
+    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
+    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
+  text-align: center;
+}
+
+.container-hobby-all h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  font-family: 'MedievalSharp', cursive;
+  color: #5b3924;
+}
+
+.container-hobby-all p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+
+    color: #5b3924;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #5b3924;
+}
+
+.form-group label {
+    display: flex;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.form-group input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8b5e3c;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fffdf5;
+}
+
+.container-hobby-search{
+    flex: 1;
+  max-width: 450px;
+  padding: 20px;
+   background: #fdf3d9;
+  border-radius: 8px;
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
+    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
+    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
+  color: #333; /* Color de texto */
+}
+
+.container-hobby,
+.container-hobby-search{
+  width: 100%;       /* Ocupan el ancho disponible */
+  max-width: 1000px;  /* Pero no más de 500px para que no se vean muy anchos */
+}
+
+.body-hobby{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    background: #d4a373;
+}
+
+
