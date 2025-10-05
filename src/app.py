@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 import re
 import hashlib
 
+
 import sys
 sys.path.append("../src")
 
@@ -18,6 +19,8 @@ load_dotenv()
 app = Flask(__name__, template_folder='templates', static_folder='static')
 db = SQLAlchemy()
 app.secret_key = 'key1'
+
+app.config["SESSION_PERMANENT"] = False
 
 db_user = os.getenv("DB_USER")
 db_pass = os.getenv("DB_PASSWORD")
@@ -32,6 +35,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{db_user}:{db_p
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
+def isLogged() -> bool:
+
+    #Lanza error si intena acceder a una variable de sesion que no existe
+    try:
+        has_user = session['username'] is not None
+        has_id = session['id'] is not None
+        return  has_user and has_id
+    except:
+        return False
+
 
 class Users(db.Model):
     _id = db.Column('id',db.Integer,primary_key = True)
@@ -131,17 +145,17 @@ def logout():
 
 @app.route('/dashboard',methods = ['POST','GET'])
 def dashboard():
+
+    if not isLogged():
+        return redirect(url_for('login'))
     return render_template('dashboard.html')
 
 @app.route("/dashboard/hobby",methods = ["POST","GET"])
 def create_hobby():
-    errors = []
-    # if not session.get('loggedin'):
-    #     return redirect(url_for('login'))
-    #
 
-    # if not user_id:
-    #     return redirect(url_for('login'))
+    errors = []
+    if not isLogged():
+        return redirect(url_for('login'))
 
     if request.method == "POST":
         name = request.form["name"].strip()
@@ -178,6 +192,10 @@ def create_hobby():
 
 @app.route("/dashboard/movies", methods=["GET"])
 def movies():
+
+    if not isLogged():
+        return redirect(url_for('login'))
+
     # parámetros de búsqueda
     q_title = (request.args.get("title") or "").strip()
     q_director = (request.args.get("director") or "").strip()
@@ -197,6 +215,10 @@ def movies():
 
 @app.route("/dashboard/movies/create", methods=["POST"])
 def create_movie():
+
+    if not isLogged():
+        return redirect(url_for('login'))
+
     title = (request.form.get("title") or "").strip()
     director = (request.form.get("director") or "").strip() or None
     actors = (request.form.get("actors") or "").strip() or None
@@ -213,7 +235,10 @@ def create_movie():
     return redirect(url_for("movies"))
 
 
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug = True,host = '0.0.0.0')
+    session['id'] = None
+    session['username'] = None
