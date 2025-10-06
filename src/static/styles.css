@@ -119,8 +119,8 @@ body{
 .container-hobby-all{
     display: flex;
   justify-content: center;
-    flex-direction: column;
-  align-items: flex-start;
+    flex-direction: row;
+  align-items: center;
   gap: 30px;
   padding: 40px;
   min-height: 100vh;
@@ -191,7 +191,7 @@ body{
 .container-hobby,
 .container-hobby-search{
   width: 100%;       /* Ocupan el ancho disponible */
-  max-width: 1000px;  /* Pero no más de 500px para que no se vean muy anchos */
+  max-width: 500px;/* Pero no más de 500px para que no se vean muy anchos */
 }
 
 .body-hobby{
