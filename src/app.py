@@ -58,11 +58,11 @@ class Users(db.Model):
         self.email = email
         self.password = self.hashPassword(password)
 
-    def hashPassword(self, password: str) -> str:
-        return hashlib.sha256(password.encode()).hexdigest()
+def hashPassword(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
 
-    def checkPassword(self, username, password):
-        return Users.query.filter_by(username=username, password=password)
+def checkPassword(username, password):
+    return Users.query.filter_by(username=username, password=password).first()
 
 
 class Hobby(db.Model):
@@ -107,10 +107,15 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        if not password:
+            password = "inv"
+        if not username:
+            username = "inv"
         # email = request.form['email']
-        print(f'username {username} password {password}')
+        # print(f'username {username} password {password},{}')
         user = Users.query.filter_by(username=username).first()
-        if user and user.checkPassword(username, password):
+        passw = hashPassword(password = password)
+        if checkPassword(username, passw):
             session['username'] = user.username
             # session['email'] = user.email
             session['id'] = user._id
