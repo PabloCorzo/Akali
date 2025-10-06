@@ -46,6 +46,11 @@ def isLogged() -> bool:
     except:
         return False
 
+def hashPassword(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def checkPassword(username, password):
+    return Users.query.filter_by(username=username, password=password).first()
 
 class Users(db.Model):
     _id = db.Column('id', db.Integer, primary_key=True)
@@ -56,13 +61,8 @@ class Users(db.Model):
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
-        self.password = self.hashPassword(password)
+        self.password = hashPassword(password)
 
-def hashPassword(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def checkPassword(username, password):
-    return Users.query.filter_by(username=username, password=password).first()
 
 
 class Hobby(db.Model):
