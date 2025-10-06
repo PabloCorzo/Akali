@@ -110,9 +110,6 @@ def login():
         # email = request.form['email']
         print(f'username {username} password {password}')
         user = Users.query.filter_by(username=username).first()
-        print("Supposed 'test' password encryption: {9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08}")
-        print(f'Actual value: {user.checkPassword(username, password)}')
-        print(user.hashPassword(password) == '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08')
         if user and user.checkPassword(username, password):
             session['username'] = user.username
             # session['email'] = user.email

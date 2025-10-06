@@ -4,15 +4,20 @@
   <meta charset="UTF-8" />
   <title>Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type = "text/css" href="{{ url_for('static',filename = 'styles.css') }}">
 </head>
 <body>
+    <div class = 'login-box'>
+    <div class = 'main-box'>
   <main class="card">
     <h1>Dashboard</h1>
-    <p>Selecciona una sección</p>
+    <p style = "margin:15px; font-size: 2rem">Selecciona una sección</p>
     <div class="actions">
       <a class="btn" href="{{ url_for('create_hobby') }}">Hobbies</a>
       <a class="btn" href="{{ url_for('movies') }}">Películas</a>
     </div>
+</div>
   </main>
+</div>
 </body>
 </html>

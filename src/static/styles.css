@@ -54,6 +54,14 @@ body{
   color: #5b3924;
 }
 
+.main-box h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin: 10px;
+  font-family: 'MedievalSharp', cursive;
+  color: #5b3924;
+}
+
 /* Campos */
 .input-group {
   margin-bottom: 15px;
