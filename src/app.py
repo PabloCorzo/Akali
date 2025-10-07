@@ -56,7 +56,7 @@ class Users(db.Model):
     _id = db.Column('id', db.Integer, primary_key=True)
     username = db.Column('username', db.String(32), unique=True, nullable=False)
     email = db.Column('email', db.String(32), unique=True, nullable=True)
-    password = db.Column('password', db.String(32), nullable=False)
+    password = db.Column('password', db.String(64), nullable=False)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -88,12 +88,16 @@ class Movie(db.Model):
     director = db.Column(db.String(255), nullable=True)
     actors = db.Column(db.String(500), nullable=True)
     synopsis = db.Column(db.Text, nullable=True)
+    ###########
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, title, director=None, actors=None, synopsis=None):
+    def __init__(self, title, director=None, actors=None, synopsis=None, user_id=None):
         self.title = title
         self.director = director
         self.actors = actors
         self.synopsis = synopsis
+        ##############
+        self.user_id = user_id
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -224,7 +228,8 @@ def movies():
     q_director = (request.args.get("director") or "").strip()
     q_actor = (request.args.get("actor") or "").strip()
 
-    query = Movie.query
+    #query = Movie.query
+    query = Movie.query.filter(Movie.user_id == session['id'])
     if q_title:
         query = query.filter(Movie.title.ilike(f"%{q_title}%"))
     if q_director:
@@ -252,7 +257,9 @@ def create_movie():
         flash("El título es obligatorio", "error")
         return redirect(url_for("movies"))
 
-    m = Movie(title=title, director=director, actors=actors, synopsis=synopsis)
+    ###########
+    owner_id = session['id']
+    m = Movie(title=title, director=director, actors=actors, synopsis=synopsis,user_id=owner_id)
     db.session.add(m)
     db.session.commit()
     flash("Película guardada", "success")

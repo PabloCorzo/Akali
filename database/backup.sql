@@ -16,35 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `films`
---
-
-DROP TABLE IF EXISTS `films`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `films` (
-  `film_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint unsigned NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `director` varchar(100) DEFAULT NULL,
-  `actors` text,
-  `synopsis` text,
-  PRIMARY KEY (`film_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `films_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `films`
---
-
-LOCK TABLES `films` WRITE;
-/*!40000 ALTER TABLE `films` DISABLE KEYS */;
-/*!40000 ALTER TABLE `films` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `hobby`
 --
 
@@ -75,29 +46,33 @@ LOCK TABLES `hobby` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `peliculas`
+-- Table structure for table `movies`
 --
 
-DROP TABLE IF EXISTS `peliculas`;
+DROP TABLE IF EXISTS `movies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `peliculas` (
+CREATE TABLE `movies` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `director` varchar(200) DEFAULT NULL,
-  `actors` varchar(200) DEFAULT NULL,
-  `synopsis` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `title` varchar(255) NOT NULL,
+  `director` varchar(255) DEFAULT NULL,
+  `actors` varchar(500) DEFAULT NULL,
+  `synopsis` text,
+  `user_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_movies_user` (`user_id`),
+  CONSTRAINT `fk_movies_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `peliculas`
+-- Dumping data for table `movies`
 --
 
-LOCK TABLES `peliculas` WRITE;
-/*!40000 ALTER TABLE `peliculas` DISABLE KEYS */;
-/*!40000 ALTER TABLE `peliculas` ENABLE KEYS */;
+LOCK TABLES `movies` WRITE;
+/*!40000 ALTER TABLE `movies` DISABLE KEYS */;
+INSERT INTO `movies` VALUES (2,'hhh','hhh','hhh','hhh',4),(3,'gggg','gggg','gggg','ggggg',4);
+/*!40000 ALTER TABLE `movies` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -196,7 +171,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +180,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin@admin.com','1234',1,'2025-09-24 16:03:46','2025-09-24 16:03:46'),(2,'PepitoLagrimitas','pepito@lagrimitas.com','raulflaco67',0,'2025-09-24 16:06:42','2025-09-24 16:06:42'),(3,'admin1','admin1@admin1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-04 17:49:52','2025-10-04 17:49:52');
+INSERT INTO `users` VALUES (1,'admin','admin@admin.com','1234',1,'2025-09-24 16:03:46','2025-09-24 16:03:46'),(2,'PepitoLagrimitas','pepito@lagrimitas.com','raulflaco67',0,'2025-09-24 16:06:42','2025-09-24 16:06:42'),(3,'admin1','admin1@admin1.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-04 17:49:52','2025-10-04 17:49:52'),(4,'carlotacrc','carlota7337@gmail.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-06 12:14:02','2025-10-06 12:14:02'),(5,'hugo','hugo@gmail.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-06 12:15:37','2025-10-06 12:15:37'),(6,'flavia','flavia@gmail.com','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',0,'2025-10-07 06:24:06','2025-10-07 06:24:06'),(7,'prueba','prueba@gmail.com','27158b65d612ec0ee7fd3b6cd6ba5b015eedaec5520a00ea18c70098dce735e4',0,'2025-10-07 09:02:01','2025-10-07 09:02:01'),(8,'prueba2','prueba2@ggg.com','6de9de3aa7718ecd6226b9fe240af85f75538c223d0b08a5b8f0efcfaecbab4b',0,'2025-10-07 09:05:20','2025-10-07 09:05:20');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -218,4 +193,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-04 19:51:04
+-- Dump completed on 2025-10-07 11:22:33
