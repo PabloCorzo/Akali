@@ -71,7 +71,7 @@ class Hobby(db.Model):
     user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
     satisfaction_level = db.Column('satisfaction_level', db.Integer, nullable=True)
     ability = db.Column('ability', db.String(100), nullable=True)
-    time = db.Column('time', db.Time, nullable=True)
+    time = db.Column('time', db.Float, nullable=True)
 
     def __init__(self, name, user_id, satisfaction_level, ability, time):
         self.name = name
@@ -126,7 +126,7 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             flash("Usuario o Contraseña Incorrecto ❌", "danger")
-            return render_template("login.html", error="Invalid user")
+            return render_template("login.html")
     else:
         return render_template('login.html')
 
@@ -137,17 +137,25 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        if email is None:
-            email = ""
+        def mail_exists():
+            return Users.query.filter_by(email=email).first()
+        
+        
         user = Users.query.filter_by(username=username).first()
+        
         if user:
-            return render_template('index.html', error='user already registered')
+            flash('Usuario ya existe','danger')
+            return render_template('signup.html')
+
+        if mail_exists():
+            flash('Correo ya registrado','danger')
+            return render_template('signup.html')
         else:
             user = Users(username=username, password=password, email=email)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
-    return render_template('index.html')
+    return render_template('signup.html')
 
 
 @app.route('/logout', methods=['POST', 'GET'])

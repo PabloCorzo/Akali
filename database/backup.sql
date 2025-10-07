@@ -28,7 +28,7 @@ CREATE TABLE `hobby` (
   `user_id` bigint unsigned DEFAULT NULL,
   `satisfaction_level` int DEFAULT NULL,
   `ability` varchar(100) DEFAULT NULL,
-  `time` time DEFAULT NULL,
+  `time` float DEFAULT NULL,
   PRIMARY KEY (`hobby_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `hobby_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
