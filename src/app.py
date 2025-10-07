@@ -125,6 +125,7 @@ def login():
             session['id'] = user._id
             return redirect(url_for('dashboard'))
         else:
+            flash("Usuario o Contraseña Incorrecto ❌", "danger")
             return render_template("login.html", error="Invalid user")
     else:
         return render_template('login.html')

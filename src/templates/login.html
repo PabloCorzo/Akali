@@ -8,6 +8,7 @@
   <!-- Fuente medieval -->  
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
 </head>
+</head>
 <body>
   <div class="overlay"></div>
   <div class="container">
@@ -33,5 +34,18 @@
       </form>
     </div>
   </div>
+  <div class="flash-container">
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            {% for categoria, mensaje in mensajes %}
+                <div class="alert alert-{{ categoria }} alert-dismissible fade show shadow" role="alert">
+                    {{ mensaje }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
 </body>
 </html>
