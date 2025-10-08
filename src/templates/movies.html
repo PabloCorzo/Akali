@@ -1,85 +1,99 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Películas</title>
-  <link rel="stylesheet" type = "text/css" href="{{ url_for('static',filename = 'styles.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="login-box ">
-  <h1>Películas</h1>
+{% block head %}
+<title>Películas</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
 
-  <!-- Añadir nueva -->
-  <h2>Añadir nueva</h2>
-  <form action="{{ url_for('create_movie') }}" method="post">
-    <label for="title">Título *</label><br>
-    <input id="title" name="title" type="text"><br><br>
+{% block body %}
+<body class="body-hobby">
+  <div class="container-hobby-all">
 
-    <label for="director">Director</label><br>
-    <input id="director" name="director" type="text"><br><br>
+    <!-- Sección: Añadir nueva -->
+    <div class="container-hobby">
+      <h1>Películas</h1>
+      <p>En este apartado puedes agregar tus películas.</p>
 
-    <label for="actors">Actores</label><br>
-    <input id="actors" name="actors" type="text"><br><br>
+      <form action="{{ url_for('create_movie') }}" method="post">
+        <div class="form-group">
+          <label for="title">Título *</label>
+          <input class="textbox" id="title" name="title" type="text" required>
+        </div>
 
-    <label for="synopsis">Sinopsis</label><br>
-    <textarea id="synopsis" name="synopsis" rows="3"></textarea><br><br>
+        <div class="form-group">
+          <label for="director">Director</label>
+          <input class="textbox" id="director" name="director" type="text">
+        </div>
 
-    <button type="submit">Guardar</button>
-  </form>
+        <div class="form-group">
+          <label for="actors">Actores</label>
+          <input class="textbox" id="actors" name="actors" type="text">
+        </div>
 
-  <hr>
+        <div class="form-group">
+          <label for="synopsis">Sinopsis</label>
+          <textarea class="textbox" id="synopsis" name="synopsis" rows="3"></textarea>
+        </div>
 
-  <!-- Buscar / Filtrar -->
-  <h2>Buscar</h2>
-  <form action="{{ url_for('movies') }}" method="get">
-    <label for="q_title">Título</label>
-    <input id="q_title" name="title" type="text"><br><br>
+        <button class="btn" type="submit">Guardar</button>
+      </form>
+    </div>
 
-    <label for="q_director">Director</label>
-    <input id="q_director" name="director" type="text"><br><br>
+    <!-- Sección: Buscar / Filtrar -->
+    <div class="container-hobby-search">
+      <h1>Buscar Película</h1>
+      <form action="{{ url_for('movies') }}" method="get">
+        <div class="form-group">
+          <label for="q_title">Título</label>
+          <input class="textbox" id="q_title" name="title" type="text">
+        </div>
 
-    <label for="q_actor">Actor</label>
-    <input id="q_actor" name="actor" type="text"><br><br>
+        <div class="form-group">
+          <label for="q_director">Director</label>
+          <input class="textbox" id="q_director" name="director" type="text">
+        </div>
 
-    <button type="submit">Buscar</button>
-  </form>
+        <div class="form-group">
+          <label for="q_actor">Actor</label>
+          <input class="textbox" id="q_actor" name="actor" type="text">
+        </div>
 
-  <hr>
+        <button class="btn" type="submit">Buscar</button>
+      </form>
 
-  <!-- Resultados -->
-  <h2>Resultados</h2>
-  <table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Director</th>
-        <th>Actores</th>
-        <th>Sinopsis</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if movies and movies|length %}
-        {% for m in movies %}
-        <tr>
-          <td>{{ m.id }}</td>
-          <td>{{ m.title }}</td>
-          <td>{{ m.director or '-' }}</td>
-          <td>{{ m.actors or '-' }}</td>
-          <td>{{ m.synopsis or '-' }}</td>
-        </tr>
-        {% endfor %}
-      {% else %}
-        <tr>
-          <td colspan="5" style="text-align:center; color: gray;">No hay resultados</td>
-        </tr>
-      {% endif %}
-    </tbody>
-  </table>
+      <!-- Resultados -->
+      <h1>Resultados</h1>
+      <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Director</th>
+            <th>Actores</th>
+            <th>Sinopsis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if movies is defined and movies|length %}
+            {% for m in movies %}
+            <tr>
+              <td>{{ m.id }}</td>
+              <td>{{ m.title }}</td>
+              <td>{{ m.director or '-' }}</td>
+              <td>{{ m.actors or '-' }}</td>
+              <td>{{ m.synopsis or '-' }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="5" style="text-align:center; color: gray;">Busca una película para ver resultados</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
 
-</div>
-
+  </div>
 </body>
-</html>
+{% endblock %}
+

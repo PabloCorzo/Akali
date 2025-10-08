@@ -227,29 +227,30 @@ def create_hobby():
 
 
 @app.route("/dashboard/movies", methods=["GET"])
+@app.route("/dashboard/movies", methods=["GET"])
+@app.route("/dashboard/movies", methods=["GET"])
 def movies():
-
     if not isLogged():
         return redirect(url_for('login'))
 
-    # parámetros de búsqueda
-    q_title = (request.args.get("title") or "").strip()
+    q_title    = (request.args.get("title") or "").strip()
     q_director = (request.args.get("director") or "").strip()
-    q_actor = (request.args.get("actor") or "").strip()
+    q_actor    = (request.args.get("actor") or "").strip()
 
-    #query = Movie.query
-    query = Movie.query.filter(Movie.user_id == session['id'])
-    if q_title:
-        query = query.filter(Movie.title.ilike(f"%{q_title}%"))
-    if q_director:
-        query = query.filter(Movie.director.ilike(f"%{q_director}%"))
-    if q_actor:
-        # búsqueda simple de substring dentro del campo actors
-        query = query.filter(Movie.actors.ilike(f"%{q_actor}%"))
+    searched = any([q_title, q_director, q_actor])
 
-    results = query.order_by(Movie.id.desc()).all()
-    return render_template("movies.html", movies=results)
+    movies = []
+    if searched:
+        query = Movie.query.filter(Movie.user_id == session['id'])
+        if q_title:
+            query = query.filter(Movie.title.ilike(f"%{q_title}%"))
+        if q_director:
+            query = query.filter(Movie.director.ilike(f"%{q_director}%"))
+        if q_actor:
+            query = query.filter(Movie.actors.ilike(f"%{q_actor}%"))
+        movies = query.order_by(Movie.id.desc()).all()
 
+    return render_template("movies.html", movies=movies, searched=searched)
 
 @app.route("/dashboard/movies/create", methods=["POST"])
 def create_movie():
