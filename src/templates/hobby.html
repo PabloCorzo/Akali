@@ -81,5 +81,27 @@
 
 
 </div>
+  <div class="flash-container">
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            {% for categoria, mensaje in mensajes %}
+                <div class="alert alert-{{ categoria }} alert-dismissible fade show shadow" role="alert">
+                    {{ mensaje }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <script>
+  // Espera 4 segundos y oculta las alertas
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      setTimeout(() => alert.remove(), 500);
+    });
+  }, 4000);
+</script>
+</div>
+
 </body>
 {% endblock %}

@@ -216,6 +216,7 @@ def create_hobby():
 
         hobby = Hobby.query.filter_by(name=name, user_id=user_id).first()
         if hobby:
+            flash("El Hobby ya existe", "danger")
             errors.append("Hobby ya existe")
             return render_template('hobby.html', errors=errors)
         else:
