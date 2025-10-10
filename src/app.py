@@ -206,6 +206,8 @@ def create_hobby():
             errors.append("Campo nivel de satisfaccion requerido")
         elif not ability:
             errors.append("Campo habilidad requerido")
+        elif  int(time) > 168 or int(time) < 0:
+            errors.append("El tiempo tiene que ser 168 como maximo")
         elif not time:
             errors.append("Campo tiempo requerido")
         elif int(satisfaction_level) > 10 or int(satisfaction_level) < 0:
