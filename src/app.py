@@ -278,7 +278,9 @@ def create_movie():
     flash("Película guardada", "success")
     return redirect(url_for("movies"))
 
-
+@app.route("/dasboard/todo",methods = ['GET','POST'])
+def todo():
+    return render_template('todo.html')
 
 if __name__ == "__main__":
     with app.app_context():

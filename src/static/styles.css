@@ -54,12 +54,15 @@ body{
   color: #5b3924;
 }
 
-.main-box h1 {
+.main-box  {
+  padding: 5px;
+  background: #5b3924;
+  border-radius: 25px;
   margin-bottom: 20px;
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin: 10px;
   font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
+  color: beige;
 }
 
 /* Campos */
