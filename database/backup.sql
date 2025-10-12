@@ -39,7 +39,7 @@ CREATE TABLE `hobby` (
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
   `task_id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
+  `name` varchar(32) NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
   `completed` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`task_id`),

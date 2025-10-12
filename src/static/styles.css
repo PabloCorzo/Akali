@@ -65,6 +65,63 @@ body{
   color: beige;
 }
 
+.task-container{
+  background-color: #fdf3d9; /* color pergamino */
+  padding: 25% 15%;
+  border-radius: 12px;
+  border: 2px solid #a9744f;
+  box-shadow: 
+    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
+    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
+    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
+  text-align: center;
+  margin-top: 100%;
+  margin-bottom: 100%;
+}
+
+.task-container h1 {
+  
+  margin-bottom: 20%;
+  font-size: 1.5rem;
+  font-family: 'MedievalSharp', cursive;
+  color: #5b3924;
+}
+.task-box-complete  {
+  
+  width: 200px;
+  padding: 5px;
+  background: #106b04;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-family: 'MedievalSharp', cursive;
+  color: beige;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: inline-block;
+
+
+}
+.task-box-incomplete  {
+  
+  width: 200px;
+  padding: 5px;
+  background: #472601dc;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-family: 'MedievalSharp', cursive;
+  color: beige;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+
 /* Campos */
 .input-group {
   margin-bottom: 15px;
@@ -104,7 +161,7 @@ body{
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 0px;
   transition: 0.3s;
   font-family: 'MedievalSharp', cursive;
 }
@@ -112,6 +169,42 @@ body{
 .btn:hover {
   background: linear-gradient(180deg, #8b5e3c, #5b3924);
 }
+
+.task-btn {
+  width: 15px;
+  height: 5px;
+  padding: 5px;
+  background: linear-gradient(180deg, #d4a373, #8b5e3c);
+  border: 1px solid #5b3924;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: 0;
+  margin-right: 0%;
+  transition: 0.3s;
+  font-family: 'MedievalSharp', cursive;
+}
+.create-task-btn {
+  width: 15px;
+  height: 5px;
+  padding: 10px;
+  background: linear-gradient(180deg, #d4a373, #8b5e3c);
+  border: 2px solid #5b3924;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 90%;
+  /* margin-bottom: 55%; */
+  margin-left: 45%;
+  margin-right: 55%;
+  transition: 0.3s;
+  font-family: 'MedievalSharp', cursive;
+}
+
 
 /* Texto inferior */
 .extra {

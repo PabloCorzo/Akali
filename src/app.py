@@ -63,6 +63,16 @@ class Users(db.Model):
         self.email = email
         self.password = hashPassword(password)
 
+class Task(db.Model):
+    _id = db.Column('task_id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String(32), unique=True, nullable=False)
+    completed = db.Column('completed', db.Boolean, unique=True, nullable=True)
+    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    def __init__(self,name, user):
+        self.name = name
+        self._user_id = Users.query.filter_by(username = user).first()._id
+        self.completed = 0
+
 
 
 class Hobby(db.Model):
@@ -280,7 +290,13 @@ def create_movie():
 
 @app.route("/dasboard/todo",methods = ['GET','POST'])
 def todo():
-    return render_template('todo.html')
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    uid = session['id']
+    print(f"user id is : {uid}")
+    task_list = Task.query.filter_by(_user_id = uid)
+    return render_template('todo.html', tasks = task_list)
 
 if __name__ == "__main__":
     with app.app_context():
