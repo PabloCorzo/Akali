@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-# import src.db_repository as db
-# import loginscripts,hobby
 import os
 import sys
 from dotenv import load_dotenv
@@ -240,8 +238,6 @@ def create_hobby():
 
 
 @app.route("/dashboard/movies", methods=["GET"])
-@app.route("/dashboard/movies", methods=["GET"])
-@app.route("/dashboard/movies", methods=["GET"])
 def movies():
     if not isLogged():
         return redirect(url_for('login'))
@@ -288,7 +284,7 @@ def create_movie():
     flash("Película guardada", "success")
     return redirect(url_for("movies"))
 
-@app.route("/dasboard/todo",methods = ['GET','POST'])
+@app.route("/dashboard/todo",methods = ['GET','POST'])
 def todo():
     if not isLogged():
         return redirect(url_for('login'))
