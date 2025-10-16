@@ -11,14 +11,29 @@
     <div class = 'login-box'>
   <main class="card">
     <h1>Dashboard</h1>
+    <!-- <div class="day_schedule">
+      <h2>Horario del día</h2>
+      {% if schedule %}
+        <ul>
+          {% for item in schedule %}
+            <li>{{ item.time }} - {{ item.activity }}</li>
+          {% endfor %}
+        </ul>
+      {% else %} -->
+        <!-- <p>No hay actividades programadas para hoy.</p>
+      {% endif %} -->
+    </div> 
     <p style = "margin:15px; font-size: 2rem">Selecciona una sección</p>
     <div class="actions">
       <a class="btn" href="{{ url_for('create_hobby') }}">Hobbies</a>
       <a class="btn" href="{{ url_for('movies') }}">Películas</a>
       <a class="btn" href="{{ url_for('todo') }}">Lista de tareas</a>
+      <a class="btn" href="{{ url_for('create_schedule_item') }}">Mi Horario</a>
     </div>
   </main>
     </div>
     </div>
 </body>
 </html>
+
+

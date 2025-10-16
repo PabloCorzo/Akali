@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 import re
 import hashlib
+from datetime import datetime, time
 
 
 import sys
@@ -70,8 +71,23 @@ class Task(db.Model):
         self.name = name
         self._user_id = Users.query.filter_by(username = user).first()._id
         self.completed = 0
-
-
+        
+class ScheduleItem(db.Model):
+    _id = db.Column('id', db.Integer, primary_key=True)
+    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    title = db.Column('title', db.String(100), unique=False, nullable=False)
+    start_time = db.Column('start_time', db.DateTime, unique=False, nullable=False)
+    end_time = db.Column('end_time', db.DateTime, unique=False, nullable=False)
+    item_type = db.Column('item_type', db.String(50), unique=False, nullable=False)
+    item_id = db.Column('item_id', db.Integer, unique=False, nullable=False)
+    
+    def __init__(self, user_id, title, start_time, end_time, item_type, item_id):
+        self._user_id = user_id
+        self.title = title
+        self.start_time = start_time
+        self.end_time = end_time
+        self.item_type = item_type
+        self.item_id = item_id
 
 class Hobby(db.Model):
     _hobby_id = db.Column('hobby_id', db.Integer, primary_key=True)
@@ -178,6 +194,12 @@ def dashboard():
     if not isLogged():
         return redirect(url_for('login'))
     return render_template('dashboard.html')
+    
+    user_id = session['id']
+    # Obtenemos todos los items del horario para el usuario.
+    # Idealmente, aquí filtrarías por el día actual, pero para empezar mostraremos todos.
+    schedule_items = ScheduleItem.query.filter_by(_user_id=user_id).order_by(ScheduleItem.start_time).all()
+    return render_template('dashboard.html', schedule=schedule_items)
 
 
 
@@ -294,8 +316,43 @@ def todo():
     task_list = Task.query.filter_by(_user_id = uid)
     return render_template('todo.html', tasks = task_list)
 
+@app.route("/dashboard/schedule",methods = ['GET','POST'])
+def create_schedule_item():
+    
+
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    user_id = session['id']
+
+    if request.method == 'POST':
+        activity = request.form.get('activity_select') 
+        start_time = request.form.get('time')
+        end_time = request.form.get('time-finish')
+        item_type = 'Custom'
+        item_id = 0
+        if not activity or not start_time or not end_time:
+            #flash("Todos los campos son obligatorios", "danger")
+            return redirect(url_for('create_schedule_item'))
+
+        if Hobby.query.filter_by(user_id=user_id,name = activity).first():
+            item_type = 'Hobby'
+            item_id = Hobby.query.filter_by(name=activity, user_id=user_id).first()._hobby_id
+        # elif activity == Task.query.filter_by(_user_id=user_id).first().name:
+        #     item_type = 'Task'
+        #     item_id = Task.query.filter_by(name=activity, _user_id=user_id).first()._task_id
+
+        item = ScheduleItem(user_id, activity, start_time, end_time, item_type, item_id)
+        db.session.add(item)
+        db.session.commit()
+
+
+    hobbies = Hobby.query.filter_by(user_id=user_id).all()
+    tasks = Task.query.filter_by(_user_id=user_id).all()
+
+    return render_template('schedule.html', hobbies=hobbies, tasks=tasks)
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug = True,host = '0.0.0.0')
-

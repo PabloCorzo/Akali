@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Horario</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block body %}
+<body class="body-schedule">
+<div class="login-box">
+    <h1>Horario</h1>
+    <form action="{{ url_for('create_schedule_item') }}" method="post">
+
+         <div class="form-group">
+            <label for="activity">Actividad</label>
+            <!-- <input class="textbox" id="activity_text" type="text" name="activity_text"  placeholder="p.ej. Almorzar (o selecciona de la lista)"> -->
+            <select name="activity_select" class="textbox">
+                <option value="">-- Selecciona una actividad existente --</option>
+                <optgroup label="Hobbies">
+                    {% for hobby in hobbies %}
+                        <option value="hobby-{{ hobby._hobby_id }}">{{ hobby.name }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Tasks">
+                    {% for task in tasks %}
+                        <option value="task-{{ task._task_id }}">{{ task.name }}</option>
+                    {% endfor %}
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="time">Hora inicio</label>
+            <input class="textbox" id="time" type="datetime-local" name="time" required>
+        </div>
+
+        <div class="form-group">
+            <label for="time-finish">Hora fin</label>
+            <input class="textbox" id="time-finish" type="datetime-local" name="time-finish" required>
+        </div>
+
+
+        <!-- <div class="form-group">
+            <label for="day_of_week">Día de la semana</label>
+            <select class="textbox" id="day_of_week" name="day_of_week" required>
+                <option value="">Selecciona un día</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+            </select>
+        </div> -->
+
+        <button class="btn" type="submit">Guardar</button>
+    </form>
+</div>
+</body>
+{% endblock %}
