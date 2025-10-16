@@ -109,6 +109,27 @@ class Movie(db.Model):
         ##############
         self.user_id = user_id
 
+##########################
+class Habit(db.Model):
+    __tablename__ = 'habits'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    satisfaction_level = db.Column(db.Integer, nullable=True)
+    ability = db.Column(db.String(100), nullable=True)
+    time = db.Column(db.Float, nullable=True)
+    ###########
+    user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
+
+    def __init__(self, name, satisfaction_level=None, ability=None, time=None, user_id=None):
+        self.name = name
+        self.satisfaction_level = satisfaction_level
+        self.ability = ability
+        self.time = time
+        ##############
+        self.user_id = user_id
+
+
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
@@ -297,6 +318,85 @@ def todo():
     print(f"user id is : {uid}")
     task_list = Task.query.filter_by(_user_id = uid)
     return render_template('todo.html', tasks = task_list)
+
+
+#########
+@app.route("/dashboard/habitos", methods=["GET"])
+def habitos():
+    # Verificamos si el usuario está logueado
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    # ID del usuario actual
+    user_id = session['id']
+
+    # Obtener los filtros del formulario de búsqueda
+    q_name = (request.args.get("name") or "").strip()
+    q_ability = (request.args.get("ability") or "").strip()
+
+    # Saber si el usuario está buscando algo
+    searched = any([q_name, q_ability])
+
+    habits = []
+    if searched:
+        # Empezamos la consulta filtrando por usuario
+        query = Habit.query.filter(Habit.user_id == user_id)
+        if q_name:
+            query = query.filter(Habit.name.ilike(f"%{q_name}%"))
+        if q_ability:
+            query = query.filter(Habit.ability.ilike(f"%{q_ability}%"))
+        habits = query.order_by(Habit.id.desc()).all()
+
+    # Renderizamos la plantilla y pasamos los resultados
+    return render_template("habitos.html", habits=habits, searched=searched)
+
+
+
+###################
+@app.route("/dashboard/habitos/create", methods=["POST"])
+def create_habit():
+    # Verificamos si el usuario está logueado
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    # Obtenemos el ID del usuario actual
+    user_id = session['id']
+
+    # Recogemos los datos del formulario
+    name = (request.form.get("name") or "").strip()
+    satisfaction_level = (request.form.get("satisfaction_level") or "").strip()
+    ability = (request.form.get("ability") or "").strip()
+    time = (request.form.get("time") or "").strip()
+
+    # Validaciones básicas
+    if not name:
+        flash("El nombre del hábito es obligatorio", "danger")
+        return redirect(url_for("habitos"))
+
+    # Convertimos satisfaction_level y time a números si es posible
+    satisfaction_level = int(satisfaction_level) if satisfaction_level else None
+    time = float(time) if time else None
+
+    # Verificamos si el hábito ya existe para el usuario actual
+    existing = Habit.query.filter_by(name=name, user_id=user_id).first()
+    if existing:
+        flash("Este hábito ya existe", "danger")
+        return redirect(url_for("habitos"))
+
+    # Creamos y guardamos el nuevo hábito
+    habit = Habit(
+        name=name,
+        satisfaction_level=satisfaction_level,
+        ability=ability,
+        time=time,
+        user_id=user_id
+    )
+    db.session.add(habit)
+    db.session.commit()
+
+    flash("Hábito guardado correctamente", "success")
+    return redirect(url_for("habitos"))
+
 
 if __name__ == "__main__":
     with app.app_context():
