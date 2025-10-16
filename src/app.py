@@ -238,7 +238,6 @@ def create_hobby():
 
     return render_template('hobby.html', hobby=hobbies)
 
-
 @app.route("/dashboard/movies", methods=["GET"])
 @app.route("/dashboard/movies", methods=["GET"])
 @app.route("/dashboard/movies", methods=["GET"])
