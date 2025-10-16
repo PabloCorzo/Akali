@@ -36,18 +36,6 @@ CREATE TABLE `hobby` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `task`;
-CREATE TABLE `task` (
-  `task_id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL,
-  `user_id` bigint unsigned DEFAULT NULL,
-  `completed` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`task_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `task_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `task_chk_1` CHECK ((`completed` between 0 and 1))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 --
 -- Dumping data for table `hobby`
 --
