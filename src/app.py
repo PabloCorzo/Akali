@@ -341,7 +341,7 @@ def create_schedule_item():
         # elif activity == Task.query.filter_by(_user_id=user_id).first().name:
         #     item_type = 'Task'
         #     item_id = Task.query.filter_by(name=activity, _user_id=user_id).first()._task_id
-
+        
         item = ScheduleItem(user_id, activity, start_time, end_time, item_type, item_id)
         db.session.add(item)
         db.session.commit()
