@@ -21,7 +21,7 @@
           <a class = "task-btn";">Quitar</a>
             {% else %}
             <div class = "task-box-incomplete">
-              <td>{{task.name}} j</td>
+              <td>{{task.name}}</td>
             </div>
             <a class = "task-btn"">Completar</a>
           {% endif %}
@@ -34,7 +34,13 @@
         </tr>
       </div>
       {% endif %}
-      <a class = "create-task-btn">Crear<a>
+      
+      <form action="{{ url_for("create_task") }}" method="post">
+          <div class="task-input">
+              <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
+          </div>  
+        <button class = "create-task-btn" type = 'submit'>Crear<a>
+    </form>
     </tbody>
   </div>
 </body>

@@ -67,7 +67,7 @@ body{
 
 .task-container{
   background-color: #fdf3d9; /* color pergamino */
-  padding: 25% 15%;
+  padding: 15%  5%;
   border-radius: 12px;
   border: 2px solid #a9744f;
   box-shadow: 
@@ -75,8 +75,8 @@ body{
     inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
     inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
   text-align: center;
-  margin-top: 100%;
-  margin-bottom: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .task-container h1 {
@@ -151,6 +151,24 @@ body{
   background: #fff8e1;
 }
 
+.task-input {
+
+  margin-top: 15%;
+  text-align: left;
+  display:inline
+}
+
+.task-input input{
+    width: 75%;
+  padding: 10px;
+  border: 1px solid #8b5e3c;
+  border-radius: 20px;
+  font-size: 1rem;
+  background    : #fffdf5; /* fondo claro pergamino */
+  display: inline;
+}
+
+
 /* Botón */
 .btn {
   width: 100%;
@@ -188,21 +206,20 @@ body{
   font-family: 'MedievalSharp', cursive;
 }
 .create-task-btn {
-  width: 15px;
-  height: 5px;
+  width: 20%;
+  height: 5%;
   padding: 10px;
   background: linear-gradient(180deg, #d4a373, #8b5e3c);
   border: 2px solid #5b3924;
   border-radius: 18px;
   color: #fff;
+  text-align: center;
   font-size: 0.9rem;
   cursor: pointer;
-  margin-top: 90%;
-  /* margin-bottom: 55%; */
-  margin-left: 45%;
-  margin-right: 55%;
+  margin-top: 2cm;
   transition: 0.3s;
   font-family: 'MedievalSharp', cursive;
+  display: inline;
 }
 
 

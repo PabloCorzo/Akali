@@ -64,9 +64,9 @@ class Users(db.Model):
         self.password = hashPassword(password)
 
 class Task(db.Model):
-    _id = db.Column('task_id', db.Integer, primary_key=True)
-    name = db.Column('name', db.String(32), unique=True, nullable=False)
-    completed = db.Column('completed', db.Boolean, unique=True, nullable=True)
+    _id = db.Column('task_id', db.Integer, primary_key=True,unique = True)
+    name = db.Column('name', db.String(32), unique=False, nullable=False)
+    completed = db.Column('completed', db.Boolean, unique=False, nullable=True)
     _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
     def __init__(self,name, user):
         self.name = name
@@ -259,7 +259,6 @@ def create_hobby():
 
     return render_template('hobby.html', hobby=hobbies)
 
-
 @app.route("/dashboard/movies", methods=["GET"])
 @app.route("/dashboard/movies", methods=["GET"])
 @app.route("/dashboard/movies", methods=["GET"])
@@ -309,15 +308,33 @@ def create_movie():
     flash("Película guardada", "success")
     return redirect(url_for("movies"))
 
-@app.route("/dasboard/todo",methods = ['GET','POST'])
-def todo():
+@app.route("/dashboard/tasks",methods = ['GET','POST'])
+def tasks():
     if not isLogged():
         return redirect(url_for('login'))
 
     uid = session['id']
     print(f"user id is : {uid}")
     task_list = Task.query.filter_by(_user_id = uid)
-    return render_template('todo.html', tasks = task_list)
+    print(task_list)
+    return render_template('tasks.html', tasks = task_list)
+
+@app.route("/dashboard/tasks/create", methods = ['POST'])
+def create_task():
+    print("woopwoop")
+    if not isLogged():
+        return redirect(url_for('login'))
+    
+    if request.form['task_name']:
+        print(f"\n\nNAME IS {request.form['task_name']}\n\n")
+        new_t = Task(request.form['task_name'],session['username'])
+        if not Task.query.filter_by(name = request.form['task_name']).first():
+            db.session.add(new_t)
+            db.session.commit()
+        else:
+            pass
+    return redirect(url_for('tasks'))
+
 
 
 #########
