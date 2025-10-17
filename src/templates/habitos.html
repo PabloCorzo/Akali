@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Hábitos</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block body %}
+<body class="body-hobby">
+  <div class="container-hobby-all">
+
+    <!-- Sección: Añadir nuevo -->
+    <div class="container-hobby">
+      <h1>Hábitos</h1>
+      <p>En este apartado puedes agregar tus hábitos.</p>
+
+      <form action="{{ url_for('create_habit') }}" method="post">
+        <div class="form-group">
+          <label for="name">Nombre del hábito *</label>
+          <input class="textbox" id="name" name="name" type="text" required>
+        </div>
+
+        <div class="form-group">
+          <label for="satisfaction_level">Nivel de satisfacción (0–10)</label>
+          <input class="textbox" id="satisfaction_level" name="satisfaction_level" type="number" min="0" max="10" step="1">
+        </div>
+
+        <div class="form-group">
+          <label for="ability">Habilidad</label>
+          <input class="textbox" id="ability" name="ability" type="text" placeholder="Ej: Principiante, Intermedio...">
+        </div>
+
+        <div class="form-group">
+          <label for="time">Tiempo semanal (h/sem)</label>
+          <input class="textbox" id="time" name="time" type="number" min="0" max="168" step="0.5">
+        </div>
+
+        <button class="btn" type="submit">Guardar</button>
+      </form>
+    </div>
+
+    <!-- Sección: Buscar / Filtrar -->
+    <div class="container-hobby-search">
+      <h1>Buscar Hábito</h1>
+      <form action="{{ url_for('habitos') }}" method="get">
+        <div class="form-group">
+          <label for="q_name">Nombre</label>
+          <input class="textbox" id="q_name" name="name" type="text" placeholder="Ej: Leer, Meditar...">
+        </div>
+
+        <div class="form-group">
+          <label for="q_ability">Habilidad</label>
+          <input class="textbox" id="q_ability" name="ability" type="text" placeholder="Ej: Principiante">
+        </div>
+
+        <button class="btn" type="submit">Buscar</button>
+      </form>
+
+      <!-- Resultados -->
+      <h1>Resultados</h1>
+      <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Nivel de satisfacción</th>
+            <th>Habilidad</th>
+            <th>Tiempo (h/sem)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if habits is defined and habits|length %}
+            {% for h in habits %}
+            <tr>
+              <td>{{ h.id }}</td>
+              <td>{{ h.name }}</td>
+              <td>{{ h.satisfaction_level or '-' }}</td>
+              <td>{{ h.ability or '-' }}</td>
+              <td>{{ h.time or '-' }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="5" style="text-align:center; color: gray;">
+                {% if searched %}No se encontraron hábitos con esos filtros{% else %}Busca un hábito para ver resultados{% endif %}
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+{% endblock %}
