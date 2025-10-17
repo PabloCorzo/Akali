@@ -9,24 +9,25 @@
 <body>
   <div class = "task-container">
     <h1>Lista de tareas</h1>
-      
+
       <tbody>
       {% if tasks %}
         {% for task in tasks %}
-        <tr>
-          {% if task.completed %}
-          <div class = "task-box-complete">
-            <td>{{task.name}}</td>
-          </div>
-          <a class = "task-btn";">Quitar</a>
-            {% else %}
-            <div class = "task-box-incomplete">
-              <td>{{task.name}}</td>
+            <div class="{{ 'task-box-complete' if task.completed else 'task-box-incomplete' }}">
+                <span>{{ task.name }}</span>
+
+                <!-- Botón Completar -->
+                  <form action="{{ url_for('toggle_task', task_id=task._id) }}" method="post" style="display:inline;">
+                <button type="submit" class="task-btn">Completar</button>
+                </form>
+
+                <!-- Botón Eliminar -->
+                <form action="{{ url_for('delete_task', task_id=task._id) }}" method="post" style="display:inline;">
+                 <button type="submit" class="task-btn btn-danger">Eliminar</button>
+                </form>
             </div>
-            <a class = "task-btn"">Completar</a>
-          {% endif %}
-        </tr>
-        {% endfor %}
+{% endfor %}
+
       {% else %}
       <div class="main-box">
         <tr>
@@ -34,13 +35,13 @@
         </tr>
       </div>
       {% endif %}
-      
-      <form action="{{ url_for("create_task") }}" method="post">
-          <div class="task-input">
-              <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
-          </div>  
-        <button class = "create-task-btn" type = 'submit'>Crear<a>
-    </form>
+
+     <form action="{{ url_for('create_task') }}" method="post">
+  <div class="task-input">
+    <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
+  </div>
+  <button class="create-task-btn" type="submit">Crear</button>
+</form>
     </tbody>
   </div>
 </body>

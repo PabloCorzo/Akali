@@ -354,6 +354,29 @@ def create_task():
             pass
     return redirect(url_for('tasks'))
 
+@app.route("/dashboard/tasks/<int:task_id>/delete", methods=['POST'])
+def delete_task(task_id):
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    # Buscar la tarea del usuario actual
+    tarea = Task.query.filter_by(_id=task_id, _user_id=session['id']).first()
+    if tarea:
+        db.session.delete(tarea)
+        db.session.commit()
+    return redirect(url_for('tasks'))
+
+@app.route("/dashboard/tasks/<int:task_id>/toggle", methods=['POST'])
+def toggle_task(task_id):
+    if not isLogged():
+        return redirect(url_for('login'))
+
+    t = Task.query.filter_by(_id=task_id, _user_id=session['id']).first_or_404()
+    t.completed = not bool(t.completed)
+    db.session.commit()
+    return redirect(url_for('tasks'))
+
+
 
 
 #########
