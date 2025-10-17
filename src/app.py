@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, url_for
+from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
@@ -434,37 +434,58 @@ def create_habit():
     return redirect(url_for("habitos"))
 
 
+@app.route('/dashboard/schedule/events')
+def get_schedule_events():
+    """
+    Esta nueva ruta es como un 'menú de eventos' para el calendario.
+    El calendario le pedirá los eventos a esta URL y los mostraremos en formato JSON.
+    """
+    if not isLogged():
+        return jsonify([]) # Devuelve una lista vacía si el usuario no está logueado
+
+    user_id = session['id']
+    schedule_items = ScheduleItem.query.filter_by(_user_id=user_id).all()
+
+    events = []
+    for item in schedule_items:
+        events.append({
+            'title': item.title,
+            'start': item.start_time.isoformat(),
+            'end': item.end_time.isoformat()
+        })
+    return jsonify(events)
+
+
 @app.route("/dashboard/schedule",methods = ['GET','POST'])
 def create_schedule_item():
-    
-
+    """
+    Modificamos esta ruta para que pueda recibir peticiones tanto
+    del formulario antiguo como del nuevo calendario interactivo.
+    """
     if not isLogged():
         return redirect(url_for('login'))
 
     user_id = session['id']
 
     if request.method == 'POST':
-        activity = request.form.get('activity_select') 
-        start_time = request.form.get('time')
-        end_time = request.form.get('time-finish')
-        item_type = 'Custom'
-        item_id = 0
-        if not activity or not start_time or not end_time:
-            #flash("Todos los campos son obligatorios", "danger")
-            return redirect(url_for('create_schedule_item'))
+        # Esta nueva sección es para cuando JavaScript envía un nuevo evento.
+        if request.is_json:
+            data = request.get_json()
+            start_time = datetime.fromisoformat(data['start'])
+            end_time = datetime.fromisoformat(data['end'])
+            new_item = ScheduleItem(
+                user_id=user_id,
+                title=data['title'],
+                start_time=start_time,
+                end_time=end_time,
+                item_type='Custom', # Asignamos un tipo por defecto
+                item_id=0           # Asignamos un ID por defecto
+            )
+            db.session.add(new_item)
+            db.session.commit()
+            return jsonify({'status': 'success', 'message': 'Evento guardado'})
 
-        if Hobby.query.filter_by(user_id=user_id,name = activity).first():
-            item_type = 'Hobby'
-            item_id = Hobby.query.filter_by(name=activity, user_id=user_id).first()._hobby_id
-        # elif activity == Task.query.filter_by(_user_id=user_id).first().name:
-        #     item_type = 'Task'
-        #     item_id = Task.query.filter_by(name=activity, _user_id=user_id).first()._task_id
-        
-        item = ScheduleItem(user_id, activity, start_time, end_time, item_type, item_id)
-        db.session.add(item)
-        db.session.commit()
-
-
+    
     hobbies = Hobby.query.filter_by(user_id=user_id).all()
     tasks = Task.query.filter_by(_user_id=user_id).all()
 
