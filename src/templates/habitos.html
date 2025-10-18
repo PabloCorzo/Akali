@@ -7,9 +7,17 @@
 
 {% block body %}
 <body class="body-hobby">
+
+    <nav class="navbar">
+    <a href="{{ url_for('create_hobby') }}">Hobbies</a>
+    <a href="{{ url_for('movies') }}">Películas</a>
+    <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
+    <a href="{{ url_for('habitos') }}">Hábitos</a>
+    <a href="{{ url_for('tasks') }}">Lista de tareas</a>
+    </nav>
   <div class="container-hobby-all">
 
-    <!-- Sección: Añadir nuevo -->
+
     <div class="container-hobby">
       <h1>Hábitos</h1>
       <p>En este apartado puedes agregar tus hábitos.</p>
