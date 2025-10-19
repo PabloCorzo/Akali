@@ -362,9 +362,177 @@ body{
 
 }
 
-/* ---------- Estilos para la página del horario ----------
-  Hecha por gemini(luego hago un refactor de todo)
-*/
+.event-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+.event-form > div {
+    background: #fdf3d9; /* Pergamino color from styles.css */
+    padding: 35px 30px;
+    border-radius: 12px;
+    border: 2px solid #a9744f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5),
+                inset 0 0 60px rgba(139,69,19,0.2),
+                inset 0 0 20px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 500px;
+}
+
+.event-form h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-family: 'MedievalSharp', cursive; /* Assuming this font is available */
+    color: #5b3924;
+    text-align: center;
+}
+
+.event-form .form-group {
+    margin-bottom: 15px;
+}
+
+.event-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c1810;
+    font-weight: bold;
+}
+
+.event-form input,
+.event-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8b5e3c;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fffdf5;
+}
+
+.event-form .btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(180deg, #d4a373, #8b5e3c);
+    border: 2px solid #5b3924;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.event-form .btn:hover {
+    background: linear-gradient(180deg, #8b5e3c, #5b3924);
+}
+
+/* For lists inside the modal */
+.event-form .list-selection ul,
+.event-form .hobby-list ul,
+.event-form .habit-list ul,
+.event-form .task-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-form .list-selection li,
+.event-form .hobby-list li,
+.event-form .habit-list li,
+.event-form .task-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #d4a373;
+}
+
+.event-form .list-selection li span,
+.event-form .hobby-list li,
+.event-form .habit-list li,
+.event-form .task-list li {
+    color: #5b3924;
+    font-size: 1.1rem;
+}
+
+.event-form .list-selection .btn,
+.event-form .hobby-list .btn,
+.event-form .habit-list .btn,
+.event-form .task-list .btn {
+    width: auto;
+    padding: 5px 15px;
+    margin-top: 0;
+}
+
+
+/* src/static/styles.css */
+
+/* --- Estilos para el Horario a Pantalla Completa --- */
+
+/* 1. Configuramos el body para la página del horario */
+.body-schedule {
+  background-color: #d4a373; /* Un color de fondo base */
+  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+  width: 100vw;  /* Ocupa el 100% del ancho de la ventana */
+  overflow: hidden; /* Evita barras de scroll indeseadas */
+  margin: 0;
+  padding: 0;
+  display: block; /* Sobrescribimos el 'flex' para que no centre el contenido */
+}
+
+/* 2. El nuevo contenedor principal que organizará el título y el calendario */
+.schedule-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column; /* Apila el título encima del calendario */
+  padding: 25px;
+  box-sizing: border-box; /* Importante para que el padding no desborde el contenedor */
+}
+
+/* 3. Estilos para el título dentro del nuevo contenedor */
+.schedule-container h1 {
+  font-family: 'MedievalSharp', cursive;
+  color: #5b3924;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  flex-shrink: 0; /* Evita que el título se encoja si no hay espacio */
+}
+
+/* 4. La clave: hacemos que el calendario crezca para ocupar el espacio restante */
+#calendar {
+  flex-grow: 1; /* Esto hace que el div ocupe todo el alto disponible */
+  background-color: #fdf3d9; /* Fondo de pergamino */
+  border: 2px solid #a9744f;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* 5. (Opcional) Pequeños ajustes para que FullCalendar se vea mejor con tu tema */
+.fc .fc-button-primary {
+    background-color: #8b5e3c !important;
+    border-color: #5b3924 !important;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #5b3924 !important;
+}
+
+.fc-daygrid-event, .fc-timegrid-event {
+    background-color: #a9744f !important;
+    border-color: #8b5e3c !important;
+}/* src/static/styles.css */
+
+/* --- Estilos para el Horario a Pantalla Completa --- */
 
 /* 1. Configuramos el body para la página del horario */
 .body-schedule {
@@ -503,6 +671,5 @@ body{
 @media (max-width: 720px) {
   :root { --navbar-height: 92px; } 
 }
-
 
 
