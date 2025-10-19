@@ -10,53 +10,328 @@
 {% block body %}
 <body class="body-schedule">
 
-    <div class="login-box" x-data="{
+    <div class="schedule-container" x-data="{
+        showModal: false,
+        modalMode: '', // 'custom' or 'hobby' or 'habit' or 'task'
+        selectedEventType: '',
+        newEvent: {
+            title: '',
+            date: '',
+            startTime: '',
+            endTime: ''
+        },
+        selectedHobby: null,
+        selectedHabit: null,
+        selectedTask: null,
+        calendar: null,
+        timeOptions: Array.from({ length: 48 }, (_, i) => {
+            const hours = Math.floor(i / 2).toString().padStart(2, '0');
+            const minutes = (i % 2 === 0 ? '00' : '30');
+            return `${hours}:${minutes}`;
+        }),
         initializeCalendar() {
-            const calendarEl = this.$refs.calendar; // Usamos $refs para referenciar el elemento
-
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                // La configuración es EXACTAMENTE LA MISMA que antes
-                initialView: 'timeGridWeek',
+            const calendarEl = this.$refs.calendar;
+            this.calendar = new FullCalendar.Calendar(calendarEl, {
+                aspectRatio: 3.5,
+                contentHeight: 600,
+                initialView: 'timeGridDay',
+                customButtons: {
+                    createEvent: {
+                        text: 'Crear Evento',
+                        click: () => {
+                            this.showModal = true;
+                            this.modalMode = '';
+                        }
+                    }
+                },
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'createEvent dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: '/dashboard/schedule/events',
                 editable: true,
-                selectable: true,
-                select: (info) => { // Usamos una función de flecha para mantener el contexto de 'this' si fuera necesario
-                    var title = prompt('Introduce el título del evento:');
-                    if (title) {
-                        var newEventData = {
-                            title: title,
-                            start: info.startStr,
-                            end: info.endStr,
-                        };
+            });
+            this.calendar.render();
+        },
+        createEvent() {
+            var newEventData = {
+                title: this.newEvent.title,
+                start: `${this.newEvent.date}T${this.newEvent.startTime}`,
+                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+            };
 
-                        fetch('{{ url_for('create_schedule_item') }}', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(newEventData),
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                calendar.addEvent(newEventData);
-                                alert('¡Evento guardado!');
-                            }
-                        });
-                    }
-                    calendar.unselect();
+            fetch('{{ url_for('create_schedule_item') }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.addEvent(newEventData);
+                    alert('¡Evento guardado!');
+                    this.showModal = false;
+                    this.newEvent.title = '';
+                    this.newEvent.date = '';
+                    this.newEvent.startTime = '';
+                    this.newEvent.endTime = '';
                 }
             });
+        },
+        addHobbyToCalendar(hobby) {
+            var newEventData = {
+                title: hobby.name,
+                start: `${this.newEvent.date}T${this.newEvent.startTime}`,
+                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+            };
 
-            calendar.render();
+            fetch('{{ url_for('create_schedule_item') }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.addEvent(newEventData);
+                    alert('¡Hobby añadido al calendario!');
+                    this.showModal = false;
+                    this.newEvent.date = '';
+                    this.newEvent.startTime = '';
+                    this.newEvent.endTime = '';
+                }
+            });
+        },
+        addHabitToCalendar(habit) {
+            var newEventData = {
+                title: habit.name,
+                start: `${this.newEvent.date}T${this.newEvent.startTime}`,
+                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+            };
+
+            fetch('{{ url_for('create_schedule_item') }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.addEvent(newEventData);
+                    alert('¡Hábito añadido al calendario!');
+                    this.showModal = false;
+                    this.newEvent.date = '';
+                    this.newEvent.startTime = '';
+                    this.newEvent.endTime = '';
+                }
+            });
+        },
+        addTaskToCalendar(task) {
+            var newEventData = {
+                title: task.name,
+                start: `${this.newEvent.date}T${this.newEvent.startTime}`,
+                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+            };
+
+            fetch('{{ url_for('create_schedule_item') }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.addEvent(newEventData);
+                    alert('¡Tarea añadida al calendario!');
+                    this.showModal = false;
+                    this.newEvent.date = '';
+                    this.newEvent.startTime = '';
+                    this.newEvent.endTime = '';
+                }
+            });
         }
-    }" x-init="initializeCalendar()"> <h1>Horario</h1>
+    }" x-init="initializeCalendar()">
+
+        <div x-show="showModal" class="event-form">
+            <div x-show="modalMode === ''">
+                <h2>Qué quieres crear?</h2>
+                <div class="form-group">
+                    <label for="event-type-select">Tipo de Evento</label>
+                    <select id="event-type-select" x-model="selectedEventType" @change="modalMode = selectedEventType">
+                        <option value="" disabled>Selecciona un tipo...</option>
+                        <option value="custom">Evento personalizado</option>
+                        <option value="hobby">Hobby</option>
+                        <option value="habit">Hábito</option>
+                        <option value="task">Tarea</option>
+                    </select>
+                </div>
+                <button type="button" @click="showModal = false" class="btn">Cancelar</button>
+            </div>
+
+            <div x-show="modalMode === 'custom'">
+                <h2>Nuevo Evento</h2>
+                <form @submit.prevent="createEvent()">
+                    <div class="form-group">
+                        <label for="event-title">Título</label>
+                        <input type="text" id="event-title" x-model="newEvent.title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-date">Fecha</label>
+                        <input type="date" id="event-date" x-model="newEvent.date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-start-time">Hora de Inicio</label>
+                        <select id="event-start-time" x-model="newEvent.startTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-end-time">Hora de Fin</label>
+                        <select id="event-end-time" x-model="newEvent.endTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Guardar</button>
+                    <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+                </form>
+            </div>
+
+            <div x-show="modalMode === 'hobby'">
+                <h2>Añadir Hobby al Calendario</h2>
+                <div class="hobby-list">
+                    <ul>
+                        {% for hobby in hobbies %}
+                        <li>
+                            {{ hobby.name }}
+                            <button @click="selectedHobby = { name: '{{ hobby.name }}', id: {{ hobby._hobby_id }} }; modalMode = 'hobby-form'" class="btn">Seleccionar</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+            </div>
+
+            <div x-show="modalMode === 'hobby-form'">
+                <h2>Añadir Hobby: <span x-text="selectedHobby ? selectedHobby.name : ''"></span></h2>
+                <form @submit.prevent="addHobbyToCalendar(selectedHobby)">
+                    <div class="form-group">
+                        <label for="hobby-date">Fecha</label>
+                        <input type="date" id="hobby-date" x-model="newEvent.date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hobby-start-time">Hora de Inicio</label>
+                        <select id="hobby-start-time" x-model="newEvent.startTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hobby-end-time">Hora de Fin</label>
+                        <select id="hobby-end-time" x-model="newEvent.endTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Guardar</button>
+                    <button type="button" @click="modalMode = 'hobby'" class="btn">Volver</button>
+                </form>
+            </div>
+
+            <div x-show="modalMode === 'habit'">
+                <h2>Añadir Hábito al Calendario</h2>
+                <div class="habit-list">
+                    <ul>
+                        {% for habit in habits %}
+                        <li>
+                            {{ habit.name }}
+                            <button @click="selectedHabit = { name: '{{ habit.name }}', id: habit.id }; modalMode = 'habit-form'" class="btn">Seleccionar</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+            </div>
+
+            <div x-show="modalMode === 'habit-form'">
+                <h2>Añadir Hábito: <span x-text="selectedHabit ? selectedHabit.name : ''"></span></h2>
+                <form @submit.prevent="addHabitToCalendar(selectedHabit)">
+                    <div class="form-group">
+                        <label for="habit-date">Fecha</label>
+                        <input type="date" id="habit-date" x-model="newEvent.date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="habit-start-time">Hora de Inicio</label>
+                        <select id="habit-start-time" x-model="newEvent.startTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="habit-end-time">Hora de Fin</label>
+                        <select id="habit-end-time" x-model="newEvent.endTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Guardar</button>
+                    <button type="button" @click="modalMode = 'habit'" class="btn">Volver</button>
+                </form>
+            </div>
+
+            <div x-show="modalMode === 'task'">
+                <h2>Añadir Tarea al Calendario</h2>
+                <div class="task-list">
+                    <ul>
+                        {% for task in tasks %}
+                        <li>
+                            {{ task.name }}
+                            <button @click="selectedTask = { name: '{{ task.name }}', id: task._id }; modalMode = 'task-form'" class="btn">Seleccionar</button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+            </div>
+
+            <div x-show="modalMode === 'task-form'">
+                <h2>Añadir Tarea: <span x-text="selectedTask ? selectedTask.name : ''"></span></h2>
+                <form @submit.prevent="addTaskToCalendar(selectedTask)">
+                    <div class="form-group">
+                        <label for="task-date">Fecha</label>
+                        <input type="date" id="task-date" x-model="newEvent.date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-start-time">Hora de Inicio</label>
+                        <select id="task-start-time" x-model="newEvent.startTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-end-time">Hora de Fin</label>
+                        <select id="task-end-time" x-model="newEvent.endTime" required>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Guardar</button>
+                    <button type="button" @click="modalMode = 'task'" class="btn">Volver</button>
+                </form>
+            </div>
+        </div>
 
         <div id='calendar' x-ref="calendar"></div>
-
     </div>
 
 </body>

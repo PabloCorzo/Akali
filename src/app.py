@@ -161,7 +161,7 @@ def login():
         if not username:
             username = "inv"
         # email = request.form['email']
-        # print(f'username {username} password {password},{}')
+        # print(f'username {username} password {password},{{}}')
         user = Users.query.filter_by(username=username).first()
         passw = hashPassword(password = password)
         if checkPassword(username, passw):
@@ -378,7 +378,6 @@ def toggle_task(task_id):
 
 
 
-
 #########
 @app.route("/dashboard/habitos", methods=["GET"])
 def habitos():
@@ -511,8 +510,9 @@ def create_schedule_item():
     
     hobbies = Hobby.query.filter_by(user_id=user_id).all()
     tasks = Task.query.filter_by(_user_id=user_id).all()
+    habits = Habit.query.filter_by(user_id=user_id).all()
 
-    return render_template('schedule.html', hobbies=hobbies, tasks=tasks)
+    return render_template('schedule.html', hobbies=hobbies, tasks=tasks, habits=habits)
 
 if __name__ == "__main__":
     with app.app_context():
