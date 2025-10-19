@@ -189,8 +189,8 @@ body{
 }
 
 .task-btn {
-  width: 15px;
-  height: 5px;
+  width: 45%;
+  height: 3%;
   padding: 5px;
   background: linear-gradient(180deg, #d4a373, #8b5e3c);
   border: 1px solid #5b3924;
