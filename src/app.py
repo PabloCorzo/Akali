@@ -428,7 +428,8 @@ def create_habit():
 
     # Validaciones básicas
     if not name:
-        flash("El nombre del hábito es obligatorio", "danger")
+        flash("El nombre del hábito es obligatorio", "habits_error")
+        #flash("El nombre del hábito es obligatorio", "danger")
         return redirect(url_for("habitos"))
 
     # Convertimos satisfaction_level y time a números si es posible
@@ -438,7 +439,8 @@ def create_habit():
     # Verificamos si el hábito ya existe para el usuario actual
     existing = Habit.query.filter_by(name=name, user_id=user_id).first()
     if existing:
-        flash("Este hábito ya existe", "danger")
+        #flash("Este hábito ya existe", "danger")
+        flash("Este hábito ya existe", "habits_error")
         return redirect(url_for("habitos"))
 
     # Creamos y guardamos el nuevo hábito
@@ -452,7 +454,8 @@ def create_habit():
     db.session.add(habit)
     db.session.commit()
 
-    flash("Hábito guardado correctamente", "success")
+    #flash("Hábito guardado correctamente", "success")
+    flash("Hábito guardado correctamente", "habits_ok")
     return redirect(url_for("habitos"))
 
 
