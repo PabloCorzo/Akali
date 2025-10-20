@@ -494,6 +494,7 @@ body{
   display: flex;
   flex-direction: column; /* Apila el título encima del calendario */
   padding: 25px;
+  padding-top: 80px;
   box-sizing: border-box; /* Importante para que el padding no desborde el contenedor */
 }
 
@@ -534,60 +535,88 @@ body{
 
 /* --- Estilos para el Horario a Pantalla Completa --- */
 
-/* 1. Configuramos el body para la página del horario */
-.body-schedule {
-  background-color: #d4a373; /* Un color de fondo base */
-  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
-  width: 100vw;  /* Ocupa el 100% del ancho de la ventana */
-  overflow: hidden; /* Evita barras de scroll indeseadas */
-  margin: 0;
-  padding: 0;
-  display: block; /* Sobrescribimos el 'flex' para que no centre el contenido */
-}
 
-/* 2. El nuevo contenedor principal que organizará el título y el calendario */
-.schedule-container {
-  width: 100%;
-  height: 100%;
+
+/*NAVBAR*/
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  background: #f6e7cf;
+  box-shadow: 0 6px 18px rgba(107, 60, 28, 0.15);
+  border-bottom: 2px solid rgba(107, 60, 28, 0.08);
+
   display: flex;
-  flex-direction: column; /* Apila el título encima del calendario */
-  padding: 25px;
-  box-sizing: border-box; /* Importante para que el padding no desborde el contenedor */
+  justify-content: center;
+  gap: 1rem;
+  padding: 14px 20px;
+
+  font-family: var(--title-font, inherit);
 }
 
-/* 3. Estilos para el título dentro del nuevo contenedor */
-.schedule-container h1 {
-  font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  flex-shrink: 0; /* Evita que el título se encoja si no hay espacio */
+.navbar a {
+  text-decoration: none;
+  color: #5b3318;
+  background: #f2dcb7;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: transform 0.08s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 0 rgba(107, 60, 28, 0.2);
 }
 
-/* 4. La clave: hacemos que el calendario crezca para ocupar el espacio restante */
-#calendar {
-  flex-grow: 1; /* Esto hace que el div ocupe todo el alto disponible */
-  background-color: #fdf3d9; /* Fondo de pergamino */
-  border: 2px solid #a9744f;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+.navbar a:hover,
+.navbar a:focus {
+  background: #edcfa0;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 rgba(107, 60, 28, 0.25);
+  outline: none;
 }
 
-/* 5. (Opcional) Pequeños ajustes para que FullCalendar se vea mejor con tu tema */
-.fc .fc-button-primary {
-    background-color: #8b5e3c !important;
-    border-color: #5b3924 !important;
+.navbar a.active {
+  background: #e9c689;
+  box-shadow: 0 4px 0 rgba(107, 60, 28, 0.3);
 }
 
-.fc .fc-button-primary:hover {
-    background-color: #5b3924 !important;
+.body-hobby {
+  padding-top: 76px;
+}
+.body-schedule {
+  padding-top: 80px;
 }
 
-.fc-daygrid-event, .fc-timegrid-event {
-    background-color: #a9744f !important;
-    border-color: #8b5e3c !important;
+@media (max-width: 720px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 10px 12px;
+  }
+  .navbar a {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+}
+:root {
+  --navbar-height: 76px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: var(--navbar-height);
+}
+
+.navbar-spacer {
+  height: var(--navbar-height);
+}
+
+@media (max-width: 720px) {
+  :root { --navbar-height: 92px; } 
 }
 
 
