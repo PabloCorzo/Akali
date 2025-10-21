@@ -207,7 +207,7 @@ def register():
 def logout():
     session['id'] = None
     session['username'] = None
-    return redirect(url_for('/'))
+    return redirect(url_for('login'))
 
 @app.route('/dashboard',methods = ['POST','GET'])
 def dashboard():
