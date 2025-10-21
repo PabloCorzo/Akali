@@ -26,17 +26,31 @@
             title: '',
             date: '',
             startTime: '',
-            endTime: ''
+            duration: ''
         },
         selectedHobby: null,
         selectedHabit: null,
         selectedTask: null,
         calendar: null,
-        timeOptions: Array.from({ length: 48 }, (_, i) => {
-            const hours = Math.floor(i / 2).toString().padStart(2, '0');
-            const minutes = (i % 2 === 0 ? '00' : '30');
-            return `${hours}:${minutes}`;
-        }),
+        timeOptions: (() => {
+            const options = [];
+            for (let i = 0; i < 48; i++) {
+                const hours = Math.floor(i / 2).toString().padStart(2, '0');
+                const minutes = (i % 2 === 0 ? '00' : '30');
+                options.push(`${hours}:${minutes}`);
+            }
+            return options;
+        })(),
+        durationOptions: [15, 30, 45, 60, 90, 120, 180, 240, 300, 360],
+        calculateEndTime(startTime, duration) {
+            if (!startTime || !duration) return '';
+            const [hours, minutes] = startTime.split(':').map(Number);
+            const durationNum = parseInt(duration);
+            const totalMinutes = hours * 60 + minutes + durationNum;
+            const endHours = Math.floor(totalMinutes / 60) % 24;
+            const endMinutes = totalMinutes % 60;
+            return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+        },
         initializeCalendar() {
             const calendarEl = this.$refs.calendar;
             this.calendar = new FullCalendar.Calendar(calendarEl, {
@@ -62,10 +76,11 @@
             this.calendar.render();
         },
         createEvent() {
+            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
             var newEventData = {
                 title: this.newEvent.title,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
-                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+                end: `${this.newEvent.date}T${endTime}`,
             };
 
             fetch('{{ url_for('create_schedule_item') }}', {
@@ -82,15 +97,16 @@
                     this.newEvent.title = '';
                     this.newEvent.date = '';
                     this.newEvent.startTime = '';
-                    this.newEvent.endTime = '';
+                    this.newEvent.duration = '';
                 }
             });
         },
         addHobbyToCalendar(hobby) {
+            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
             var newEventData = {
                 title: hobby.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
-                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+                end: `${this.newEvent.date}T${endTime}`,
             };
 
             fetch('{{ url_for('create_schedule_item') }}', {
@@ -106,15 +122,16 @@
                     this.showModal = false;
                     this.newEvent.date = '';
                     this.newEvent.startTime = '';
-                    this.newEvent.endTime = '';
+                    this.newEvent.duration = '';
                 }
             });
         },
         addHabitToCalendar(habit) {
+            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
             var newEventData = {
                 title: habit.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
-                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+                end: `${this.newEvent.date}T${endTime}`,
             };
 
             fetch('{{ url_for('create_schedule_item') }}', {
@@ -130,15 +147,16 @@
                     this.showModal = false;
                     this.newEvent.date = '';
                     this.newEvent.startTime = '';
-                    this.newEvent.endTime = '';
+                    this.newEvent.duration = '';
                 }
             });
         },
         addTaskToCalendar(task) {
+            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
             var newEventData = {
                 title: task.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
-                end: `${this.newEvent.date}T${this.newEvent.endTime}`,
+                end: `${this.newEvent.date}T${endTime}`,
             };
 
             fetch('{{ url_for('create_schedule_item') }}', {
@@ -154,7 +172,7 @@
                     this.showModal = false;
                     this.newEvent.date = '';
                     this.newEvent.startTime = '';
-                    this.newEvent.endTime = '';
+                    this.newEvent.duration = '';
                 }
             });
         }
@@ -189,19 +207,27 @@
                     </div>
                     <div class="form-group">
                         <label for="event-start-time">Hora de Inicio</label>
-                        <select id="event-start-time" x-model="newEvent.startTime" required>
+                        <select id="event-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
                             </template>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="event-end-time">Hora de Fin</label>
-                        <select id="event-end-time" x-model="newEvent.endTime" required>
-                            <template x-for="time in timeOptions" :key="time">
-                                <option :value="time" x-text="time"></option>
+                        <label for="event-duration">Duración (minutos)</label>
+                        <select id="event-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona duración</option>
+                            <template x-for="duration in durationOptions" :key="duration">
+                                <option :value="duration" x-text="duration + ' min'"></option>
                             </template>
                         </select>
+                    </div>
+                    <div class="form-group" x-show="newEvent.startTime && newEvent.duration">
+                        <label>Hora de Fin</label>
+                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
+                            <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Guardar</button>
                     <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
@@ -232,19 +258,27 @@
                     </div>
                     <div class="form-group">
                         <label for="hobby-start-time">Hora de Inicio</label>
-                        <select id="hobby-start-time" x-model="newEvent.startTime" required>
+                        <select id="hobby-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
                             </template>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="hobby-end-time">Hora de Fin</label>
-                        <select id="hobby-end-time" x-model="newEvent.endTime" required>
-                            <template x-for="time in timeOptions" :key="time">
-                                <option :value="time" x-text="time"></option>
+                        <label for="hobby-duration">Duración (minutos)</label>
+                        <select id="hobby-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona duración</option>
+                            <template x-for="duration in durationOptions" :key="duration">
+                                <option :value="duration" x-text="duration + ' min'"></option>
                             </template>
                         </select>
+                    </div>
+                    <div class="form-group" x-show="newEvent.startTime && newEvent.duration">
+                        <label>Hora de Fin</label>
+                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
+                            <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Guardar</button>
                     <button type="button" @click="modalMode = 'hobby'" class="btn">Volver</button>
@@ -275,19 +309,27 @@
                     </div>
                     <div class="form-group">
                         <label for="habit-start-time">Hora de Inicio</label>
-                        <select id="habit-start-time" x-model="newEvent.startTime" required>
+                        <select id="habit-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
                             </template>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="habit-end-time">Hora de Fin</label>
-                        <select id="habit-end-time" x-model="newEvent.endTime" required>
-                            <template x-for="time in timeOptions" :key="time">
-                                <option :value="time" x-text="time"></option>
+                        <label for="habit-duration">Duración (minutos)</label>
+                        <select id="habit-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona duración</option>
+                            <template x-for="duration in durationOptions" :key="duration">
+                                <option :value="duration" x-text="duration + ' min'"></option>
                             </template>
                         </select>
+                    </div>
+                    <div class="form-group" x-show="newEvent.startTime && newEvent.duration">
+                        <label>Hora de Fin</label>
+                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
+                            <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Guardar</button>
                     <button type="button" @click="modalMode = 'habit'" class="btn">Volver</button>
@@ -318,19 +360,27 @@
                     </div>
                     <div class="form-group">
                         <label for="task-start-time">Hora de Inicio</label>
-                        <select id="task-start-time" x-model="newEvent.startTime" required>
+                        <select id="task-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
                             </template>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="task-end-time">Hora de Fin</label>
-                        <select id="task-end-time" x-model="newEvent.endTime" required>
-                            <template x-for="time in timeOptions" :key="time">
-                                <option :value="time" x-text="time"></option>
+                        <label for="task-duration">Duración (minutos)</label>
+                        <select id="task-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
+                            <option value="">Selecciona duración</option>
+                            <template x-for="duration in durationOptions" :key="duration">
+                                <option :value="duration" x-text="duration + ' min'"></option>
                             </template>
                         </select>
+                    </div>
+                    <div class="form-group" x-show="newEvent.startTime && newEvent.duration">
+                        <label>Hora de Fin</label>
+                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
+                            <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
+                        </div>
                     </div>
                     <button type="submit" class="btn">Guardar</button>
                     <button type="button" @click="modalMode = 'task'" class="btn">Volver</button>
