@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block body %}
-<nav class="navbar">
+<!-- <nav class="navbar">
   <span class="navbar-title">AKALI</span>
   <a href="{{ url_for('create_hobby') }}">Hobbies</a>
   <a href="{{ url_for('movies') }}">Películas</a>
   <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
   <a href="{{ url_for('habitos') }}" class="active">Hábitos</a>
   <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-</nav>
+</nav> -->
 
 <div class="container-hobby-all">
   <div class="container-hobby">
@@ -32,6 +32,11 @@
 
     <h1>Hábitos</h1>
     <p>En este apartado puedes agregar tus hábitos.</p>
+
+    
+
+
+
 
     <form action="{{ url_for('create_habit') }}" method="post">
       <div class="form-group">
