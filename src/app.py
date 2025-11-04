@@ -1,33 +1,26 @@
 from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for
 import os
 import sys
-from dotenv import load_dotenv
 import hashlib
 from datetime import datetime, time
 from database import db
-from activity import Users, Task, ScheduleItem, Hobby, Movie, Habit, hashPassword
+from activity import Users, Task, ScheduleItem, Hobby, Movie, Habit, hashPassword, Game
+from config import config
 
 sys.path.append("../src")
 
-load_dotenv()
+# Obtener el entorno desde variable de entorno, por defecto 'development'
+env = os.getenv('FLASK_ENV', 'development')
 
-# Configuración de la aplicación Flask
-app = Flask(__name__, template_folder='templates', static_folder='static')
-app.secret_key = 'key1'
-app.config["SESSION_PERMANENT"] = False
+# Crear la aplicación Flask
+app = Flask(__name__)
 
-# Configuración de la base de datos
-db_user = os.getenv("DB_USER")
-db_pass = os.getenv("DB_PASSWORD")
-db_host = os.getenv("DB_HOST")
-db_name = os.getenv("DB_NAME")
-db_port = os.getenv("DB_PORT")
+# Cargar configuración según el entorno
+app.config.from_object(config[env])
 
-db_uri = f"mysql+mysqlconnector://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
-print(f"DEBUG: Conectando a la base de datos con la URI: {db_uri}")
-
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Mostrar información de debug sobre la conexión
+print(f"DEBUG: Entorno actual: {env}")
+print(f"DEBUG: Conectando a la base de datos: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 # Inicializar la base de datos con la aplicación
 db.init_app(app)
