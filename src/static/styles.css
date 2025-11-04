@@ -651,4 +651,99 @@ body{
   :root { --navbar-height: 92px; } 
 }
 
+/* NAVBAR */
+
+:root {
+  --navbar-height: 76px; /* Altura base del navbar */
+  --navbar-bg: #f6e7cf;  /* Fondo crema */
+  --navbar-link-bg: #f2dcb7;
+  --navbar-link-hover: #edcfa0;
+  --navbar-link-active: #e9c689;
+  --navbar-text: #5b3318; /* Marrón oscuro tipo títulos */
+}
+
+/* --- Barra fija arriba --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height);
+  z-index: 1000;
+
+  background: var(--navbar-bg);
+  box-shadow: 0 6px 18px rgba(107, 60, 28, 0.15);
+  border-bottom: 2px solid rgba(107, 60, 28, 0.08);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 20px;
+
+  font-family: var(--title-font, 'Comic Neue', cursive);
+}
+
+/* --- Links dentro de la navbar --- */
+.navbar a {
+  text-decoration: none;
+  color: var(--navbar-text);
+  background: var(--navbar-link-bg);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: transform 0.08s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 0 rgba(107, 60, 28, 0.2);
+}
+
+.navbar a:hover,
+.navbar a:focus {
+  background: var(--navbar-link-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 rgba(107, 60, 28, 0.25);
+  outline: none;
+}
+
+.navbar a.active {
+  background: var(--navbar-link-active);
+  box-shadow: 0 4px 0 rgba(107, 60, 28, 0.3);
+}
+
+/* --- Espaciador para compensar la altura fija --- */
+.navbar-spacer {
+  height: var(--navbar-height);
+}
+
+/* --- Ajustes del body (por si olvidas el spacer) --- */
+body {
+  padding-top: var(--navbar-height);
+}
+
+/* --- Para pantallas pequeñas --- */
+@media (max-width: 720px) {
+  :root {
+    --navbar-height: 92px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 10px 12px;
+  }
+
+  .navbar a {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+/* --- Ajuste opcional para que FullCalendar o tablas no se peguen --- */
+.fc,
+.container-hobby-all,
+.main-content,
+.calendar-wrapper {
+  margin-top: 8px;
+}
+
 

@@ -121,7 +121,7 @@ def dashboard():
     if not isLogged():
         return redirect(url_for('login'))
     return render_template('dashboard.html')
-    
+
 
 
 
@@ -418,16 +418,24 @@ def create_schedule_item():
 
     return render_template('schedule.html', hobbies=hobbies, tasks=tasks, habits=habits)
 
-@app.route("/dashboard/activitys",methods = ['GET','POST'])
-def create_activity():
-    
+
+@app.route("/dashboard/games", methods=["GET"])
+def games():
     if not isLogged():
         return redirect(url_for('login'))
-    user_id = session['id']
-    
-     
 
-    
+    q_title    = (request.args.get("title") or "").strip()
+
+    searched = any([q_title])
+
+    games = []
+    if searched:
+        query = Game.query.filter(Game.user_id == session['id'])
+        if q_title:
+            query = query.filter(Game.title.ilike(f"%{q_title}%"))
+        games = query.order_by(Game.id.desc()).all()
+
+    return render_template("games.html", games=games, searched=searched)
 
 if __name__ == "__main__":
     with app.app_context():
