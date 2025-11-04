@@ -1,123 +1,113 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Hobby</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Hobby</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block body %}
-<body class="body-hobby">
+    <body class="body-hobby">
     <div class="container-hobby-all">
-    <div class="container-hobby">
-
-    <!-- <nav class="navbar">
-    <span class="navbar-title">AKALI</span>
-    <a href="{{ url_for('create_hobby') }}">Hobbies</a>
-    <a href="{{ url_for('movies') }}">Películas</a>
-    <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
-    <a href="{{ url_for('habitos') }}">Hábitos</a>
-    <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-    </nav> -->
+        <div class="container-hobby">
 
 
+            <h1>Hobby</h1>
+            <p>En este apartado puedes agregar los hobbies que realizas en tu día a día.</p>
 
-        <h1>Hobby</h1>
-        <p>En este apartado puedes agregar los hobbies que realizas en tu día a día.</p>
-
-        <form action="{{  url_for('create_hobby')  }}" method="post">
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input class="textbox" id="name" type="text" name="name" placeholder="p.ej. Pintar" required>
-            </div>
-
-            <div class="form-group">
-                <label for="satisfaction_level">Nivel de satisfacción</label>
-                <input class="textbox" id="satisfaction_level" type="number" name="satisfaction_level"
-                       placeholder="1-10" min="1" max="10" required>
-            </div>
-
-            <div class="form-group">
-                <label for="ability">Habilidad</label>
-                <select class="textbox" id="ability" name="ability" required>
-                    <option value="">Selecciona nivel de habilidad</option>
-                    <option value="bajo">Bajo</option>
-                    <option value="medio">Medio</option>
-                    <option value="alto">Alto</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="time">Tiempo</label>
-                <input class="textbox" id="time" type="number" name="time" placeholder="horas a la semana" min="0"
-                       placeholder="1-168" min="1" max="168" required>
-            </div>
-
-            <button class="btn" type="submit">Guardar</button>
-        </form>
-    </div>
-
-    <div class="container-hobby-search">
-        <h1>Buscar Hobby</h1>
-  <form action="{{ url_for('create_hobby') }}" method="get">
-    <div class="form-group">
-        <label for="name">Hobby</label>
-        <input class="textbox" id="b_name" type="text" name="b_name"><br><br>
-        <h1>Resultados</h1>
-  <table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Nivel de satisfaccion</th>
-        <th>Habilidad</th>
-        <th>Tiempo</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if hobby%}
-        {% for h in hobby %}
-        <tr>
-          <td>{{ h.name }}</td>
-          <td>{{ h.satisfaction_level or '-' }}</td>
-          <td>{{ h.ability or '-' }}</td>
-          <td>{{ h.time or '-' }}</td>
-        </tr>
-        {% endfor %}
-      {% else %}
-        <tr>
-          <td colspan="5" style="text-align:center; color: gray;">No hay resultados</td>
-        </tr>
-      {% endif %}
-    </tbody>
-  </table>
-    </div>
-
-    <button class="btn" type="submit">Buscar</button>
-  </form>
-    </div>
-
-
-</div>
-  <div class="flash-container">
-    {% with mensajes = get_flashed_messages(with_categories=true) %}
-        {% if mensajes %}
-            {% for categoria, mensaje in mensajes %}
-                <div class="alert alert-{{ categoria }} alert-dismissible fade show shadow" role="alert">
-                    {{ mensaje }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <form action="{{ url_for('create_hobby') }}" method="post">
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input class="textbox" id="name" type="text" name="name" placeholder="p.ej. Pintar" required>
                 </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <script>
-  // Espera 4 segundos y oculta las alertas
-  setTimeout(() => {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-      setTimeout(() => alert.remove(), 500);
-    });
-  }, 4000);
-</script>
-</div>
 
-</body>
+                <div class="form-group">
+                    <label for="satisfaction_level">Nivel de satisfacción</label>
+                    <input class="textbox" id="satisfaction_level" type="number" name="satisfaction_level"
+                           placeholder="1-10" min="1" max="10" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ability">Habilidad</label>
+                    <select class="textbox" id="ability" name="ability" required>
+                        <option value="">Selecciona nivel de habilidad</option>
+                        <option value="bajo">Bajo</option>
+                        <option value="medio">Medio</option>
+                        <option value="alto">Alto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Tiempo</label>
+                    <input class="textbox" id="time" type="number" name="time" placeholder="horas a la semana" min="0"
+                           placeholder="1-168" min="1" max="168" required>
+                </div>
+
+                <button class="btn" type="submit">Guardar</button>
+            </form>
+        </div>
+
+        <div class="container-hobby-search">
+            <h1>Buscar Hobby</h1>
+            <form action="{{ url_for('create_hobby') }}" method="get">
+                <div class="form-group">
+                    <label for="name">Hobby</label>
+                    <input class="textbox" id="b_name" type="text" name="b_name"><br><br>
+                    <h1>Resultados</h1>
+                    <table border="1" cellpadding="5" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Nivel de satisfaccion</th>
+                            <th>Habilidad</th>
+                            <th>Tiempo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if hobby %}
+                            {% for h in hobby %}
+                                <tr>
+                                    <td>{{ h.name }}</td>
+                                    <td>{{ h.satisfaction_level or '-' }}</td>
+                                    <td>{{ h.ability or '-' }}</td>
+                                    <td>{{ h.time or '-' }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align:center; color: gray;">No hay resultados</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="btn" type="submit">Buscar</button>
+            </form>
+        </div>
+
+
+    </div>
+    <div class="flash-container">
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% if mensajes %}
+                {% for categoria, mensaje in mensajes %}
+                    <div class="alert alert-{{ categoria }} alert-dismissible fade show shadow" role="alert">
+                        {{ mensaje }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <script>
+            // Espera 4 segundos y oculta las alertas
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    setTimeout(() => alert.remove(), 500);
+                });
+            }, 4000);
+        </script>
+    </div>
+
+    </body>
 {% endblock %}

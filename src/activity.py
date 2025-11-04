@@ -103,3 +103,13 @@ class Habit(db.Model):
         self.time = time
         ##############
         self.user_id = user_id
+
+class Game(db.Model):
+    __tablename__ = 'games'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, title):
+        self.title = title
+

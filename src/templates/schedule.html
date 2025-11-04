@@ -1,22 +1,15 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Horario</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <title>Horario</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 {% endblock %}
 
 {% block body %}
-<body class="body-schedule">
-    <!-- <nav class="navbar">
-    <span class="navbar-title">AKALI</span>
-    <a href="{{ url_for('create_hobby') }}">Hobbies</a>
-    <a href="{{ url_for('movies') }}">Películas</a>
-    <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
-    <a href="{{ url_for('habitos') }}">Hábitos</a>
-    <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-    </nav> -->
+    <body class="body-schedule">
+
     <div class="navbar-spacer" aria-hidden="true"></div>
 
     <div class="schedule-container" x-data="{
@@ -208,7 +201,8 @@
                     </div>
                     <div class="form-group">
                         <label for="event-start-time">Hora de Inicio</label>
-                        <select id="event-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                        <select id="event-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
+                                required>
                             <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
@@ -240,10 +234,12 @@
                 <div class="hobby-list">
                     <ul>
                         {% for hobby in hobbies %}
-                        <li>
-                            {{ hobby.name }}
-                            <button @click="selectedHobby = { name: '{{ hobby.name }}', id: {{ hobby._hobby_id }} }; modalMode = 'hobby-form'" class="btn">Seleccionar</button>
-                        </li>
+                            <li>
+                                {{ hobby.name }}
+                                <button @click="selectedHobby = { name: '{{ hobby.name }}', id: {{ hobby._hobby_id }} }; modalMode = 'hobby-form'"
+                                        class="btn">Seleccionar
+                                </button>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -259,7 +255,8 @@
                     </div>
                     <div class="form-group">
                         <label for="hobby-start-time">Hora de Inicio</label>
-                        <select id="hobby-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                        <select id="hobby-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
+                                required>
                             <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
@@ -291,10 +288,12 @@
                 <div class="habit-list">
                     <ul>
                         {% for habit in habits %}
-                        <li>
-                            {{ habit.name }}
-                            <button @click="selectedHabit = { name: '{{ habit.name }}', id: habit.id }; modalMode = 'habit-form'" class="btn">Seleccionar</button>
-                        </li>
+                            <li>
+                                {{ habit.name }}
+                                <button @click="selectedHabit = { name: '{{ habit.name }}', id: habit.id }; modalMode = 'habit-form'"
+                                        class="btn">Seleccionar
+                                </button>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -310,7 +309,8 @@
                     </div>
                     <div class="form-group">
                         <label for="habit-start-time">Hora de Inicio</label>
-                        <select id="habit-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                        <select id="habit-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
+                                required>
                             <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
@@ -342,10 +342,12 @@
                 <div class="task-list">
                     <ul>
                         {% for task in tasks %}
-                        <li>
-                            {{ task.name }}
-                            <button @click="selectedTask = { name: '{{ task.name }}', id: task._id }; modalMode = 'task-form'" class="btn">Seleccionar</button>
-                        </li>
+                            <li>
+                                {{ task.name }}
+                                <button @click="selectedTask = { name: '{{ task.name }}', id: task._id }; modalMode = 'task-form'"
+                                        class="btn">Seleccionar
+                                </button>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -361,7 +363,8 @@
                     </div>
                     <div class="form-group">
                         <label for="task-start-time">Hora de Inicio</label>
-                        <select id="task-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})" required>
+                        <select id="task-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
+                                required>
                             <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
                                 <option :value="time" x-text="time"></option>
@@ -392,5 +395,5 @@
         <div id='calendar' x-ref="calendar"></div>
     </div>
 
-</body>
+    </body>
 {% endblock %}
