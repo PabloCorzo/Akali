@@ -1,0 +1,105 @@
+"""
+Models module - Activity related models
+Este módulo contiene todos los modelos de base de datos de la aplicación.
+"""
+
+from database import db
+import hashlib
+
+
+def hashPassword(password: str) -> str:
+    """Hash a password using SHA256"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+
+class Users(db.Model):
+    _id = db.Column('id', db.Integer, primary_key=True)
+    username = db.Column('username', db.String(32), unique=True, nullable=False)
+    email = db.Column('email', db.String(32), unique=True, nullable=True)
+    password = db.Column('password', db.String(64), nullable=False)
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = hashPassword(password)
+
+class Task(db.Model):
+    _id = db.Column('task_id', db.Integer, primary_key=True,unique = True)
+    name = db.Column('name', db.String(32), unique=False, nullable=False)
+    completed = db.Column('completed', db.Boolean, unique=False, nullable=True)
+    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    def __init__(self,name, user):
+        self.name = name
+        self._user_id = Users.query.filter_by(username = user).first()._id
+        self.completed = 0
+        
+class ScheduleItem(db.Model):
+    _id = db.Column('id', db.Integer, primary_key=True)
+    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    title = db.Column('title', db.String(100), unique=False, nullable=False)
+    start_time = db.Column('start_time', db.DateTime, unique=False, nullable=False)
+    end_time = db.Column('end_time', db.DateTime, unique=False, nullable=False)
+    item_type = db.Column('item_type', db.String(50), unique=False, nullable=False)
+    item_id = db.Column('item_id', db.Integer, unique=False, nullable=False)
+    
+    def __init__(self, user_id, title, start_time, end_time, item_type, item_id):
+        self._user_id = user_id
+        self.title = title
+        self.start_time = start_time
+        self.end_time = end_time
+        self.item_type = item_type
+        self.item_id = item_id
+
+class Hobby(db.Model):
+    _hobby_id = db.Column('hobby_id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String(100), unique=False, nullable=False)
+    user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
+    satisfaction_level = db.Column('satisfaction_level', db.Integer, nullable=True)
+    ability = db.Column('ability', db.String(100), nullable=True)
+    time = db.Column('time', db.Float, nullable=True)
+
+    def __init__(self, name, user_id, satisfaction_level, ability, time):
+        self.name = name
+        self.user_id = user_id
+        self.satisfaction_level = satisfaction_level
+        self.ability = ability
+        self.time = time
+
+
+class Movie(db.Model):
+    __tablename__ = 'movies'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    director = db.Column(db.String(255), nullable=True)
+    actors = db.Column(db.String(500), nullable=True)
+    synopsis = db.Column(db.Text, nullable=True)
+    ###########
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    def __init__(self, title, director=None, actors=None, synopsis=None, user_id=None):
+        self.title = title
+        self.director = director
+        self.actors = actors
+        self.synopsis = synopsis
+        ##############
+        self.user_id = user_id
+
+##########################
+class Habit(db.Model):
+    __tablename__ = 'habits'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    satisfaction_level = db.Column(db.Integer, nullable=True)
+    ability = db.Column(db.String(100), nullable=True)
+    time = db.Column(db.Float, nullable=True)
+    ###########
+    user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
+
+    def __init__(self, name, satisfaction_level=None, ability=None, time=None, user_id=None):
+        self.name = name
+        self.satisfaction_level = satisfaction_level
+        self.ability = ability
+        self.time = time
+        ##############
+        self.user_id = user_id
