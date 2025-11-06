@@ -1,749 +1,899 @@
-/* Reset */
+﻿/*
+ * AKALI - Aplicación de Productividad Personal
+ * Diseño Moderno, Limpio y Minimalista
+ * Inspirado en Notion, Todoist y Neubrutalism suave
+ */
+
+/* ========================================
+   IMPORTACIONES
+   ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ========================================
+   VARIABLES CSS - PALETA AKALI
+   ======================================== */
+:root {
+  /* Paleta de Colores Inspirada en Akali - Versión Marrón Clara */
+  --bg-main: #FAF6F1;          /* Beige muy claro (fondo principal) */
+  --bg-secondary: #F5EFE7;     /* Beige más cálido (contenedores secundarios) */
+  --card-bg: #FFFFFF;          /* Blanco puro (cards) */
+  --card-hover: #FDF9F5;       /* Blanco con tinte beige muy suave (hover) */
+  
+  --text-primary: #2D2520;     /* Marrón muy oscuro (texto principal) */
+  --text-secondary: #5D4E45;   /* Marrón grisáceo medio (texto secundario) */
+  --text-muted: #8D7E75;       /* Marrón grisáceo claro (texto deshabilitado) */
+  
+  --accent: #C19A6B;           /* Marrón dorado/camel (acento principal) */
+  --accent-hover: #A67C52;     /* Marrón dorado más oscuro (hover) */
+  --accent-dark: #8B6F47;      /* Marrón dorado oscuro */
+  --accent-light: #D4B896;     /* Marrón dorado claro */
+  --accent-glow: rgba(193, 154, 107, 0.15); /* Resplandor marrón suave */
+  
+  --gold: #D4A574;             /* Dorado cálido (detalles especiales) */
+  --gold-hover: #B8895E;       /* Dorado oscuro */
+  
+  --success: #7FA84F;          /* Verde oliva para éxito */
+  --success-light: #A3C585;    /* Verde oliva claro */
+  --danger: #D67C5C;           /* Terracota para peligro */
+  --danger-hover: #C25A38;     /* Terracota oscuro */
+  --warning: #E8B44F;          /* Amarillo mostaza advertencia */
+  
+  --border-color: #E5D5C3;     /* Beige claro para bordes */
+  --border-light: #F0E6D9;     /* Beige muy claro para bordes */
+  --border-accent: #C19A6B;    /* Marrón dorado para bordes activos */
+  
+  /* Espaciado */
+  --navbar-height: 64px;
+  
+  /* Sombras suaves */
+  --shadow-sm: 0 2px 8px rgba(193, 154, 107, 0.08);
+  --shadow-md: 0 4px 20px rgba(193, 154, 107, 0.12);
+  --shadow-lg: 0 8px 32px rgba(193, 154, 107, 0.15);
+  --shadow-glow: 0 0 20px rgba(193, 154, 107, 0.15);
+  --shadow-glow-lg: 0 0 40px rgba(193, 154, 107, 0.2);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* ========================================
+   RESET Y ESTILOS GLOBALES
+   ======================================== */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-}
-
-body{
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url("imagenes/fondo_login_akali.jpeg") no-repeat center center/cover;
-  position: relative;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-/* Capa oscura encima del fondo */
-.overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  z-index: 0;
-}
-
-.container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Efecto pergamino digital */
-.login-box {
-  background: #fdf3d9; /* color pergamino */
-  padding: 35px 30px;
-  border-radius: 12px;
-  border: 2px solid #a9744f;
-  box-shadow: 
-    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
-    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
-    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
-  text-align: center;
-}
-
-/* Título estilo medieval */
-.login-box h1 {
-  margin-bottom: 20px;
-  font-size: 2.5rem;
-  font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
-}
-
-.main-box  {
-  padding: 5px;
-  background: #5b3924;
-  border-radius: 25px;
-  margin-bottom: 20px;
-  font-size: 2rem;
-  margin: 10px;
-  font-family: 'MedievalSharp', cursive;
-  color: beige;
-}
-
-.task-container{
-  background-color: #fdf3d9; /* color pergamino */
-  padding: 15%  5%;
-  border-radius: 12px;
-  border: 2px solid #a9744f;
-  box-shadow: 
-    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
-    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
-    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
-  text-align: center;
-  margin-top: 5%;
-  margin-bottom: 5%;
-}
-
-.task-container h1 {
-  
-  margin-bottom: 20%;
-  font-size: 1.5rem;
-  font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
-}
-.task-box-complete  {
-  
-  width: 200px;
-  padding: 5px;
-  background: #106b04;
-  border-radius: 25px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  font-family: 'MedievalSharp', cursive;
-  color: beige;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: inline-block;
-
-
-}
-.task-box-incomplete  {
-  
-  width: 200px;
-  padding: 5px;
-  background: #472601dc;
-  border-radius: 25px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  font-family: 'MedievalSharp', cursive;
-  color: beige;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  display: inline-block;
-}
-
-
-/* Campos */
-.input-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-  color: #2c1810;
-  font-weight: bold;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #8b5e3c;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #fffdf5; /* fondo claro pergamino */
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: #d35400;
-  background: #fff8e1;
-}
-
-.task-input {
-
-  margin-top: 15%;
-  text-align: left;
-  display:inline
-}
-
-.task-input input{
-    width: 75%;
-  padding: 10px;
-  border: 1px solid #8b5e3c;
-  border-radius: 20px;
-  font-size: 1rem;
-  background    : #fffdf5; /* fondo claro pergamino */
-  display: inline;
-}
-
-
-/* Botón */
-.btn {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(180deg, #d4a373, #8b5e3c);
-  border: 2px solid #5b3924;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 0px;
-  transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
-}
-
-.btn:hover {
-  background: linear-gradient(180deg, #8b5e3c, #5b3924);
-}
-
-.task-btn {
-  width: 45%;
-  height: 3%;
-  padding: 5px;
-  background: linear-gradient(180deg, #d4a373, #8b5e3c);
-  border: 1px solid #5b3924;
-  border-radius: 18px;
-  color: #fff;
-  font-size: 0.9rem;
-  cursor: pointer;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  margin-left: 0;
-  margin-right: 0%;
-  transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
-}
-.create-task-btn {
-  width: 20%;
-  height: 5%;
-  padding: 10px;
-  background: linear-gradient(180deg, #d4a373, #8b5e3c);
-  border: 2px solid #5b3924;
-  border-radius: 18px;
-  color: #fff;
-  text-align: center;
-  font-size: 0.9rem;
-  cursor: pointer;
-  margin-top: 2cm;
-  transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
-  display: inline;
-}
-
-
-/* Texto inferior */
-.extra {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #2c1810;
-}
-
-.extra a {
-  color: #8b5e3c;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* css hobby*/
-.container-hobby-all{
-    display: flex;
-  justify-content: center;
-    flex-direction: row;
-  align-items: center;
-  gap: 30px;
-  padding: 40px;
-  min-height: 100vh;
-}
-
-.container-hobby {
-
-    background: #fdf3d9; /* color pergamino */
-  padding: 35px 30px;
-  border-radius: 12px;
-  border: 2px solid #a9744f;
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
-    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
-    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
-  text-align: center;
-}
-
-.container-hobby-all h1 {
-  margin-bottom: 20px;
-  font-size: 2.5rem;
-  font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
-}
-
-.container-hobby-all p {
-    margin-bottom: 20px;
-    font-size: 1rem;
-
-    color: #5b3924;
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: #5b3924;
-}
-
-.form-group label {
-    display: flex;
-    margin-bottom: 5px;
-    font-size: 1rem;
-}
-
-.form-group input{
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #8b5e3c;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #fffdf5;
-}
-
-.form-group select{
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #8b5e3c;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #fffdf5;
-    cursor: pointer;
-}
-
-.form-group select:focus,
-.form-group input:focus {
-    outline: none;
-    border-color: #d35400;
-    background: #fff8e1;
-}
-
-.container-hobby-search{
-    flex: 1;
-  max-width: 450px;
-  padding: 20px;
-   background: #fdf3d9;
-  border-radius: 8px;
-    box-shadow:
-    0 8px 20px rgba(0,0,0,0.5),      /* sombra externa */
-    inset 0 0 60px rgba(139,69,19,0.2), /* manchas internas */
-    inset 0 0 20px rgba(0,0,0,0.15);    /* bordes oscuros */
-  color: #333; /* Color de texto */
-}
-
-.container-hobby,
-.container-hobby-search{
-  width: 100%;       /* Ocupan el ancho disponible */
-  max-width: 500px;/* Pero no más de 500px para que no se vean muy anchos */
-}
-
-.body-hobby{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-
-    background: #d4a373;
-}
-
-/* ---------- Mensajes Flash ---------- */
-.flash-container {
-    position: fixed;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2000;
-    width: 80%;
-      text-align: center;
-    animation: fadeIn 0.4s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -20px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
-}
-
-/* Personalización del color del mensaje de error */
-.alert-danger {
-    background-color: #6f4d38;
-    color: white;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    border-radius: 25px;
-    padding: 10px 20px 10px 20px;
-    border: 2px solid #c23b3b;
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
-
-}
-
-.event-form {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it's on top */
-}
-
-.event-form > div {
-    background: #fdf3d9; /* Pergamino color from styles.css */
-    padding: 35px 30px;
-    border-radius: 12px;
-    border: 2px solid #a9744f;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5),
-                inset 0 0 60px rgba(139,69,19,0.2),
-                inset 0 0 20px rgba(0,0,0,0.15);
-    width: 90%;
-    max-width: 500px;
-}
-
-.event-form h2 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-    font-family: 'MedievalSharp', cursive; /* Assuming this font is available */
-    color: #5b3924;
-    text-align: center;
-}
-
-.event-form .form-group {
-    margin-bottom: 15px;
-}
-
-.event-form label {
-    display: block;
-    margin-bottom: 5px;
-    color: #2c1810;
-    font-weight: bold;
-}
-
-.event-form input,
-.event-form select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #8b5e3c;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #fffdf5;
-}
-
-.event-form .btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(180deg, #d4a373, #8b5e3c);
-    border: 2px solid #5b3924;
-    border-radius: 6px;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-
-.event-form .btn:hover {
-    background: linear-gradient(180deg, #8b5e3c, #5b3924);
-}
-
-/* For lists inside the modal */
-.event-form .list-selection ul,
-.event-form .hobby-list ul,
-.event-form .habit-list ul,
-.event-form .task-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.event-form .list-selection li,
-.event-form .hobby-list li,
-.event-form .habit-list li,
-.event-form .task-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #d4a373;
-}
-
-.event-form .list-selection li span,
-.event-form .hobby-list li,
-.event-form .habit-list li,
-.event-form .task-list li {
-    color: #5b3924;
-    font-size: 1.1rem;
-}
-
-.event-form .list-selection .btn,
-.event-form .hobby-list .btn,
-.event-form .habit-list .btn,
-.event-form .task-list .btn {
-    width: auto;
-    padding: 5px 15px;
-    margin-top: 0;
-}
-
-
-/* src/static/styles.css */
-
-/* --- Estilos para el Horario a Pantalla Completa --- */
-
-/* 1. Configuramos el body para la página del horario */
-.body-schedule {
-  background-color: #d4a373; /* Un color de fondo base */
-  min-height: 100vh; /* Mínimo 100% de altura, permite crecer */
-  width: 100vw;  /* Ocupa el 100% del ancho de la ventana */
-  overflow-x: hidden; /* Evita scroll horizontal */
-  overflow-y: auto; /* Permite scroll vertical si es necesario */
   margin: 0;
   padding: 0;
-  display: block; /* Sobrescribimos el 'flex' para que no centre el contenido */
 }
 
-/* 2. El nuevo contenedor principal que organizará el título y el calendario */
-.schedule-container {
-  width: 100%;
-  min-height: calc(100vh - 80px); /* Altura mínima menos el navbar */
-  display: flex;
-  flex-direction: column; /* Apila el título encima del calendario */
-  padding: 25px;
-  padding-top: 20px;
-  box-sizing: border-box; /* Importante para que el padding no desborde el contenedor */
+html {
+  scroll-behavior: smooth;
 }
 
-/* 3. Estilos para el título dentro del nuevo contenedor */
-.schedule-container h1 {
-  font-family: 'MedievalSharp', cursive;
-  color: #5b3924;
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  flex-shrink: 0; /* Evita que el título se encoja si no hay espacio */
-}
-
-/* 4. La clave: hacemos que el calendario crezca para ocupar el espacio restante */
-#calendar {
-  flex-grow: 1; /* Esto hace que el div ocupe todo el alto disponible */
-  min-height: 800px; /* Altura mínima para asegurar que se vea todo el horario */
-  background-color: #fdf3d9; /* Fondo de pergamino */
-  border: 2px solid #a9744f;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-  overflow: visible; /* Asegura que el contenido sea visible */
-}
-
-/* 5. (Opcional) Pequeños ajustes para que FullCalendar se vea mejor con tu tema */
-.fc .fc-button-primary {
-    background-color: #8b5e3c !important;
-    border-color: #5b3924 !important;
-}
-
-.fc .fc-button-primary:hover {
-    background-color: #5b3924 !important;
-}
-
-.fc-daygrid-event, .fc-timegrid-event {
-    background-color: #a9744f !important;
-    border-color: #8b5e3c !important;
-}/* src/static/styles.css */
-
-/* --- Estilos para el Horario a Pantalla Completa --- */
-
-
-
-/*NAVBAR*/
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-
-  background: #f6e7cf;
-  box-shadow: 0 6px 18px rgba(107, 60, 28, 0.15);
-  border-bottom: 2px solid rgba(107, 60, 28, 0.08);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 14px 20px;
-
-  font-family: var(--title-font, inherit);
-}
-
-.navbar-title {
-  font-family: 'MedievalSharp', cursive;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #5b3318;
-  position: absolute;
-  left: 20px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  letter-spacing: 2px;
-}
-
-.navbar a {
-  text-decoration: none;
-  color: #5b3318;
-  background: #f2dcb7;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  transition: transform 0.08s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 2px 0 rgba(107, 60, 28, 0.2);
-}
-
-.navbar a:hover,
-.navbar a:focus {
-  background: #edcfa0;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 0 rgba(107, 60, 28, 0.25);
-  outline: none;
-}
-
-.navbar a.active {
-  background: #e9c689;
-  box-shadow: 0 4px 0 rgba(107, 60, 28, 0.3);
-}
-
-.body-hobby {
-  padding-top: 76px;
-}
-.body-schedule {
-  padding-top: 80px;
-}
-
-@media (max-width: 720px) {
-  .navbar {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 10px 12px;
-  }
-  .navbar a {
-    padding: 8px 12px;
-    font-size: 0.95rem;
-  }
-}
-:root {
-  --navbar-height: 76px;
-}
-
-.navbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  height: var(--navbar-height);
-}
-
-.navbar-spacer {
-  height: var(--navbar-height);
-}
-
-@media (max-width: 720px) {
-  :root { --navbar-height: 92px; } 
-}
-
-/* NAVBAR */
-
-:root {
-  --navbar-height: 76px; /* Altura base del navbar */
-  --navbar-bg: #f6e7cf;  /* Fondo crema */
-  --navbar-link-bg: #f2dcb7;
-  --navbar-link-hover: #edcfa0;
-  --navbar-link-active: #e9c689;
-  --navbar-text: #5b3318; /* Marrón oscuro tipo títulos */
-}
-
-/* --- Barra fija arriba --- */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--navbar-height);
-  z-index: 1000;
-
-  background: var(--navbar-bg);
-  box-shadow: 0 6px 18px rgba(107, 60, 28, 0.15);
-  border-bottom: 2px solid rgba(107, 60, 28, 0.08);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 0 20px;
-
-  font-family: var(--title-font, 'Comic Neue', cursive);
-}
-
-/* --- Links dentro de la navbar --- */
-.navbar a {
-  text-decoration: none;
-  color: var(--navbar-text);
-  background: var(--navbar-link-bg);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  transition: transform 0.08s ease, box-shadow 0.2s ease, background 0.2s ease;
-  box-shadow: 0 2px 0 rgba(107, 60, 28, 0.2);
-}
-
-.navbar a:hover,
-.navbar a:focus {
-  background: var(--navbar-link-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 0 rgba(107, 60, 28, 0.25);
-  outline: none;
-}
-
-.navbar a.active {
-  background: var(--navbar-link-active);
-  box-shadow: 0 4px 0 rgba(107, 60, 28, 0.3);
-}
-
-/* --- Espaciador para compensar la altura fija --- */
-.navbar-spacer {
-  height: var(--navbar-height);
-}
-
-/* --- Ajustes del body (por si olvidas el spacer) --- */
 body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   padding-top: var(--navbar-height);
 }
 
-/* --- Para pantallas pequeñas --- */
-@media (max-width: 720px) {
-  :root {
-    --navbar-height: 92px;
-  }
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
 
-  .navbar {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 10px 12px;
-  }
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.875rem;
+}
 
-  .navbar a {
-    padding: 8px 12px;
-    font-size: 0.95rem;
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* ========================================
+   CONTENEDORES PRINCIPALES
+   ======================================== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ========================================
+   NAVBAR - BARRA DE NAVEGACIÓN
+   ======================================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  z-index: 1000;
+  transition: box-shadow 0.3s ease;
+}
+
+.navbar-title {
+  position: absolute;
+  left: 2rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.navbar a {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.navbar a:hover {
+  color: var(--accent);
+  background-color: var(--accent-glow);
+}
+
+.navbar a.active {
+  color: var(--accent);
+  font-weight: 600;
+  background-color: var(--accent-glow);
+}
+
+.navbar-spacer {
+  height: var(--navbar-height);
+}
+
+/* ========================================
+   LOGIN / SIGNUP - PÁGINAS DE AUTENTICACIÓN
+   ======================================== */
+.overlay {
+  display: none;
+}
+
+.overlay + .container {
+  min-height: calc(100vh - var(--navbar-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-box {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.4s ease;
+}
+
+.login-box h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+}
+
+.extra {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.extra a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ========================================
+   FORMULARIOS
+   ======================================== */
+.form-group,
+.input-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label,
+.input-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='username'],
+textarea,
+select,
+.textbox {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background-color: var(--card-bg);
+  transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger);
+  color: #FFFFFF;
+}
+
+.task-btn,
+.create-task-btn {
+  width: auto;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.task-btn:hover,
+.create-task-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: var(--accent-glow);
+}
+
+/* ========================================
+   HOBBY Y MOVIES - LAYOUT LADO A LADO
+   ======================================== */
+.body-hobby {
+  min-height: 100vh;
+}
+
+.container-hobby-all {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container-hobby {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInLeft 0.5s ease;
+}
+
+.container-hobby h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.container-hobby p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container-hobby-search {
+  flex: 0 0 400px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInRight 0.5s ease;
+}
+
+.container-hobby-search h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Responsive para hobby/movies */
+@media (max-width: 1024px) {
+  .container-hobby-all {
+    flex-direction: column;
+  }
+  
+  .container-hobby-search {
+    flex: 1;
+    width: 100%;
   }
 }
 
-/* --- Ajuste opcional para que FullCalendar o tablas no se peguen --- */
-.fc,
-.container-hobby-all,
-.main-content,
-.calendar-wrapper {
-  margin-top: 8px;
+/* ========================================
+   TAREAS - LISTA DE TAREAS
+   ======================================== */
+.task-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.task-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.task-input {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.task-input input {
+  flex: 1;
+}
+
+.task-box-incomplete,
+.task-box-complete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.task-box-incomplete {
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.task-box-incomplete:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.task-box-complete {
+  background-color: var(--border-light);
+  opacity: 0.7;
+}
+
+.task-box-complete span,
+.task-box-complete .task-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+   TABLAS
+   ======================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+thead {
+  background-color: var(--bg-main);
+}
+
+thead th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  letter-spacing: 0.5px;
+}
+
+th,
+td {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: var(--bg-secondary);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ========================================
+   HORARIO / CALENDARIO
+   ======================================== */
+.body-schedule {
+  background-color: var(--bg-main);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.schedule-container {
+  width: 100%;
+  min-height: calc(100vh - var(--navbar-height));
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.schedule-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#calendar {
+  flex-grow: 1;
+  min-height: 700px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+  overflow: visible;
+}
+
+/* Botones de FullCalendar */
+.fc .fc-button-primary {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+.fc .fc-button-primary:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+}
+
+/* Eventos del calendario */
+.fc-event {
+  background-color: var(--accent) !important;
+  border-color: var(--accent-dark) !important;
+  color: #FFFFFF !important;
+}
+
+.fc-event:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+/* Celdas del calendario */
+.fc-day-today {
+  background-color: var(--bg-secondary) !important;
+}
+
+.fc-daygrid-day:hover {
+  background-color: var(--card-hover) !important;
+}
+
+/* Headers del calendario */
+.fc-col-header-cell {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Líneas del calendario */
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: var(--border-light) !important;
+}
+
+/* ========================================
+   MODAL DE EVENTOS
+   ======================================== */
+.event-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.event-form > div {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideInDown 0.3s ease;
+}
+
+.event-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.event-form .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.event-form .btn {
+  margin-top: 0.75rem;
+}
+
+.event-form ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.event-form li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem;
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color 0.2s ease;
+}
+
+.event-form li:hover {
+  background-color: var(--bg-secondary);
+}
+
+.event-form li .btn {
+  width: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  margin-left: 1rem;
+}
+
+/* ========================================
+   MENSAJES FLASH
+   ======================================== */
+.flash-container {
+  position: fixed;
+  top: calc(var(--navbar-height) + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+  width: auto;
+  max-width: 90%;
+  animation: slideInDown 0.3s ease;
+}
+
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert-danger {
+  background-color: #FEE2E2;
+  color: var(--danger);
+  border: 1px solid #FCA5A5;
+  border-left: 4px solid var(--danger);
+}
+
+.alert-success {
+  background-color: #D1FAE5;
+  color: var(--success);
+  border: 1px solid #6EE7B7;
+  border-left: 4px solid var(--success);
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+.main-box {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  color: #FFFFFF;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 80px;
+  }
+  
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--navbar-height);
+    padding: 0.75rem 1rem;
+  }
+  
+  .navbar-title {
+    position: relative;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .container-hobby-all {
+    padding: 1rem;
+  }
+  
+  .container-hobby,
+  .container-hobby-search {
+    padding: 1.5rem;
+  }
+  
+  .task-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .schedule-container {
+    padding: 1rem;
+  }
+  
+  #calendar {
+    min-height: 500px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  .login-box {
+    padding: 1.5rem;
+  }
+  
+  .navbar a {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+/* ========================================
+   ACCESIBILIDAD
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+ty: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Scroll animations */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Minor responsive tweaks */
+@media (max-width: 720px){
+  :root{ --navbar-height: 96px; }
+  .navbar-title{ left: 16px; }
+  .navbar{ padding: 8px 16px; }
+  .container{ padding: 12px; }
+  
+  .task-box-incomplete:hover,
+  .task-box-complete:hover{
+    transform: none;
+  }
+  
+  .btn:hover{
+    transform: none;
+  }
 }
 
 
