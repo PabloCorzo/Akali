@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -13,7 +15,7 @@
     <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
     <a href="{{ url_for('habitos') }}">Hábitos</a>
     <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-          <a href="{{ url_for('games') }}">Juegos</a>
+    <a href="{{ url_for('games') }}">Juegos</a>
     </nav>
     {% block body %}{% endblock %}
 </body>
