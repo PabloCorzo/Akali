@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Menú de Estudio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type = "text/css" href="{{ url_for('static',filename = 'styles.css') }}">
+</head>
+
+<body>
+ <div class="container-hobby-all">
+        <nav class="navbar">
+            <a href="{{ url_for('create_hobby') }}">Hobbies</a>
+            <a href="{{ url_for('movies') }}">Películas</a>
+            <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
+            <a href="{{ url_for('habitos') }}">Hábitos</a>
+            <a href="{{ url_for('tasks') }}">Lista de tareas</a>
+            <a href="{{ url_for('games') }}">Juegos</a>
+            <a href="{{ url_for('study') }}" class="active">Estudio</a>
+        </nav>
+
+        <div class = 'login-box'>
+            <div class = 'login-box'>
+                <main class="card">
+                    <h1>Estudio</h1>
+                    <p style="margin:15px; font-size: 2rem">
+                        Selecciona una herramienta
+                    </p>
+                </main>
+            </div>
+        </div>
+        </div>
+</body>
+</html>

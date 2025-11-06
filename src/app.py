@@ -430,6 +430,12 @@ def games():
 
     return render_template("games.html", games=games, searched=searched)
 
+@app.route("/dashboard/study", methods=["GET"])
+def study():
+    if not isLogged():
+        return redirect(url_for('login'))
+    return render_template("study.html")
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
