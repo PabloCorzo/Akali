@@ -50,7 +50,7 @@ body{
 .login-box h1 {
   margin-bottom: 20px;
   font-size: 2.5rem;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: #5b3924;
 }
 
@@ -61,7 +61,7 @@ body{
   margin-bottom: 20px;
   font-size: 2rem;
   margin: 10px;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: beige;
 }
 
@@ -83,7 +83,7 @@ body{
   
   margin-bottom: 20%;
   font-size: 1.5rem;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: #5b3924;
 }
 .task-box-complete  {
@@ -94,7 +94,7 @@ body{
   border-radius: 25px;
   margin-bottom: 20px;
   font-size: 1rem;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: beige;
   margin-left: auto;
   margin-right: auto;
@@ -112,7 +112,7 @@ body{
   border-radius: 25px;
   margin-bottom: 20px;
   font-size: 1rem;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: beige;
   margin-left: auto;
   margin-right: auto;
@@ -181,7 +181,7 @@ body{
   cursor: pointer;
   margin-top: 0px;
   transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
 }
 
 .btn:hover {
@@ -203,7 +203,7 @@ body{
   margin-left: 0;
   margin-right: 0%;
   transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
 }
 .create-task-btn {
   width: 20%;
@@ -218,7 +218,7 @@ body{
   cursor: pointer;
   margin-top: 2cm;
   transition: 0.3s;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   display: inline;
 }
 
@@ -263,7 +263,7 @@ body{
 .container-hobby-all h1 {
   margin-bottom: 20px;
   font-size: 2.5rem;
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: #5b3924;
 }
 
@@ -407,7 +407,7 @@ body{
 .event-form h2 {
     margin-bottom: 20px;
     font-size: 2rem;
-    font-family: 'MedievalSharp', cursive; /* Assuming this font is available */
+    font-family: Arial, sans-serif; /* Assuming this font is available */
     color: #5b3924;
     text-align: center;
 }
@@ -518,7 +518,7 @@ body{
 
 /* 3. Estilos para el título dentro del nuevo contenedor */
 .schedule-container h1 {
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   color: #5b3924;
   text-align: center;
   font-size: 2.5rem;
@@ -579,7 +579,7 @@ body{
 }
 
 .navbar-title {
-  font-family: 'MedievalSharp', cursive;
+  font-family: Arial, sans-serif;
   font-size: 1.8rem;
   font-weight: bold;
   color: #5b3318;

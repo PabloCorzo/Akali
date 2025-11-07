@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Nutrición</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<body class="body-hobby">
+<div class="container-hobby-all">
+    <div class="container-hobby">
+        <h1>Nutrición</h1>
+        <p>Consulta tus registros diarios y totales de alimentación.</p>
+
+        <a class="btn" href="{{ url_for('nutrition_new') }}">+ Nuevo registro</a>
+
+        <h1 style="margin-top: 2rem;">Resumen diario</h1>
+        <table border="1" cellpadding="8" cellspacing="0" style="width:100%; text-align:center;">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Kcal</th>
+                    <th>Proteína (g)</th>
+                    <th>Carbohidratos (g)</th>
+                    <th>Grasas (g)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if resume and resume|length %}
+                    {% for day, r in resume.items() %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td>{{ r.kcal }}</td>
+                        <td>{{ r.p }}</td>
+                        <td>{{ r.c }}</td>
+                        <td>{{ r.g }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align:center; color: gray;">Sin datos aún.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <h1 style="margin-top: 2rem;">Entradas</h1>
+        <table border="1" cellpadding="8" cellspacing="0" style="width:100%; text-align:center;">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Alimento</th>
+                    <th>Kcal</th>
+                    <th>P (g)</th>
+                    <th>C (g)</th>
+                    <th>G (g)</th>
+                    <th>Notas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if entries and entries|length %}
+                    {% for e in entries %}
+                    <tr>
+                        <td>{{ e.date }}</td>
+                        <td>{{ e.meal_type }}</td>
+                        <td>{{ e.food }}</td>
+                        <td>{{ e.calories or 0 }}</td>
+                        <td>{{ e.protein_g or 0 }}</td>
+                        <td>{{ e.carbs_g or 0 }}</td>
+                        <td>{{ e.fat_g or 0 }}</td>
+                        <td>{{ e.notes or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8" style="text-align:center; color: gray;">No hay registros todavía.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container-hobby-search">
+        <h1>Consejo</h1>
+        <p>Desde “Nuevo registro” puedes añadir comidas y sus valores nutricionales.</p>
+    </div>
+</div>
+</body>
+{% endblock %}

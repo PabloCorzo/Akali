@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% set body_class = "body-hobby" %}
+
+{% block head %}
+<title>Nuevo registro nutricional</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container-hobby-all">
+
+  <div class="container-hobby">
+    <h1>Nuevo registro nutricional</h1>
+    <p>Introduce la comida y, si quieres, sus macros.</p>
+
+    <form method="post">
+      <div class="form-group">
+        <label for="date">Fecha</label>
+        <input class="textbox" id="date" type="date" name="date">
+      </div>
+
+      <div class="form-group">
+        <label for="meal_type">Tipo de comida</label>
+        <select class="textbox" id="meal_type" name="meal_type">
+          <option>desayuno</option>
+          <option>comida</option>
+          <option>cena</option>
+          <option>snack</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="food">Alimento / descripción *</label>
+        <input class="textbox" id="food" name="food" required>
+      </div>
+
+      <div class="form-group">
+        <label for="calories">Calorías</label>
+        <input class="textbox" id="calories" type="number" name="calories" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="protein_g">Proteína (g)</label>
+        <input class="textbox" id="protein_g" type="number" step="0.1" name="protein_g" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="carbs_g">Carbohidratos (g)</label>
+        <input class="textbox" id="carbs_g" type="number" step="0.1" name="carbs_g" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="fat_g">Grasas (g)</label>
+        <input class="textbox" id="fat_g" type="number" step="0.1" name="fat_g" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notas</label>
+        <textarea class="textbox" id="notes" name="notes"></textarea>
+      </div>
+
+      <button class="btn" type="submit">Guardar</button>
+      <a class="btn" href="{{ url_for('nutrition_list') }}">Volver</a>
+    </form>
+  </div>
+
+  <div class="container-hobby-search">
+    <h1>Consejo</h1>
+    <p>Puedes dejar macros a 0 si solo quieres registrar la comida.</p>
+  </div>
+
+</div>
+{% endblock %}

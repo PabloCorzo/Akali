@@ -4,7 +4,7 @@ import sys
 import hashlib
 from datetime import datetime, time
 from database import db
-from activity import Users, Task, ScheduleItem, Hobby, Movie, Habit, hashPassword, Game
+from activity import Users, Task, ScheduleItem, Hobby, Movie, Habit, hashPassword, Game, Workout, Exercise, NutritionEntry
 from config import config
 
 sys.path.append("../src")
@@ -429,6 +429,97 @@ def games():
         games = query.order_by(Game.id.desc()).all()
 
     return render_template("games.html", games=games, searched=searched)
+
+
+
+# -------------------- NUEVAS RUTAS: ENTRENAMIENTOS --------------------
+@app.route("/fitness/workouts", methods=["GET"])
+def workouts_list():
+    if not isLogged():
+        return redirect(url_for('login'))
+    ws = Workout.query.filter_by(user_id=session['id']).order_by(Workout.date.desc()).all()
+    return render_template("workouts.html", workouts=ws)
+
+
+@app.route("/fitness/workouts/new", methods=["GET", "POST"])
+def workouts_new():
+    if not isLogged():
+        return redirect(url_for('login'))
+    if request.method == "POST":
+        w = Workout(
+            user_id=session['id'],
+            title=(request.form.get("title") or "Entrenamiento").strip(),
+            date=datetime.strptime(request.form.get("date"), "%Y-%m-%d") if request.form.get("date") else datetime.utcnow(),
+            duration_min=int(request.form.get("duration_min") or 0),
+            notes=request.form.get("notes")
+        )
+        db.session.add(w); db.session.flush()
+
+        names  = request.form.getlist("ex_name[]")
+        kinds  = request.form.getlist("ex_kind[]")
+        sets_  = request.form.getlist("ex_sets[]")
+        reps   = request.form.getlist("ex_reps[]")
+        weight = request.form.getlist("ex_weight[]")
+        time_  = request.form.getlist("ex_time[]")
+        dist   = request.form.getlist("ex_distance[]")
+
+        for i in range(len(names)):
+            if not names[i].strip():
+                continue
+            db.session.add(Exercise(
+                workout_id=w.id, name=names[i], kind=kinds[i] or None,
+                sets=int(sets_[i] or 0) if sets_ else None,
+                reps=int(reps[i] or 0) if reps else None,
+                weight_kg=float(weight[i] or 0) if weight else None,
+                time_sec=int(time_[i] or 0) if time_ else None,
+                distance_km=float(dist[i] or 0) if dist else None
+            ))
+        db.session.commit()
+        flash("Entrenamiento guardado", "success")
+        return redirect(url_for("workouts_list"))
+
+    return render_template("workout_form.html")
+
+
+# -------------------- NUEVAS RUTAS: NUTRICIÓN --------------------
+@app.route("/fitness/nutrition", methods=["GET"])
+def nutrition_list():
+    if not isLogged():
+        return redirect(url_for('login'))
+    entries = NutritionEntry.query.filter_by(user_id=session['id']).order_by(NutritionEntry.date.desc()).all()
+    resume = {}
+    for e in entries:
+        k = e.date.strftime("%Y-%m-%d")
+        resume.setdefault(k, {"kcal": 0, "p": 0, "c": 0, "g": 0})
+        resume[k]["kcal"] += e.calories
+        resume[k]["p"] += e.protein_g
+        resume[k]["c"] += e.carbs_g
+        resume[k]["g"] += e.fat_g
+    return render_template("nutrition.html", entries=entries, resume=resume)
+
+
+@app.route("/fitness/nutrition/new", methods=["GET", "POST"])
+def nutrition_new():
+    if not isLogged():
+        return redirect(url_for('login'))
+    if request.method == "POST":
+        e = NutritionEntry(
+            user_id=session['id'],
+            date=datetime.strptime(request.form.get("date"), "%Y-%m-%d") if request.form.get("date") else datetime.utcnow(),
+            meal_type=request.form.get("meal_type"),
+            food=request.form["food"],
+            calories=int(request.form.get("calories") or 0),
+            protein_g=float(request.form.get("protein_g") or 0),
+            carbs_g=float(request.form.get("carbs_g") or 0),
+            fat_g=float(request.form.get("fat_g") or 0),
+            notes=request.form.get("notes")
+        )
+        db.session.add(e); db.session.commit()
+        flash("Registro nutricional añadido", "success")
+        return redirect(url_for("nutrition_list"))
+
+    return render_template("nutrition_form.html")
+
 
 if __name__ == "__main__":
     with app.app_context():

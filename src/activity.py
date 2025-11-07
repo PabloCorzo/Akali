@@ -5,6 +5,8 @@ Este módulo contiene todos los modelos de base de datos de la aplicación.
 
 from database import db
 import hashlib
+################3
+from datetime import datetime
 
 
 def hashPassword(password: str) -> str:
@@ -113,3 +115,46 @@ class Game(db.Model):
     def __init__(self, title):
         self.title = title
 
+
+
+# -------------------- NUEVOS: ENTRENAMIENTOS + NUTRICIÓN --------------------
+
+class Workout(db.Model):
+    __tablename__ = "workouts"
+    id = db.Column(db.Integer, primary_key=True)
+    # Relación con usuario (tabla 'users')
+    user_id = db.Column(db.BigInteger, nullable=False, index=True)
+    date = db.Column(db.Date, default=datetime.utcnow)
+    title = db.Column(db.String(120), nullable=False)
+    duration_min = db.Column(db.Integer, default=0)
+    notes = db.Column(db.Text)
+    # Relación 1-N con Exercise
+    exercises = db.relationship("Exercise", backref="workout", cascade="all, delete-orphan")
+
+
+class Exercise(db.Model):
+    __tablename__ = "exercises"
+    id = db.Column(db.Integer, primary_key=True)
+    workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id"), nullable=False, index=True)
+    name = db.Column(db.String(120), nullable=False)
+    kind = db.Column(db.String(50))       # fuerza/cardio/movilidad...
+    sets = db.Column(db.Integer)
+    reps = db.Column(db.Integer)
+    weight_kg = db.Column(db.Float)
+    time_sec = db.Column(db.Integer)
+    distance_km = db.Column(db.Float)
+
+
+class NutritionEntry(db.Model):
+    __tablename__ = "nutrition_entries"
+    id = db.Column(db.Integer, primary_key=True)
+    # Relación con usuario (tabla 'users')
+    user_id = db.Column(db.BigInteger, nullable=False, index=True)
+    date = db.Column(db.Date, default=datetime.utcnow)
+    meal_type = db.Column(db.String(50))  # desayuno/comida/cena/snack
+    food = db.Column(db.String(200), nullable=False)
+    calories = db.Column(db.Integer, default=0)
+    protein_g = db.Column(db.Float, default=0)
+    carbs_g = db.Column(db.Float, default=0)
+    fat_g = db.Column(db.Float, default=0)
+    notes = db.Column(db.Text)

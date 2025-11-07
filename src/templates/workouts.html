@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Entrenamientos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+
+    <style>
+      /* Más aire y ancho cómodo */
+      .container-hobby-all { gap: 60px; padding: 60px; }
+      .container-hobby, .container-hobby-search { max-width: 650px; padding: 50px 40px; }
+      .container-hobby h1 { font-size: 2.7rem; }
+
+      table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+      th, td { padding: 10px 12px; }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container-hobby-all">
+  <div class="container-hobby">
+    <h1>Entrenamientos</h1>
+    <p>En este apartado puedes consultar y registrar tus entrenamientos.</p>
+
+    <a class="btn" href="{{ url_for('workouts_new') }}">+ Nuevo entrenamiento</a>
+
+    <h1 style="margin-top: 2rem;">Historial</h1>
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Título</th>
+          <th>Duración (min)</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if workouts and workouts|length %}
+          {% for w in workouts %}
+            <tr>
+              <td>{{ w.date }}</td>
+              <td>{{ w.title }}</td>
+              <td>{{ w.duration_min or 0 }}</td>
+              <td>{{ w.notes or "-" }}</td>
+            </tr>
+            <tr>
+              <td colspan="4" style="background-color:#fff8ec;">
+                {% if w.exercises %}
+                  <strong>Ejercicios:</strong>
+                  <table border="1" cellpadding="5" cellspacing="0" style="width:100%; margin-top:.5rem;">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Series</th>
+                        <th>Reps</th>
+                        <th>Peso (kg)</th>
+                        <th>Tiempo (s)</th>
+                        <th>Distancia (km)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for e in w.exercises %}
+                        <tr>
+                          <td>{{ e.name }}</td>
+                          <td>{{ e.kind or "-" }}</td>
+                          <td>{{ e.sets or "-" }}</td>
+                          <td>{{ e.reps or "-" }}</td>
+                          <td>{{ e.weight_kg or "-" }}</td>
+                          <td>{{ e.time_sec or "-" }}</td>
+                          <td>{{ e.distance_km or "-" }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  <em>Sin ejercicios.</em>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="4" style="text-align:center; color: gray;">No hay entrenamientos aún.</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container-hobby-search">
+    <h1>Consejo</h1>
+    <p>Puedes añadir varios ejercicios a cada entrenamiento desde el formulario “Nuevo entrenamiento”.</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% set body_class = "body-hobby" %}
+
+{% block head %}
+<title>Nuevo entrenamiento</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+
+<style>
+  /* Más aire y ancho cómodo */
+  .container-hobby-all { gap: 60px; padding: 60px; }
+  .container-hobby, .container-hobby-search { max-width: 650px; padding: 50px 40px; }
+  .container-hobby h1 { font-size: 2.7rem; }
+
+  /* Grid de ejercicios responsivo */
+  .exercise-grid { display: grid; gap: 1rem; }
+  .exercise-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: .8rem;
+    width: 100%;
+  }
+  .exercise-row .textbox { width: 100%; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-hobby-all">
+
+  <div class="container-hobby">
+    <h1>Nuevo entrenamiento</h1>
+    <p>Completa la información del entrenamiento y añade los ejercicios que lo componen.</p>
+
+    <form method="post">
+      <div class="form-group">
+        <label for="title">Título *</label>
+        <input class="textbox" id="title" name="title" type="text" required>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Fecha</label>
+        <input class="textbox" id="date" name="date" type="date">
+      </div>
+
+      <div class="form-group">
+        <label for="duration_min">Duración (min)</label>
+        <input class="textbox" id="duration_min" name="duration_min" type="number" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notas</label>
+        <textarea class="textbox" id="notes" name="notes"></textarea>
+      </div>
+
+      <h1 style="margin-top: 1rem;">Ejercicios</h1>
+
+      <div class="exercise-grid" id="rows">
+        <div class="exercise-row">
+          <input class="textbox" name="ex_name[]"     placeholder="Nombre *" required>
+          <input class="textbox" name="ex_kind[]"     placeholder="Tipo">
+          <input class="textbox" name="ex_sets[]"     type="number" min="0" placeholder="Series">
+          <input class="textbox" name="ex_reps[]"     type="number" min="0" placeholder="Reps">
+          <input class="textbox" name="ex_weight[]"   type="number" step="0.1" placeholder="Peso kg">
+          <input class="textbox" name="ex_time[]"     type="number" min="0" placeholder="Tiempo s">
+          <input class="textbox" name="ex_distance[]" type="number" step="0.01" placeholder="Distancia km">
+        </div>
+      </div>
+
+      <button type="button" class="btn" onclick="addRow()">+ Añadir ejercicio</button>
+
+      <div style="margin-top:1.5rem;">
+        <button class="btn" type="submit">Guardar</button>
+        <a class="btn" href="{{ url_for('workouts_list') }}">Volver</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="container-hobby-search">
+    <h1>Consejo</h1>
+    <p>Puedes añadir tantas filas de ejercicios como quieras con el botón “+ Añadir ejercicio”.</p>
+  </div>
+
+</div>
+
+<script>
+function addRow(){
+  const r = document.querySelector(".exercise-row").cloneNode(true);
+  r.querySelectorAll("input").forEach(i => i.value = "");
+  document.getElementById("rows").appendChild(r);
+}
+</script>
+{% endblock %}
