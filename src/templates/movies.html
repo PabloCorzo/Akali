@@ -14,7 +14,7 @@
             <h1>Películas</h1>
             <p>En este apartado puedes agregar tus películas.</p>
 
-            <form action="{{ url_for('create_movie') }}" method="post">
+            <form action="{{ url_for('movies.create_movie') }}" method="post">
                 <div class="form-group">
                     <label for="title">Título *</label>
                     <input class="textbox" id="title" name="title" type="text" required>
@@ -42,7 +42,7 @@
         <!-- Sección: Buscar / Filtrar -->
         <div class="container-hobby-search">
             <h1>Buscar Película</h1>
-            <form action="{{ url_for('movies') }}" method="get">
+            <form action="{{ url_for('movies.movies') }}" method="get">
                 <div class="form-group">
                     <label for="q_title">Título</label>
                     <input class="textbox" id="q_title" name="title" type="text">

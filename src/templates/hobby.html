@@ -14,7 +14,7 @@
             <h1>Hobby</h1>
             <p>En este apartado puedes agregar los hobbies que realizas en tu día a día.</p>
 
-            <form action="{{ url_for('create_hobby') }}" method="post">
+            <form action="{{ url_for('hobbies.create_hobby') }}" method="post">
                 <div class="form-group">
                     <label for="name">Nombre</label>
                     <input class="textbox" id="name" type="text" name="name" placeholder="p.ej. Pintar" required>
@@ -48,7 +48,7 @@
 
         <div class="container-hobby-search">
             <h1>Buscar Hobby</h1>
-            <form action="{{ url_for('create_hobby') }}" method="get">
+            <form action="{{ url_for('hobbies.create_hobby') }}" method="get">
                 <div class="form-group">
                     <label for="name">Hobby</label>
                     <input class="textbox" id="b_name" type="text" name="b_name"><br><br>

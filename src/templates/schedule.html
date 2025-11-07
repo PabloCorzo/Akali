@@ -76,7 +76,7 @@
                 end: `${this.newEvent.date}T${endTime}`,
             };
 
-            fetch('{{ url_for('create_schedule_item') }}', {
+            fetch('{{ url_for('schedule.create_schedule_item') }}', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newEventData),
@@ -102,7 +102,7 @@
                 end: `${this.newEvent.date}T${endTime}`,
             };
 
-            fetch('{{ url_for('create_schedule_item') }}', {
+            fetch('{{ url_for('schedule.create_schedule_item') }}', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newEventData),
@@ -127,7 +127,7 @@
                 end: `${this.newEvent.date}T${endTime}`,
             };
 
-            fetch('{{ url_for('create_schedule_item') }}', {
+            fetch('{{ url_for('schedule.create_schedule_item') }}', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newEventData),
@@ -152,7 +152,7 @@
                 end: `${this.newEvent.date}T${endTime}`,
             };
 
-            fetch('{{ url_for('create_schedule_item') }}', {
+            fetch('{{ url_for('schedule.create_schedule_item') }}', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newEventData),

@@ -15,12 +15,12 @@
                     <span>{{ task.name }}</span>
 
                     <!-- Botón Completar -->
-                    <form action="{{ url_for('toggle_task', task_id=task._id) }}" method="post" style="display:inline;">
+                    <form action="{{ url_for('tasks.toggle_task', task_id=task._id) }}" method="post" style="display:inline;">
                         <button type="submit" class="task-btn">Completar</button>
                     </form>
 
                     <!-- Botón Eliminar -->
-                    <form action="{{ url_for('delete_task', task_id=task._id) }}" method="post" style="display:inline;">
+                    <form action="{{ url_for('tasks.delete_task', task_id=task._id) }}" method="post" style="display:inline;">
                         <button type="submit" class="task-btn btn-danger">Eliminar</button>
                     </form>
                 </div>
@@ -31,7 +31,7 @@
             </div>
         {% endif %}
 
-        <form action="{{ url_for('create_task') }}" method="post">
+        <form action="{{ url_for('tasks.create_task') }}" method="post">
             <div class="task-input">
                 <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
             </div>

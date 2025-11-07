@@ -13,25 +13,25 @@
         </div>
 
         <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-            <a class="btn" href="{{ url_for('create_hobby') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('hobbies.create_hobby') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Hobbies
             </a>
-            <a class="btn" href="{{ url_for('movies') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('movies.movies') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Películas
             </a>
-            <a class="btn" href="{{ url_for('create_schedule_item') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('schedule.create_schedule_item') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Mi Horario
             </a>
-            <a class="btn" href="{{ url_for('habitos') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('habits.habitos') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Hábitos
             </a>
-            <a class="btn" href="{{ url_for('tasks') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('tasks.tasks') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Lista de tareas
             </a>
-            <a class="btn" href="{{ url_for('games') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('games.games') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Juegos
             </a>
-            <a class="btn" href="{{ url_for('study') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
+            <a class="btn" href="{{ url_for('study.study') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
                 Estudio
             </a>
         </div>
