@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     {% block head %}{% endblock %}
 </head>
 <body>
       <nav class="navbar">
     <span class="navbar-title">AKALI</span>
+    <a href="{{ url_for('dashboard') }}">Inicio</a>
     <a href="{{ url_for('create_hobby') }}">Hobbies</a>
     <a href="{{ url_for('movies') }}">Películas</a>
     <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
@@ -16,6 +19,9 @@
           <a href="{{ url_for('games') }}">Juegos</a>
     <a href="{{ url_for('workouts_list') }}">Entrenamientos</a>   <!-- NUEVO -->
     <a href="{{ url_for('nutrition_list') }}">Nutrición</a>       <!-- NUEVO -->
+    <a href="{{ url_for('games') }}">Juegos</a>
+    <a href="{{ url_for('study') }}">Estudio</a>
+
     </nav>
     {% block body %}{% endblock %}
 </body>
