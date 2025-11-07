@@ -8,20 +8,28 @@
     {% block head %}{% endblock %}
 </head>
 <body>
-      <nav class="navbar">
-    <span class="navbar-title">AKALI</span>
-    <a href="{{ url_for('dashboard') }}">Inicio</a>
-    <a href="{{ url_for('create_hobby') }}">Hobbies</a>
-    <a href="{{ url_for('movies') }}">Películas</a>
-    <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
-    <a href="{{ url_for('habitos') }}">Hábitos</a>
-    <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-          <a href="{{ url_for('games') }}">Juegos</a>
-    <a href="{{ url_for('workouts_list') }}">Entrenamientos</a>   <!-- NUEVO -->
-    <a href="{{ url_for('nutrition_list') }}">Nutrición</a>       <!-- NUEVO -->
-    <a href="{{ url_for('games') }}">Juegos</a>
-    <a href="{{ url_for('study') }}">Estudio</a>
-
+    <nav class="navbar">
+        <span class="navbar-title">AKALI</span>
+        <a href="{{ url_for('dashboard') }}">Inicio</a>
+        <a href="{{ url_for('create_hobby') }}">Hobbies</a>
+        <a href="{{ url_for('movies') }}">Películas</a>
+        <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
+        <a href="{{ url_for('habitos') }}">Hábitos</a>
+        <a href="{{ url_for('tasks') }}">Lista de tareas</a>
+        
+        <!-- Menú desplegable Salud -->
+        <div class="navbar-dropdown" x-data="{ open: false }">
+            <a @click="open = !open" @click.away="open = false" style="cursor: pointer;">
+                Salud ▾
+            </a>
+            <div class="navbar-dropdown-menu" x-show="open" x-transition>
+                <a href="{{ url_for('workouts_list') }}">Entrenamientos</a>
+                <a href="{{ url_for('nutrition_list') }}">Nutrición</a>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('games') }}">Juegos</a>
+        <a href="{{ url_for('study') }}">Estudio</a>
     </nav>
     {% block body %}{% endblock %}
 </body>

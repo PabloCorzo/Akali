@@ -182,6 +182,59 @@ a:hover {
   height: var(--navbar-height);
 }
 
+/* Dropdown del Navbar */
+.navbar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar-dropdown > a {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.navbar-dropdown > a:hover {
+  color: var(--accent);
+  background-color: var(--accent-glow);
+}
+
+.navbar-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  min-width: 180px;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.navbar-dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+
+.navbar-dropdown-menu a:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent);
+}
+
+.navbar-dropdown-menu a:not(:last-child) {
+  border-bottom: 1px solid var(--border-light);
+}
+
 /* ========================================
    LOGIN / SIGNUP - PÁGINAS DE AUTENTICACIÓN
    ======================================== */
