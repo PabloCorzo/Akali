@@ -1,63 +1,41 @@
-  <!DOCTYPE html>
-<html lang="es">
-<head>
-  <title>ToDo</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type = "text/css" href="{{ url_for('static',filename = 'styles.css') }}">
+{% extends "base.html" %}
 
-</head>
-  
+{% block head %}
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
 
-<body>
+{% block body %}
+    <div class="task-container">
+        <h1>Lista de tareas</h1>
 
-  <div class = "task-container">
-  <nav class="navbar">
-    <span class="navbar-title">AKALI</span>
-    <a href="{{ url_for('create_hobby') }}">Hobbies</a>
-    <a href="{{ url_for('movies') }}">Películas</a>
-    <a href="{{ url_for('create_schedule_item') }}">Mi horario</a>
-    <a href="{{ url_for('habitos') }}">Hábitos</a>
-    <a href="{{ url_for('tasks') }}">Lista de tareas</a>
-    <a href="{{ url_for('games') }}">Juegos</a>
-    <a href="{{ url_for('study') }}">Estudio</a>
-    
-  </nav>
-    <h1>Lista de tareas</h1>
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="{{ 'task-box-complete' if task.completed else 'task-box-incomplete' }}">
+                    <span>{{ task.name }}</span>
 
-      <tbody>
-      {% if tasks %}
-        {% for task in tasks %}
-            <div class="{{ 'task-box-complete' if task.completed else 'task-box-incomplete' }}">
-                <span>{{ task.name }}</span>
+                    <!-- Botón Completar -->
+                    <form action="{{ url_for('toggle_task', task_id=task._id) }}" method="post" style="display:inline;">
+                        <button type="submit" class="task-btn">Completar</button>
+                    </form>
 
-                <!-- Botón Completar -->
-                  <form action="{{ url_for('toggle_task', task_id=task._id) }}" method="post" style="display:inline;">
-                <button type="submit" class="task-btn">Completar</button>
-                </form>
-
-                <!-- Botón Eliminar -->
-                <form action="{{ url_for('delete_task', task_id=task._id) }}" method="post" style="display:inline;">
-                 <button type="submit" class="task-btn btn-danger">Eliminar</button>
-                </form>
+                    <!-- Botón Eliminar -->
+                    <form action="{{ url_for('delete_task', task_id=task._id) }}" method="post" style="display:inline;">
+                        <button type="submit" class="task-btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="main-box">
+                <p>No hay tareas</p>
             </div>
-{% endfor %}
+        {% endif %}
 
-      {% else %}
-      <div class="main-box">
-        <tr>
-          <td colspan="5">No hay tareas</td>
-        </tr>
-      </div>
-      {% endif %}
-
-     <form action="{{ url_for('create_task') }}" method="post">
-  <div class="task-input">
-    <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
-  </div>
-  <button class="create-task-btn" type="submit">Crear</button>
-</form>
-    </tbody>
-  </div>
-</body>
-</html>
+        <form action="{{ url_for('create_task') }}" method="post">
+            <div class="task-input">
+                <input type="text" id="task_name" name="task_name" placeholder="Nueva tarea" required>
+            </div>
+            <button class="create-task-btn" type="submit">Crear</button>
+        </form>
+    </div>
+{% endblock %}
