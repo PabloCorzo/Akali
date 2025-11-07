@@ -430,7 +430,11 @@ def games():
 
     return render_template("games.html", games=games, searched=searched)
 
-
+@app.route("/dashboard/study", methods=["GET"])
+def study():
+    if not isLogged():
+        return redirect(url_for('login'))
+    return render_template("study.html")
 
 # -------------------- NUEVAS RUTAS: ENTRENAMIENTOS --------------------
 @app.route("/fitness/workouts", methods=["GET"])
