@@ -1,36 +1,129 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Dashboard</title>
+    <title>Dashboard - AKALI</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="main-box">
-            <h1>Bienvenido a AKALI</h1>
-            <p style="margin: 15px; font-size: 1.2rem">Tu aplicación de productividad personal</p>
+    <div class="dashboard-wrapper">
+        <!-- Header de Bienvenida -->
+        <div class="dashboard-header">
+            <h1>Bienvenido de vuelta</h1>
+            <p>Aquí tienes un resumen de tu día</p>
         </div>
 
-        <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-            <a class="btn" href="{{ url_for('activity.create_Activity') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Actividades
-            </a>
-            <a class="btn" href="{{ url_for('movies.movies') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Películas
-            </a>
-            <a class="btn" href="{{ url_for('schedule.create_schedule_item') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Mi Horario
-            </a>
-            <a class="btn" href="{{ url_for('tasks.tasks') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Lista de tareas
-            </a>
-            <a class="btn" href="{{ url_for('games.games') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Juegos
-            </a>
-            <a class="btn" href="{{ url_for('study.study') }}" style="padding: 2rem; text-align: center; font-size: 1.1rem;">
-                Estudio
-            </a>
+        <!-- Grid Principal del Dashboard -->
+        <div class="dashboard-grid">
+            
+            <!-- Widget 1: Eventos de Hoy -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Tu Día</h2>
+                    <a href="{{ url_for('schedule.create_schedule_item') }}" class="card-link">Ver horario completo →</a>
+                </div>
+                <div class="card-content">
+                    {% if events %}
+                        <ul class="event-list">
+                            {% for event in events %}
+                                <li class="event-item">
+                                    <span class="event-time">{{ event.start_time.strftime('%H:%M') }}</span>
+                                    <span class="event-title">{{ event.title }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>No hay eventos para hoy</p>
+                            <small>Disfruta de tu tiempo libre</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Widget 2: Tareas Pendientes -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>✓ Próximas Tareas</h2>
+                    <a href="{{ url_for('tasks.tasks') }}" class="card-link">Ver todas →</a>
+                </div>
+                <div class="card-content">
+                    {% if tasks %}
+                        <ul class="task-list">
+                            {% for task in tasks %}
+                                <li class="task-item">
+                                    <span class="task-bullet">•</span>
+                                    <span class="task-name">{{ task.name }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>¡Todo al día!</p>
+                            <small>No tienes tareas pendientes</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Widget 3: Mini Calendario Semanal -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>📆 Esta Semana</h2>
+                    <a href="{{ url_for('schedule.create_schedule_item') }}" class="card-link">Ver calendario →</a>
+                </div>
+                <div class="card-content">
+                    <div class="mini-calendar">
+                        {% for day in week_days %}
+                            <div class="mini-day {% if day.is_today %}mini-day-today{% endif %}">
+                                <div class="mini-day-header">
+                                    <span class="mini-day-name">{{ day.day_name }}</span>
+                                    <span class="mini-day-number">{{ day.day_number }}</span>
+                                </div>
+                                <div class="mini-day-content">
+                                    {% if day.events_count > 0 %}
+                                        <div class="mini-event-indicator">
+                                            <span class="mini-count">{{ day.events_count }}</span>
+                                        </div>
+                                    {% else %}
+                                        <span class="mini-empty">-</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget 4: Acciones Rápidas -->
+            <div class="dashboard-card dashboard-card-wide">
+                <div class="card-header">
+                    <h2>Acciones Rápidas</h2>
+                </div>
+                <div class="card-content">
+                    <div class="quick-actions-grid">
+                        <a href="{{ url_for('tasks.tasks') }}" class="quick-action-btn">
+                            <span>Nueva Tarea</span>
+                        </a>
+                        <a href="{{ url_for('activity.create_Activity') }}" class="quick-action-btn">
+                            <span>Nueva Actividad</span>
+                        </a>
+                        <a href="{{ url_for('workout.workouts_new') }}" class="quick-action-btn">
+                            <span>Añadir Entrenamiento</span>
+                        </a>
+                        <a href="{{ url_for('nutrition.nutrition_new') }}" class="quick-action-btn">
+                            <span>Añadir comida</span>
+                        </a>
+                        <a href="{{ url_for('movies.movies') }}" class="quick-action-btn">
+                            <span>Nueva Película</span>
+                        </a>
+                        <a href="{{ url_for('schedule.create_schedule_item') }}" class="quick-action-btn">
+                            <span>Horario</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}
