@@ -510,6 +510,254 @@ textarea {
 }
 
 /* ========================================
+   WORKOUT - ENTRENAMIENTOS (Mismo layout)
+   ======================================== */
+.body-workout {
+  min-height: 100vh;
+}
+
+.container-workout-all {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container-workout {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInLeft 0.5s ease;
+}
+
+.container-workout h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.container-workout p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container-workout-search {
+  flex: 0 0 400px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInRight 0.5s ease;
+}
+
+.container-workout-search h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Responsive para workout */
+@media (max-width: 1024px) {
+  .container-workout-all {
+    flex-direction: column;
+  }
+  
+  .container-workout-search {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ========================================
+   NUTRITION - NUTRICIÓN (Mismo layout)
+   ======================================== */
+.body-nutrition {
+  min-height: 100vh;
+}
+
+.container-nutrition-all {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container-nutrition {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInLeft 0.5s ease;
+}
+
+.container-nutrition h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.container-nutrition p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container-nutrition-search {
+  flex: 0 0 400px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInRight 0.5s ease;
+}
+
+.container-nutrition-search h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Responsive para nutrition */
+@media (max-width: 1024px) {
+  .container-nutrition-all {
+    flex-direction: column;
+  }
+  
+  .container-nutrition-search {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ========================================
+   STUDY - ESTUDIO (Mismo layout)
+   ======================================== */
+.body-study {
+  min-height: 100vh;
+}
+
+.container-study-all {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container-study {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInLeft 0.5s ease;
+}
+
+.container-study h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.container-study p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container-study-search {
+  flex: 0 0 400px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInRight 0.5s ease;
+}
+
+.container-study-search h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Responsive para study */
+@media (max-width: 1024px) {
+  .container-study-all {
+    flex-direction: column;
+  }
+  
+  .container-study-search {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ========================================
+   GAMES - JUEGOS (Mismo layout)
+   ======================================== */
+.body-games {
+  min-height: 100vh;
+}
+
+.container-games-all {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container-games {
+  flex: 1;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInLeft 0.5s ease;
+}
+
+.container-games h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.container-games p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.container-games-search {
+  flex: 0 0 400px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  animation: slideInRight 0.5s ease;
+}
+
+.container-games-search h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Responsive para games */
+@media (max-width: 1024px) {
+  .container-games-all {
+    flex-direction: column;
+  }
+  
+  .container-games-search {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ========================================
    TAREAS - LISTA DE TAREAS
    ======================================== */
 .task-container {
@@ -904,14 +1152,26 @@ tbody tr:last-child td {
   }
   
   .container-activity-all,
-  .container-movies-all {
+  .container-movies-all,
+  .container-workout-all,
+  .container-nutrition-all,
+  .container-study-all,
+  .container-games-all {
     padding: 1rem;
   }
   
   .container-activity,
   .container-activity-search,
   .container-movies,
-  .container-movies-search {
+  .container-movies-search,
+  .container-workout,
+  .container-workout-search,
+  .container-nutrition,
+  .container-nutrition-search,
+  .container-study,
+  .container-study-search,
+  .container-games,
+  .container-games-search {
     padding: 1.5rem;
   }
   

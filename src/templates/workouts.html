@@ -2,14 +2,13 @@
 
 {% block head %}
     <title>Entrenamientos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
     <style>
       /* Más aire y ancho cómodo */
-      .container-hobby-all { gap: 60px; padding: 60px; }
-      .container-hobby, .container-hobby-search { max-width: 650px; padding: 50px 40px; }
-      .container-hobby h1 { font-size: 2.7rem; }
+      .container-workout-all { gap: 60px; padding: 60px; }
+      .container-workout, .container-workout-search { max-width: 650px; padding: 50px 40px; }
+      .container-workout h1 { font-size: 2.7rem; }
 
       table { width: 100%; border-collapse: collapse; margin-top: 15px; }
       th, td { padding: 10px 12px; }
@@ -17,8 +16,8 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-hobby-all">
-  <div class="container-hobby">
+<div class="container-workout-all">
+  <div class="container-workout">
     <h1>Entrenamientos</h1>
     <p>En este apartado puedes consultar y registrar tus entrenamientos.</p>
 
@@ -88,9 +87,9 @@
     </table>
   </div>
 
-  <div class="container-hobby-search">
+  <div class="container-workout-search">
     <h1>Consejo</h1>
-    <p>Puedes añadir varios ejercicios a cada entrenamiento desde el formulario “Nuevo entrenamiento”.</p>
+    <p>Puedes añadir varios ejercicios a cada entrenamiento desde el formulario "Nuevo entrenamiento".</p>
   </div>
 </div>
 {% endblock %}

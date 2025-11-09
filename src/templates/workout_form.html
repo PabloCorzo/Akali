@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% set body_class = "body-hobby" %}
+{% set body_class = "body-workout" %}
 
 {% block head %}
 <title>Nuevo entrenamiento</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
 
 <style>
   /* Más aire y ancho cómodo */
-  .container-hobby-all { gap: 60px; padding: 60px; }
-  .container-hobby, .container-hobby-search { max-width: 650px; padding: 50px 40px; }
-  .container-hobby h1 { font-size: 2.7rem; }
+  .container-workout-all { gap: 60px; padding: 60px; }
+  .container-workout, .container-workout-search { max-width: 650px; padding: 50px 40px; }
+  .container-workout h1 { font-size: 2.7rem; }
 
   /* Grid de ejercicios responsivo */
   .exercise-grid { display: grid; gap: 1rem; }
@@ -25,9 +24,9 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-hobby-all">
+<div class="container-workout-all">
 
-  <div class="container-hobby">
+  <div class="container-workout">
     <h1>Nuevo entrenamiento</h1>
     <p>Completa la información del entrenamiento y añade los ejercicios que lo componen.</p>
 
@@ -75,9 +74,9 @@
     </form>
   </div>
 
-  <div class="container-hobby-search">
+  <div class="container-workout-search">
     <h1>Consejo</h1>
-    <p>Puedes añadir tantas filas de ejercicios como quieras con el botón “+ Añadir ejercicio”.</p>
+    <p>Puedes añadir tantas filas de ejercicios como quieras con el botón "+ Añadir ejercicio".</p>
   </div>
 
 </div>

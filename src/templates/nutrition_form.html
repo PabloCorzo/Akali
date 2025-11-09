@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% set body_class = "body-hobby" %}
+{% set body_class = "body-nutrition" %}
 
 {% block head %}
 <title>Nuevo registro nutricional</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<div class="container-hobby-all">
+<div class="container-nutrition-all">
 
-  <div class="container-hobby">
+  <div class="container-nutrition">
     <h1>Nuevo registro nutricional</h1>
     <p>Introduce la comida y, si quieres, sus macros.</p>
 
@@ -65,7 +64,7 @@
     </form>
   </div>
 
-  <div class="container-hobby-search">
+  <div class="container-nutrition-search">
     <h1>Consejo</h1>
     <p>Puedes dejar macros a 0 si solo quieres registrar la comida.</p>
   </div>
