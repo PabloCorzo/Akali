@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for, jsonify
-from model import ScheduleItem, Hobby, Task, Habit
+from model import ScheduleItem, Activity, Task
 from datetime import datetime
 from database import db
 from utils import isLogged
@@ -60,8 +60,7 @@ def create_schedule_item():
             return jsonify({'status': 'success', 'message': 'Evento guardado'})
 
     
-    hobbies = Hobby.query.filter_by(user_id=user_id).all()
+    activities = Activity.query.filter_by(user_id=user_id).all()
     tasks = Task.query.filter_by(_user_id=user_id).all()
-    habits = Habit.query.filter_by(user_id=user_id).all()
 
-    return render_template('schedule.html', hobbies=hobbies, tasks=tasks, habits=habits)
+    return render_template('schedule.html', activities=activities, tasks=tasks)

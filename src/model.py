@@ -52,8 +52,9 @@ class ScheduleItem(db.Model):
         self.item_type = item_type
         self.item_id = item_id
 
-class Hobby(db.Model):
-    _hobby_id = db.Column('hobby_id', db.Integer, primary_key=True)
+class Activity(db.Model):
+    __tablename__ = 'activities'
+    _activity_id = db.Column('activity_id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100), unique=False, nullable=False)
     user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
     satisfaction_level = db.Column('satisfaction_level', db.Integer, nullable=True)
@@ -87,24 +88,6 @@ class Movie(db.Model):
         self.user_id = user_id
 
 ##########################
-class Habit(db.Model):
-    __tablename__ = 'habits'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    satisfaction_level = db.Column(db.Integer, nullable=True)
-    ability = db.Column(db.String(100), nullable=True)
-    time = db.Column(db.Float, nullable=True)
-    ###########
-    user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
-
-    def __init__(self, name, satisfaction_level=None, ability=None, time=None, user_id=None):
-        self.name = name
-        self.satisfaction_level = satisfaction_level
-        self.ability = ability
-        self.time = time
-        ##############
-        self.user_id = user_id
 
 class Game(db.Model):
     __tablename__ = 'games'

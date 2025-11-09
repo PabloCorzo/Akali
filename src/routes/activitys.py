@@ -1,36 +1,35 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
-from model import Users, hashPassword
 from database import db
 from utils import  isLogged
-from model import Hobby
+from model import Activity
 
-hobbies_bp = Blueprint(
-    'hobbies', __name__,
+activity_bp = Blueprint(
+    'activity', __name__,
     template_folder='../templates',
     static_folder='../static'
 )
 
 
-@hobbies_bp.route("/dashboard/hobbies", methods=["POST", "GET"])
-def create_hobby():
+@activity_bp.route("/dashboard/activity", methods=["POST", "GET"])
+def create_Activity():
 
     errors = []
     if not isLogged():
         return redirect(url_for('auth.login'))
     
     user_id = session['id']
-
+    
     name = request.args.get("b_name")
 
     if name:
-        hobbies = Hobby.query.filter(
-            Hobby.user_id == user_id,
-            Hobby.name.ilike(f'%{name}%')
+        activities = Activity.query.filter(
+            Activity.user_id == user_id,
+            Activity.name.ilike(f'%{name}%')
         ).all()
-        if not hobbies:
-            flash("No se encontraron hobbies con ese nombre.", "warning")
+        if not activities:
+            flash("No se encontraron actividades con ese nombre.", "warning")
     else:
-        hobbies = Hobby.query.filter_by(user_id=user_id).all()
+        activities = Activity.query.filter_by(user_id=user_id).all()
 
     if request.method == "POST":
         name = request.form["name"].strip()
@@ -52,16 +51,16 @@ def create_hobby():
             errors.append("Nivel de satisfaccion debe estar entre 0 y 10")
 
         if errors:
-            return render_template('hobby.html', errors=errors)
+            return render_template('Activity.html', errors=errors, Activity=activities)
 
-        hobby = Hobby.query.filter_by(name=name, user_id=user_id).first()
-        if hobby:
-            flash("El Hobby ya existe", "danger")
-            errors.append("Hobby ya existe")
-            return render_template('hobby.html', errors=errors)
+        existing_activity = Activity.query.filter_by(name=name, user_id=user_id).first()
+        if existing_activity:
+            flash("La actividad ya existe", "danger")
+            errors.append("La actividad ya existe")
+            return render_template('Activity.html', errors=errors, Activity=activities)
         else:
-            hobby = Hobby(name, user_id, satisfaction_level, ability, time)
-            db.session.add(hobby)
+            activity = Activity(name, user_id, satisfaction_level, ability, time)
+            db.session.add(activity)
             db.session.commit()
 
-    return render_template('hobby.html', hobby=hobbies)
+    return render_template('Activity.html', Activity=activities, errors=errors)

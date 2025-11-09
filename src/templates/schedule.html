@@ -13,7 +13,7 @@
 
     <div class="schedule-container" x-data="{
         showModal: false,
-        modalMode: '', // 'custom' or 'hobby' or 'habit' or 'task'
+        modalMode: '', // 'custom' or 'activity' or 'task'
         selectedEventType: '',
         newEvent: {
             title: '',
@@ -21,8 +21,7 @@
             startTime: '',
             duration: ''
         },
-        selectedHobby: null,
-        selectedHabit: null,
+        selectedActivity: null,
         selectedTask: null,
         calendar: null,
         timeOptions: (() => {
@@ -94,10 +93,10 @@
                 }
             });
         },
-        addHobbyToCalendar(hobby) {
+        addActivityToCalendar(activity) {
             const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
             var newEventData = {
-                title: hobby.name,
+                title: activity.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
                 end: `${this.newEvent.date}T${endTime}`,
             };
@@ -111,32 +110,7 @@
             .then(data => {
                 if (data.status === 'success') {
                     this.calendar.addEvent(newEventData);
-                    alert('¡Hobby añadido al calendario!');
-                    this.showModal = false;
-                    this.newEvent.date = '';
-                    this.newEvent.startTime = '';
-                    this.newEvent.duration = '';
-                }
-            });
-        },
-        addHabitToCalendar(habit) {
-            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
-            var newEventData = {
-                title: habit.name,
-                start: `${this.newEvent.date}T${this.newEvent.startTime}`,
-                end: `${this.newEvent.date}T${endTime}`,
-            };
-
-            fetch('{{ url_for('schedule.create_schedule_item') }}', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newEventData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    this.calendar.addEvent(newEventData);
-                    alert('¡Hábito añadido al calendario!');
+                    alert('¡Actividad añadida al calendario!');
                     this.showModal = false;
                     this.newEvent.date = '';
                     this.newEvent.startTime = '';
@@ -179,8 +153,7 @@
                     <select id="event-type-select" x-model="selectedEventType" @change="modalMode = selectedEventType">
                         <option value="" disabled>Selecciona un tipo...</option>
                         <option value="custom">Evento personalizado</option>
-                        <option value="hobby">Hobby</option>
-                        <option value="habit">Hábito</option>
+                        <option value="activity">Actividad</option>
                         <option value="task">Tarea</option>
                     </select>
                 </div>
@@ -228,14 +201,14 @@
                 </form>
             </div>
 
-            <div x-show="modalMode === 'hobby'">
-                <h2>Añadir Hobby al Calendario</h2>
-                <div class="hobby-list">
+            <div x-show="modalMode === 'activity'">
+                <h2>Añadir Actividad al Calendario</h2>
+                <div class="activity-list">
                     <ul>
-                        {% for hobby in hobbies %}
+                        {% for activity in activities %}
                             <li>
-                                {{ hobby.name }}
-                                <button @click="selectedHobby = { name: '{{ hobby.name }}', id: {{ hobby._hobby_id }} }; modalMode = 'hobby-form'"
+                                {{ activity.name }}
+                                <button @click="selectedActivity = { name: '{{ activity.name }}', id: {{ activity._activity_id }} }; modalMode = 'activity-form'"
                                         class="btn">Seleccionar
                                 </button>
                             </li>
@@ -245,16 +218,16 @@
                 <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
             </div>
 
-            <div x-show="modalMode === 'hobby-form'">
-                <h2>Añadir Hobby: <span x-text="selectedHobby ? selectedHobby.name : ''"></span></h2>
-                <form @submit.prevent="addHobbyToCalendar(selectedHobby)">
+            <div x-show="modalMode === 'activity-form'">
+                <h2>Añadir Actividad: <span x-text="selectedActivity ? selectedActivity.name : ''"></span></h2>
+                <form @submit.prevent="addActivityToCalendar(selectedActivity)">
                     <div class="form-group">
-                        <label for="hobby-date">Fecha</label>
-                        <input type="date" id="hobby-date" x-model="newEvent.date" required>
+                        <label for="activity-date">Fecha</label>
+                        <input type="date" id="activity-date" x-model="newEvent.date" required>
                     </div>
                     <div class="form-group">
-                        <label for="hobby-start-time">Hora de Inicio</label>
-                        <select id="hobby-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
+                        <label for="activity-start-time">Hora de Inicio</label>
+                        <select id="activity-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
                                 required>
                             <option value="">Selecciona una hora</option>
                             <template x-for="time in timeOptions" :key="time">
@@ -263,8 +236,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="hobby-duration">Duración (minutos)</label>
-                        <select id="hobby-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
+                        <label for="activity-duration">Duración (minutos)</label>
+                        <select id="activity-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
                             <option value="">Selecciona duración</option>
                             <template x-for="duration in durationOptions" :key="duration">
                                 <option :value="duration" x-text="duration + ' min'"></option>
@@ -278,61 +251,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn">Guardar</button>
-                    <button type="button" @click="modalMode = 'hobby'" class="btn">Volver</button>
-                </form>
-            </div>
-
-            <div x-show="modalMode === 'habit'">
-                <h2>Añadir Hábito al Calendario</h2>
-                <div class="habit-list">
-                    <ul>
-                        {% for habit in habits %}
-                            <li>
-                                {{ habit.name }}
-                                <button @click="selectedHabit = { name: '{{ habit.name }}', id: habit.id }; modalMode = 'habit-form'"
-                                        class="btn">Seleccionar
-                                </button>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
-            </div>
-
-            <div x-show="modalMode === 'habit-form'">
-                <h2>Añadir Hábito: <span x-text="selectedHabit ? selectedHabit.name : ''"></span></h2>
-                <form @submit.prevent="addHabitToCalendar(selectedHabit)">
-                    <div class="form-group">
-                        <label for="habit-date">Fecha</label>
-                        <input type="date" id="habit-date" x-model="newEvent.date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="habit-start-time">Hora de Inicio</label>
-                        <select id="habit-start-time" x-model="newEvent.startTime" @change="$nextTick(() => {})"
-                                required>
-                            <option value="">Selecciona una hora</option>
-                            <template x-for="time in timeOptions" :key="time">
-                                <option :value="time" x-text="time"></option>
-                            </template>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="habit-duration">Duración (minutos)</label>
-                        <select id="habit-duration" x-model="newEvent.duration" @change="$nextTick(() => {})" required>
-                            <option value="">Selecciona duración</option>
-                            <template x-for="duration in durationOptions" :key="duration">
-                                <option :value="duration" x-text="duration + ' min'"></option>
-                            </template>
-                        </select>
-                    </div>
-                    <div class="form-group" x-show="newEvent.startTime && newEvent.duration">
-                        <label>Hora de Fin</label>
-                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
-                            <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn">Guardar</button>
-                    <button type="button" @click="modalMode = 'habit'" class="btn">Volver</button>
+                    <button type="button" @click="modalMode = 'activity'" class="btn">Volver</button>
                 </form>
             </div>
 

@@ -11,6 +11,10 @@ auth_bp = Blueprint(
 )
 
 
+@auth_bp.route('/', methods=['POST', 'GET'])
+def home():
+    return redirect(url_for('auth.login'))
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     print(f"Login iniciado con metodo: {request.method}")

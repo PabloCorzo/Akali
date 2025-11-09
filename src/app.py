@@ -5,10 +5,9 @@ from database import db
 from config import config
 from routes.auth import auth_bp
 from routes.dashboard import dashboard_bp
-from routes.activitys import hobbies_bp
+from routes.activitys import activity_bp
 from routes.movies import movies_bp
 from routes.tasks import tasks_bp
-from routes.habits import habit_bp
 from routes.schedule import schedule_bp
 from routes.nutrition import nutrition_bp
 from routes.games import games_bp
@@ -35,16 +34,12 @@ print(f"DEBUG: Conectando a la base de datos: {app.config['SQLALCHEMY_DATABASE_U
 db.init_app(app)
 
 
-@app.route('/', methods=['POST', 'GET'])
-def home():
-    return redirect(url_for('auth.login'))
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(dashboard_bp)
-app.register_blueprint(hobbies_bp)
+app.register_blueprint(activity_bp)
 app.register_blueprint(movies_bp)
 app.register_blueprint(tasks_bp)
-app.register_blueprint(habit_bp)
 app.register_blueprint(schedule_bp)
 app.register_blueprint(games_bp)
 app.register_blueprint(study_bp)
