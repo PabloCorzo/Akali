@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block body %}
-    <body class="body-hobby">
-    <div class="container-hobby-all">
+    <body class="body-movies">
+    <div class="container-movies-all">
         
         <!-- Sección: Añadir nueva -->
-        <div class="container-hobby">
+        <div class="container-movies">
             <h1>Películas</h1>
             <p>En este apartado puedes agregar tus películas.</p>
 
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Sección: Buscar / Filtrar -->
-        <div class="container-hobby-search">
+        <div class="container-movies-search">
             <h1>Buscar Película</h1>
             <form action="{{ url_for('movies.movies') }}" method="get">
                 <div class="form-group">

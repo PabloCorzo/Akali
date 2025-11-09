@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from model import NutritionEntry
 from datetime import datetime
 from database import db
-from utils import  isLogged
+from utils import  isLogged, login_required
 
 nutrition_bp = Blueprint(
     'nutrition', __name__,
@@ -12,9 +12,8 @@ nutrition_bp = Blueprint(
 
 # -------------------- NUEVAS RUTAS: NUTRICIÓN --------------------
 @nutrition_bp.route("/fitness/nutrition", methods=["GET"])
+@login_required
 def nutrition_list():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
     entries = NutritionEntry.query.filter_by(user_id=session['id']).order_by(NutritionEntry.date.desc()).all()
     resume = {}
     for e in entries:
@@ -28,9 +27,8 @@ def nutrition_list():
 
 
 @nutrition_bp.route("/fitness/nutrition/new", methods=["GET", "POST"])
+@login_required
 def nutrition_new():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
     if request.method == "POST":
         e = NutritionEntry(
             user_id=session['id'],

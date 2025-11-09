@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from database import db
-from utils import  isLogged
+from utils import  isLogged, login_required
 from model import Activity
 
 activity_bp = Blueprint(
@@ -11,11 +11,10 @@ activity_bp = Blueprint(
 
 
 @activity_bp.route("/dashboard/activity", methods=["POST", "GET"])
+@login_required
 def create_Activity():
 
     errors = []
-    if not isLogged():
-        return redirect(url_for('auth.login'))
     
     user_id = session['id']
     

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from model import Game
 from database import db
-from utils import  isLogged
+from utils import  isLogged, login_required
 
 games_bp = Blueprint(
     'games', __name__,
@@ -10,10 +10,8 @@ games_bp = Blueprint(
 )
 
 @games_bp.route("/dashboard/games", methods=["GET"])
+@login_required
 def games():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
-
     q_title    = (request.args.get("title") or "").strip()
 
     searched = any([q_title])

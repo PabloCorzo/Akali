@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from model import Workout, Exercise
 from datetime import datetime
 from database import db
-from utils import  isLogged
+from utils import  isLogged, login_required
 
 workout_bp = Blueprint(
     'workout', __name__,
@@ -12,17 +12,15 @@ workout_bp = Blueprint(
 
 # -------------------- NUEVAS RUTAS: ENTRENAMIENTOS --------------------
 @workout_bp.route("/fitness/workouts", methods=["GET"])
+@login_required
 def workouts_list():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
     ws = Workout.query.filter_by(user_id=session['id']).order_by(Workout.date.desc()).all()
     return render_template("workouts.html", workouts=ws)
 
 
 @workout_bp.route("/fitness/workouts/new", methods=["GET", "POST"])
+@login_required
 def workouts_new():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
     if request.method == "POST":
         w = Workout(
             user_id=session['id'],

@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from model import ScheduleItem, Activity, Task
 from datetime import datetime
 from database import db
-from utils import isLogged
+from utils import isLogged, login_required
 
 schedule_bp = Blueprint('schedule', __name__,
     template_folder='../templates', static_folder='../static')
@@ -31,14 +31,12 @@ def get_schedule_events():
 
 
 @schedule_bp.route("/dashboard/schedule",methods = ['GET','POST'])
+@login_required
 def create_schedule_item():
     """
     Modificamos esta ruta para que pueda recibir peticiones tanto
     del formulario antiguo como del nuevo calendario interactivo.
     """
-    if not isLogged():
-        return redirect(url_for('auth.login'))
-
     user_id = session['id']
 
     if request.method == 'POST':

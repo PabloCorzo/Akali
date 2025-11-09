@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
 from model import Movie
 from database import db
-from utils import  isLogged
+from utils import  isLogged, login_required
 
 movies_bp = Blueprint(
     'movies', __name__, 
@@ -11,10 +11,8 @@ movies_bp = Blueprint(
 
 
 @movies_bp.route("/dashboard/movies", methods=["GET"])
+@login_required
 def movies():
-    if not isLogged():
-        return redirect(url_for('auth.login'))
-
     q_title    = (request.args.get("title") or "").strip()
     q_director = (request.args.get("director") or "").strip()
     q_actor    = (request.args.get("actor") or "").strip()
@@ -35,10 +33,8 @@ def movies():
     return render_template("movies.html", movies=movies, searched=searched)
 
 @movies_bp.route("/dashboard/movies/create", methods=["POST"])
+@login_required
 def create_movie():
-
-    if not isLogged():
-        return redirect(url_for('auth.login'))
 
     title = (request.form.get("title") or "").strip()
     director = (request.form.get("director") or "").strip() or None
