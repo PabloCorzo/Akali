@@ -45,13 +45,18 @@ def create_schedule_item():
             data = request.get_json()
             start_time = datetime.fromisoformat(data['start'])
             end_time = datetime.fromisoformat(data['end'])
+            
+            # Obtener tipo e ID del item (activity, task o custom)
+            item_type = data.get('item_type', 'Custom')
+            item_id = data.get('item_id', 0)
+            
             new_item = ScheduleItem(
                 user_id=user_id,
                 title=data['title'],
                 start_time=start_time,
                 end_time=end_time,
-                item_type='Custom', # Asignamos un tipo por defecto
-                item_id=0           # Asignamos un ID por defecto
+                item_type=item_type,
+                item_id=item_id
             )
             db.session.add(new_item)
             db.session.commit()
