@@ -1591,4 +1591,67 @@ tbody tr:last-child td {
   }
 }
 
+/* ========================================
+   GAMES - Tarjeta blanca con botón camel
+   ======================================== */
 
+.games-full {
+  background-color: var(--bg-main);
+  min-height: calc(100vh - var(--navbar-height));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.blackjack-box {
+  background-color: #ffffff; /* todo el recuadro blanco */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  width: 600px;
+  max-width: 90%;
+  text-align: center;
+  transition: transform 0.3s ease;
+  animation: fadeIn 0.4s ease;
+}
+
+.blackjack-box:hover {
+  transform: scale(1.02);
+}
+
+.blackjack-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.blackjack-btn {
+  display: block;
+  width: 100%;
+  background-color: var(--accent);
+  color: #fff; /* texto blanco */
+  font-weight: 600;
+  padding: 1rem 0;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.blackjack-btn:hover {
+  background-color: var(--accent-hover); /* se oscurece */
+  color: #fff; /* mantener texto blanco */
+  transform: translateY(-1px);
+}
+
+.blackjack-btn:active {
+  transform: translateY(1px);
+}
+
+
+
+/* ========================================
+   ACCESIBILIDAD
+   ======================================== */
