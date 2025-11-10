@@ -19,7 +19,6 @@ sys.path.append("../src")
 
 # Obtener el entorno desde variable de entorno, por defecto 'development'
 env = os.getenv('FLASK_ENV', 'development')
-
 # Crear la aplicación Flask
 app = Flask(__name__)
 
@@ -45,6 +44,7 @@ app.register_blueprint(games_bp)
 app.register_blueprint(study_bp)
 app.register_blueprint(nutrition_bp)
 app.register_blueprint(workout_bp)
+
 
 #########
 
