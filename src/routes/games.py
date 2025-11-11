@@ -15,7 +15,6 @@ games_bp = Blueprint(
 @login_required
 def games():
     q_title    = (request.args.get("title") or "").strip()
-
     searched = any([q_title])
 
     games = []
@@ -122,15 +121,44 @@ def blackjack():
 
     #add action var to the state object to pass it here and apply result
 
+    #player_hand
+    #dealer_hand
+    #deck
+    #turn  
+    
     if not session["game"]:
 
-        session["game"] = start_game().state
+        bj = start_game().state
+        session["game"] = True
+        session["game_player_hand"] = bj.player_hand_serialize()
+        session["game_dealer_hand"] = bj.dealer_hand_serialize()
+        session["game_deck"] = bj.deck
+        session["game_turn"] = bj.turn
+        
+    else:
+        phand = session["game_player_hand"]
+        dhand = session["game_dealer_hand"]
+        deck = session["game_deck"]
+        turn = session["game_turn"]
+        bj = start_game.state
+        bj.player_hand = phand
+        bj.dealer_hand = dhand
+        bj.deck = deck
+        bj.turn = turn
 
-    bj = session["game"]
 
     if bj.is_over():
-
-        session["game"] = start_game().state
-        bj = session["game"]
-
+        
+        bj = start_game().state
+        
+        session["game_player_hand"] = bj.player_hand
+        session["game_dealer_hand"] = bj.dealer_hand
+        session["game_deck"] = bj.deck
+        session["game_turn"] = bj.turn
+        
+    print('\n\n\n\n\n')
+    print(type(session['game']))    
+    print(type(bj))    
+    print('\n\n\n\n\n')
+    # return render_template("blackjack.html")
     return render_template("blackjack.html",state = bj)

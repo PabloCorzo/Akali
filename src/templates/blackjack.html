@@ -5,8 +5,8 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
-{% block body %}
-{% if state %}
+    {% block body %}
+ {% if state %}
 
 {% for card in state.player_hand %}
 
@@ -20,8 +20,11 @@
         <div><p> dealer card is a {{card.name}}</p></div>
     {% endfor %}
     
-    <a  href="{{ url_for('blackjack') }}">button to test</a>
-{% endif %}
+    <a  href="{{ url_for('games.blackjack') }}">button to test</a>
+    
+    {% endif %} 
+    {% endblock %}
+
 <body class="body-games">
   <div class="games-full">
     <div class="blackjack-box">
@@ -29,4 +32,3 @@
     </div>
   </div>
 </body>
-{% endblock %}

@@ -33,6 +33,7 @@ def login():
             session['username'] = user.username
             # session['email'] = user.email
             session['id'] = user._id
+            session["game"] = None
             return redirect(url_for('dashboard.dashboard'))
         else:
             flash("Usuario o Contraseña Incorrecto ❌", "danger")
