@@ -129,32 +129,38 @@ def blackjack():
     if not session["game"]:
 
         bj = start_game().state
+        d = bj.serialize()
         session["game"] = True
-        session["game_player_hand"] = bj.player_hand_serialize()
-        session["game_dealer_hand"] = bj.dealer_hand_serialize()
-        session["game_deck"] = bj.deck
-        session["game_turn"] = bj.turn
+        session["game_player_hand"] = d["phand"]
+        session["game_dealer_hand"] = d["dhand"]
+        session["game_deck"] = d["deck"]
+        session["game_turn"] = d["turn"]
         
     else:
         phand = session["game_player_hand"]
         dhand = session["game_dealer_hand"]
         deck = session["game_deck"]
         turn = session["game_turn"]
-        bj = start_game.state
-        bj.player_hand = phand
-        bj.dealer_hand = dhand
-        bj.deck = deck
-        bj.turn = turn
+        stats = {}    
+        bj = start_game().state
+        stats["phand"] = phand
+        stats["dhand"] = dhand
+        stats["deck"] = deck
+        stats["turn"] = turn
+
+        bj.to_state(stats)
 
 
     if bj.is_over():
         
         bj = start_game().state
         
-        session["game_player_hand"] = bj.player_hand
-        session["game_dealer_hand"] = bj.dealer_hand
-        session["game_deck"] = bj.deck
-        session["game_turn"] = bj.turn
+        bj = start_game().state
+        d = bj.serialize()
+        session["game_player_hand"] = d["phand"]
+        session["game_dealer_hand"] = d["dhand"]
+        session["game_deck"] = d["deck"]
+        session["game_turn"] = d["turn"]
         
     print('\n\n\n\n\n')
     print(type(session['game']))    

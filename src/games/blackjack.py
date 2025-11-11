@@ -67,6 +67,56 @@ class GameState:
         return player_score
 
 
+    def serialize(self) -> dict[str: any]:
+        
+        pcards = []
+        dcards = []
+        turn = self.turn 
+        deck = []
+        for card in self.player_hand:
+            pcards.append(card.name)
+        
+        for card in self.dealer_hand:
+            dcards.append(card.name)
+
+
+        for card in self.deck:
+            deck.append(card.name)
+
+        return {
+
+            "phand" : pcards,
+            "dhand" : dcards,
+            "turn" : turn,
+            "deck" : deck 
+
+        }
+
+    def to_state(self, d : dict[str : any]):
+
+        turn = d["turn"]
+        deck_names = d["deck"]
+        pcard_names = d["phand"]
+        dcard_names = d["dhand"]
+        deck = []
+        pcards = []
+        dcards = []
+
+        for name in deck_names:
+            deck.append(Card(name))
+
+        for name in pcard_names:
+            pcards.append(Card(name))
+
+        for name in dcard_names:
+            dcards.append(Card(name)) 
+    
+        self.turn = turn
+        self.deck = deck
+        self.player_hand = pcards
+        self.dealer_hand = dcards
+
+
     def dealer_score(self,hide : bool = False) -> int:
         dealer_score = 0
         
