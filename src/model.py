@@ -141,3 +141,21 @@ class NutritionEntry(db.Model):
     carbs_g = db.Column(db.Float, default=0)
     fat_g = db.Column(db.Float, default=0)
     notes = db.Column(db.Text)
+
+
+#########################################
+
+class Flashcard(db.Model):
+    __tablename__ = "flashcards"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    question = db.Column(db.String(500), nullable=False)
+    answer = db.Column(db.Text, nullable=False)
+    category = db.Column(db.String(100), default="General")
+
+    def __init__(self, user_id, question, answer, category="General"):
+        self.user_id = user_id
+        self.question = question
+        self.answer = answer
+        self.category = category

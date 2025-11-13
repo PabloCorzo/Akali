@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Flashcards de Estudio</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container-flashcards-all {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+
+        .creation-container {
+            flex: 0 0 350px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .list-container {
+            flex-grow: 1;
+        }
+
+
+        .flashcard {
+            background-color: #f7f3ed;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .flashcard:hover {
+            transform: translateY(-2px);
+        }
+        .flashcard .answer {
+            display: none;
+            color: #8b4513;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .flashcard h4 {
+            color: #383838;
+            margin-bottom: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-flashcards-all">
+
+        <div class="creation-container">
+            <h2>Crear Nueva Flashcard</h2>
+            <p>Agrega una nueva pregunta y respuesta.</p>
+
+            <form action="{{ url_for('flashcards.create_flashcard') }}" method="post">
+                <div class="form-group">
+                    <label for="question">Pregunta *</label>
+                    <input class="textbox" id="question" name="question" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="answer">Respuesta *</label>
+                    <textarea class="textbox" id="answer" name="answer" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Categoría (Opcional)</label>
+                    <input class="textbox" id="category" name="category" type="text">
+                </div>
+
+                <button class="btn" type="submit">Guardar Flashcard</button>
+            </form>
+        </div>
+
+        <div class="list-container">
+            <h1>Mis Flashcards ({{ flashcards|length }})</h1>
+
+            {% if flashcards is defined and flashcards|length %}
+                {% for card in flashcards %}
+                    <div class="flashcard">
+                        <div onclick="toggleAnswer(this)">
+                            <h4>Pregunta:</h4>
+                            <div class="flashcard-content">{{ card.question }}</div>
+                        </div>
+
+                        <div class="answer">
+                            <h4>Respuesta:</h4>
+                            {{ card.answer }}
+                            <small class="text-muted">Categoría: {{ card.category }}</small>
+
+                            <form action="{{ url_for('flashcards.delete_flashcard', card_id=card.id) }}" method="post" style="display:inline; margin-left: 20px;">
+                                <button type="submit" class="btn" style="background-color: #e74c3c; color: white;">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align:center; color: gray; margin-top: 50px;">Aún no tienes flashcards. ¡Crea una para empezar!</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(element) {
+            const cardElement = element.closest('.flashcard');
+            const answer = cardElement.querySelector('.answer');
+
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}
