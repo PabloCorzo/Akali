@@ -8,27 +8,21 @@
 {% block body %}
 
     <div class="dashboard-wrapper">
-        <!-- Header de Bienvenida -->
-        <div class="dashboard-header">
-            <h1>Bienvenido de vuelta</h1>
-            <p>Aquí tienes un resumen de tu día</p>
-
-    <div class="container">
-        <!-- AÑADIR ESTO: Mensajes flash -->
+        <!-- Mensajes flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }}" style="padding: 1rem; margin-bottom: 1rem; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+              <div class="alert alert-{{ category }}">
                 {{ message }}
               </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
-        <!-- FIN mensajes flash -->
 
-        <div class="main-box">
-            <h1>Bienvenido a AKALI</h1>
-            <p style="margin: 15px; font-size: 1.2rem">Tu aplicación de productividad personal</p>
+        <!-- Header de Bienvenida -->
+        <div class="dashboard-header">
+            <h1>Bienvenido de vuelta</h1>
+            <p>Aquí tienes un resumen de tu día</p>
         </div>
 
         <!-- Grid Principal del Dashboard -->
@@ -144,4 +138,5 @@
 
         </div>
     </div>
+
 {% endblock %}
