@@ -7,10 +7,11 @@
 
 {% block body %}
 <body class="body-games">
-    
-  <div class="container-games-all">
+  <div class="games-full">
+    <div class="blackjack-box">
+      <img src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img">
+      <a href="/dashboard/blackjack" class="blackjack-btn">Jugar Black Jack</a>
+    </div>
   </div>
-  <h1>Black Jack coming soon...</h1>
 </body>
 {% endblock %}
-l>

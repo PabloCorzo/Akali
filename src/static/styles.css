@@ -440,7 +440,7 @@ textarea {
   .container-activity-all {
     flex-direction: column;
   }
-  
+
   .container-activity-search {
     flex: 1;
     width: 100%;
@@ -502,7 +502,7 @@ textarea {
   .container-movies-all {
     flex-direction: column;
   }
-  
+
   .container-movies-search {
     flex: 1;
     width: 100%;
@@ -564,7 +564,7 @@ textarea {
   .container-workout-all {
     flex-direction: column;
   }
-  
+
   .container-workout-search {
     flex: 1;
     width: 100%;
@@ -626,7 +626,7 @@ textarea {
   .container-nutrition-all {
     flex-direction: column;
   }
-  
+
   .container-nutrition-search {
     flex: 1;
     width: 100%;
@@ -688,7 +688,7 @@ textarea {
   .container-study-all {
     flex-direction: column;
   }
-  
+
   .container-study-search {
     flex: 1;
     width: 100%;
@@ -1339,15 +1339,15 @@ tbody tr:last-child td {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .quick-actions-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
-  
+
   .mini-calendar {
     gap: 0.375rem;
   }
-  
+
   .mini-day {
     padding: 0.5rem 0.25rem;
   }
@@ -1357,17 +1357,17 @@ tbody tr:last-child td {
   .dashboard-wrapper {
     padding: 1rem;
   }
-  
+
   .dashboard-header h1 {
     font-size: 2rem;
   }
-  
+
   .card-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .quick-actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1591,4 +1591,81 @@ tbody tr:last-child td {
   }
 }
 
+/* Estilos para el display de monedas */
+.coins-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 15px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border-radius: 20px;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-left: 10px;
+}
 
+/* ========================================
+   GAMES - Tarjeta blanca con botón camel
+   ======================================== */
+
+.games-full {
+  background-color: var(--bg-main);
+  min-height: calc(100vh - var(--navbar-height));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.blackjack-box {
+  background-color: #ffffff; /* todo el recuadro blanco */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  width: 600px;
+  max-width: 90%;
+  text-align: center;
+  transition: transform 0.3s ease;
+  animation: fadeIn 0.4s ease;
+}
+
+.blackjack-box:hover {
+  transform: scale(1.02);
+}
+
+.blackjack-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.blackjack-btn {
+  display: block;
+  width: 100%;
+  background-color: var(--accent);
+  color: #fff; /* texto blanco */
+  font-weight: 600;
+  padding: 1rem 0;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.blackjack-btn:hover {
+  background-color: var(--accent-hover); /* se oscurece */
+  color: #fff; /* mantener texto blanco */
+  transform: translateY(-1px);
+}
+
+.blackjack-btn:active {
+  transform: translateY(1px);
+}
+
+
+
+/* ========================================
+   ACCESIBILIDAD
+   ======================================== */

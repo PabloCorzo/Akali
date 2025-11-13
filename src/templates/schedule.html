@@ -73,6 +73,8 @@
                 title: this.newEvent.title,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
                 end: `${this.newEvent.date}T${endTime}`,
+                item_type: 'Custom',
+                item_id: 0
             };
 
             fetch('{{ url_for('schedule.create_schedule_item') }}', {
@@ -83,7 +85,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    this.calendar.addEvent(newEventData);
+                    // Recargar eventos desde el servidor en lugar de agregar manualmente
+                    this.calendar.refetchEvents();
                     alert('¡Evento guardado!');
                     this.showModal = false;
                     this.newEvent.title = '';
@@ -99,6 +102,8 @@
                 title: activity.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
                 end: `${this.newEvent.date}T${endTime}`,
+                item_type: 'Activity',
+                item_id: activity.id
             };
 
             fetch('{{ url_for('schedule.create_schedule_item') }}', {
@@ -109,7 +114,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    this.calendar.addEvent(newEventData);
+                    // Recargar eventos desde el servidor en lugar de agregar manualmente
+                    this.calendar.refetchEvents();
                     alert('¡Actividad añadida al calendario!');
                     this.showModal = false;
                     this.newEvent.date = '';
@@ -124,6 +130,8 @@
                 title: task.name,
                 start: `${this.newEvent.date}T${this.newEvent.startTime}`,
                 end: `${this.newEvent.date}T${endTime}`,
+                item_type: 'Task',
+                item_id: task.id
             };
 
             fetch('{{ url_for('schedule.create_schedule_item') }}', {
@@ -134,7 +142,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    this.calendar.addEvent(newEventData);
+                    // Recargar eventos desde el servidor en lugar de agregar manualmente
+                    this.calendar.refetchEvents();
                     alert('¡Tarea añadida al calendario!');
                     this.showModal = false;
                     this.newEvent.date = '';

@@ -14,13 +14,13 @@ from routes.games import games_bp
 from routes.study import study_bp
 from routes.workout import workout_bp
 from routes.flashcards import flashcards_bp
+from utils import inject_user_coins
 
 
 sys.path.append("../src")
 
 # Obtener el entorno desde variable de entorno, por defecto 'development'
 env = os.getenv('FLASK_ENV', 'development')
-
 # Crear la aplicación Flask
 app = Flask(__name__)
 
@@ -48,7 +48,9 @@ app.register_blueprint(nutrition_bp)
 app.register_blueprint(workout_bp)
 app.register_blueprint(flashcards_bp)
 
-#########
+
+app.context_processor(inject_user_coins)
+
 
 
 if __name__ == "__main__":

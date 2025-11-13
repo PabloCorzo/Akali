@@ -19,12 +19,13 @@ class Users(db.Model):
     username = db.Column('username', db.String(32), unique=True, nullable=False)
     email = db.Column('email', db.String(32), unique=True, nullable=True)
     password = db.Column('password', db.String(64), nullable=False)
+    coins = db.Column('coins', db.Integer, default=0, nullable=False)
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password,coins =  0):
         self.username = username
         self.email = email
         self.password = hashPassword(password)
-
+        self.coins = coins
 class Task(db.Model):
     _id = db.Column('task_id', db.Integer, primary_key=True,unique = True)
     name = db.Column('name', db.String(32), unique=False, nullable=False)

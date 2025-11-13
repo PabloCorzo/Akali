@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Juegos</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+    {% block body %}
+ {% if state %}
+
+{% for card in state.player_hand %}
+
+    <div><p> card is a {{card.name}}</p></div>
+    
+    {% endfor %}
+    
+    <div><p> player score is {{state.player_score()}}</p></div>
+
+    {% for card in state.player_hand %}
+        <div><p> dealer card is a {{card.name}}</p></div>
+    {% endfor %}
+    
+    <a  href="{{ url_for('games.blackjack') }}">button to test</a>
+    
+    {% endif %} 
+    {% endblock %}
+
+<body class="body-games">
+  <div class="games-full">
+    <div class="blackjack-box">
+      <img src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img">
+    </div>
+  </div>
+</body>
