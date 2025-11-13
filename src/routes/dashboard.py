@@ -62,3 +62,9 @@ def dashboard():
     
     return render_template('dashboard.html', tasks=tasks, events=events, 
                          week_days=week_days, today=today)
+
+    if not isLogged():
+        return redirect(url_for('auth.login'))
+    if session.pop('show_coins_message', False):
+        flash("¡Has ganado 10 monedas! 🪙", "coins_success")
+    return render_template('dashboard.html')

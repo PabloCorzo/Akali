@@ -9,7 +9,14 @@
 </head>
 <body>
     <nav class="navbar">
-        <span class="navbar-title">AKALI</span>
+        <div style="display: flex; align-items: center;">
+            <span class="navbar-title">AKALI</span>
+            {% if user_coins is not none and user_name %}
+                <span class="coins-display">
+                    🪙 {{ user_coins }}
+                </span>
+            {% endif %}
+        </div>
         <a href="{{ url_for('dashboard.dashboard') }}">Inicio</a>
         <a href="{{ url_for('activity.create_Activity') }}">Actividades</a>
         <a href="{{ url_for('movies.movies') }}">Películas</a>
