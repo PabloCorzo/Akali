@@ -15,6 +15,7 @@ from routes.study import study_bp
 from routes.workout import workout_bp
 from utils import inject_user_coins
 
+
 sys.path.append("../src")
 
 # Obtener el entorno desde variable de entorno, por defecto 'development'
@@ -49,7 +50,7 @@ app.register_blueprint(workout_bp)
 app.context_processor(inject_user_coins)
 
 #########
-
+app.context_processor(inject_user_coins)
 
 if __name__ == "__main__":
     with app.app_context():
