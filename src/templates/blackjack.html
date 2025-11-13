@@ -20,7 +20,8 @@
         <div><p> dealer card is a {{card.name}}</p></div>
     {% endfor %}
     
-    <a  href="{{ url_for('games.blackjack') }}">button to test</a>
+    <a  href="{{url_for('games.blackjack', action = '1')}}">TEST HIT</a>
+    <a  href="{{url_for('games.blackjack', action = '0')}}">TEST STAY</a>
     
     {% endif %} 
     {% endblock %}
@@ -28,7 +29,7 @@
 <body class="body-games">
   <div class="games-full">
     <div class="blackjack-box">
-      <img src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img">
+      <img src="{{url_for('static', filename='imagenes/casino_racoon.jpg')}}" alt="Black Jack" class="blackjack-img">
     </div>
   </div>
 </body>

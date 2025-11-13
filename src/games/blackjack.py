@@ -185,6 +185,8 @@ class GameState:
     #breaks if -> GameState
     def result(self,action):
 
+        action = int(action)
+
         if self.turn == 0:
             score = self.player_score()
         else:
@@ -194,7 +196,7 @@ class GameState:
             raise ValueError("Cannot act on a finished game")
 
         if action not in self.actions(score):
-            raise ValueError("Illegal action")
+            raise ValueError(f"Illegal action, actions are {type(self.actions(score))}, got {type(action)}")
         
 
         if action == 0:
@@ -251,14 +253,19 @@ class Dealer(Player):
 
 class BlackJack:
 
-    def __init__(self):
+    def __init__(self, state : GameState = None):
+        if state:
+            self.state = state
 
-        self.state = GameState()
-        self.dealer = Dealer()
-        self.player = HumanPlayer()
+            self.dealer = Dealer()      #not sure if necessary but could avoid errors
+            self.player = HumanPlayer() #not sure if necessary but could avoid errors
+        else:
+            self.state = GameState()
+            self.dealer = Dealer()
+            self.player = HumanPlayer()
 
-        self.state.deal_cards(2,0)
-        self.state.deal_cards(2,1)
+            self.state.deal_cards(2,0)
+            self.state.deal_cards(2,1)
    
     def play_game(self):
         

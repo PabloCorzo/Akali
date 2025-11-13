@@ -83,22 +83,30 @@ def start_game() -> bjg.BlackJack:
 #         elif bj.state.player_score() == bj.state.dealer_score():
 #             print("IT'S A TIE")
 
-def next_turn(bj : bjg.BlackJack, action : int):
-    if bj.state.is_over():
+def next_turn(state : bjg.GameState, action : int):
+    if state.is_over():
         raise ValueError('game is over')
+    
     else:
-        if bj.state.turn == 0:
-            score = bj.state.player_score()
+        if state.turn == 0:
+            score = state.player_score()
         else:
-            score = bj.state.dealer_score()
-        legal_actions = bj.state.actions(score)
-    if action in legal_actions:
+            score = state.dealer_score()
+        legal_actions = state.actions(score)
 
-        new_state = bj.state.result(action)
-        bj.state = new_state
-        return bj
+        print('\n\n\n\n\n\n')
+        print(f'{type(action)} == {type(legal_actions[-1])}')
+        print('\n\n\n\n\n\n')
+    if int(action) in legal_actions:
+
+        print(f'{action} is right')
+        new_state = state.result(action)
+        state = new_state
+
+        return state
     else:
-        raise ValueError('wrong action')
+        raise ValueError(f'wrong action, right ones are {legal_actions},chose {action}')
+    
     #0 -> stay
     #1 -> hit
     # move = -1 
@@ -117,7 +125,7 @@ def next_turn(bj : bjg.BlackJack, action : int):
 
 @games_bp.route("/dashboard/blackjack",methods = ["GET","POST"])
 @login_required
-def blackjack():
+def blackjack(action = None):
 
     #add action var to the state object to pass it here and apply result
 
@@ -125,7 +133,7 @@ def blackjack():
     #dealer_hand
     #deck
     #turn  
-    
+    action = request.args.get('action')
     if not session["game"]:
 
         bj = start_game().state
@@ -162,9 +170,9 @@ def blackjack():
         session["game_deck"] = d["deck"]
         session["game_turn"] = d["turn"]
         
-    print('\n\n\n\n\n')
-    print(type(session['game']))    
-    print(type(bj))    
-    print('\n\n\n\n\n')
-    # return render_template("blackjack.html")
+
+    print(action)
+
+    if action:
+        state = next_turn(bj,action)
     return render_template("blackjack.html",state = bj)
