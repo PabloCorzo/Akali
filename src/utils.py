@@ -15,6 +15,14 @@ def checkPassword(username, password):
     """Verifica si la contraseña es correcta para el usuario dado"""
     return Users.query.filter_by(username=username, password=password).first()
 
+def inject_user_coins():
+    """Hace que las monedas del usuario estén disponibles en todos los templates"""
+    if 'id' in session:
+        user = Users.query.get(session['id'])
+        if user:
+            return {'user_coins': user.coins, 'user_name': user.username}
+    return {'user_coins': 0, 'user_name': None}
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

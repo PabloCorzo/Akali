@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from model import Users, hashPassword
 from database import db
 from utils import checkPassword
+from routes.coins_manager import CoinsManager
 
 #Crear un blueprint para que funciones
 auth_bp = Blueprint(
@@ -33,6 +34,9 @@ def login():
             session['username'] = user.username
             # session['email'] = user.email
             session['id'] = user._id
+
+            CoinsManager.add_coins(user._id, 10)
+            session['show_coins_message'] = True
             session["game"] = None
             return redirect(url_for('dashboard.dashboard'))
         else:

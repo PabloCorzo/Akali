@@ -19,12 +19,13 @@ class Users(db.Model):
     username = db.Column('username', db.String(32), unique=True, nullable=False)
     email = db.Column('email', db.String(32), unique=True, nullable=True)
     password = db.Column('password', db.String(64), nullable=False)
+    coins = db.Column('coins', db.Integer, default=0, nullable=False)
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password,coins =  0):
         self.username = username
         self.email = email
         self.password = hashPassword(password)
-
+        self.coins = coins
 class Task(db.Model):
     _id = db.Column('task_id', db.Integer, primary_key=True,unique = True)
     name = db.Column('name', db.String(32), unique=False, nullable=False)
@@ -141,3 +142,21 @@ class NutritionEntry(db.Model):
     carbs_g = db.Column(db.Float, default=0)
     fat_g = db.Column(db.Float, default=0)
     notes = db.Column(db.Text)
+
+
+#########################################
+
+class Flashcard(db.Model):
+    __tablename__ = "flashcards"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    question = db.Column(db.String(500), nullable=False)
+    answer = db.Column(db.Text, nullable=False)
+    category = db.Column(db.String(100), default="General")
+
+    def __init__(self, user_id, question, answer, category="General"):
+        self.user_id = user_id
+        self.question = question
+        self.answer = answer
+        self.category = category

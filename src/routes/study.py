@@ -1,6 +1,8 @@
-from flask import Blueprint, app, render_template, request, flash, session, redirect, url_for
-from database import db
-from utils import  isLogged, login_required
+# En src/routes/study.py (DEBE QUEDAR ASÍ DE LIMPIO)
+
+from flask import Blueprint, render_template, session
+# Asegúrate de que solo importas lo necesario para esta página
+from utils import login_required
 
 study_bp = Blueprint(
     'study', __name__,
@@ -12,3 +14,4 @@ study_bp = Blueprint(
 @login_required
 def study():
     return render_template("study.html")
+

@@ -13,6 +13,8 @@ from routes.nutrition import nutrition_bp
 from routes.games import games_bp
 from routes.study import study_bp
 from routes.workout import workout_bp
+from routes.flashcards import flashcards_bp
+from utils import inject_user_coins
 
 
 sys.path.append("../src")
@@ -44,9 +46,11 @@ app.register_blueprint(games_bp)
 app.register_blueprint(study_bp)
 app.register_blueprint(nutrition_bp)
 app.register_blueprint(workout_bp)
+app.register_blueprint(flashcards_bp)
 
 
-#########
+app.context_processor(inject_user_coins)
+
 
 
 if __name__ == "__main__":

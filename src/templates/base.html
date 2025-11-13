@@ -9,13 +9,18 @@
 </head>
 <body>
     <nav class="navbar">
-        <span class="navbar-title">AKALI</span>
         <a href="{{ url_for('dashboard.dashboard') }}">Inicio</a>
-        <a href="{{ url_for('activity.create_Activity') }}">Actividades</a>
-        <a href="{{ url_for('movies.movies') }}">Películas</a>
         <a href="{{ url_for('schedule.create_schedule_item') }}">Mi horario</a>
-        <a href="{{ url_for('tasks.tasks') }}">Lista de tareas</a>
         
+        <div class="navbar-dropdown" x-data="{ open: false }">
+            <a @click="open = !open" @click.away="open = false" style="cursor: pointer;">
+                Eventos ▾
+            </a>
+            <div class="navbar-dropdown-menu" x-show="open" x-transition>
+                <a href="{{ url_for('activity.create_Activity') }}">Actividades</a>
+                <a href="{{ url_for('tasks.tasks') }}">Lista de tareas</a>
+            </div>
+        </div>
         <!-- Menú desplegable Salud -->
         <div class="navbar-dropdown" x-data="{ open: false }">
             <a @click="open = !open" @click.away="open = false" style="cursor: pointer;">
@@ -27,8 +32,26 @@
             </div>
         </div>
         
+        
         <a href="{{ url_for('games.games') }}">Juegos</a>
         <a href="{{ url_for('study.study') }}">Estudio</a>
+        <div class="navbar-dropdown" x-data="{ open: false }">
+            <a @click="open = !open" @click.away="open = false" style="cursor: pointer;">
+                Extra ▾
+            </a>
+            <div class="navbar-dropdown-menu" x-show="open" x-transition>
+                <a href="{{ url_for('movies.movies') }}">Películas</a>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: center;">
+            <span class="navbar-title">AKALI</span>
+            {% if user_coins is not none and user_name %}
+                <span class="coins-display">
+                    🪙 {{ user_coins }}
+                </span>
+            {% endif %}
+        </div>
     </nav>
     {% block body %}{% endblock %}
 </body>
