@@ -218,6 +218,24 @@ class GameState:
         if action == 0:
             self.stay()
         return self
+
+    def get_winner(self) -> int:
+
+    #either player is above 21 or below dealer, who isnt above 21   
+        if self.player_score() > 21 or self.player_score() < self.dealer_score() <= 21:
+            print("YOU LOSE")
+            return -1
+        #player is above dealer, but not 21 or dealer is above 21
+        elif 21 >= self.player_score() > self.dealer_score() or self.dealer_score() > 21:
+            print("YOU WIN")
+            return 1
+        #both are tied
+        elif self.player_score() == self.dealer_score():
+                print("IT'S A TIE")
+                return 0
+
+
+
 class Player(ABC):
     
     @abstractmethod

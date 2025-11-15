@@ -6,29 +6,48 @@
 {% endblock %}
 
     {% block body %}
- {% if state %}
 
-{% for card in state.player_hand %}
+  {% if state %} 
+    {% if state.turn < 2 %} 
 
+    {% for card in state.player_hand %}
     <div><p> card is a {{card.name}}</p></div>
-    
     {% endfor %}
-    
     <div><p> player score is {{state.player_score()}}</p></div>
+    
 
     {% for card in state.dealer_hand %}
         <div><p> dealer card is a {{card.name}}</p></div>
     {% endfor %}
         <div><p> dealer score is  {{state.dealer_score()}}</p></div>
     
-    {% if state.turn == 0%}
-    <a class="btn" href="{{url_for('games.blackjack', action = '1')}}">TEST HIT</a>
+    {% if state.turn == 0 %}
+    <a class="btn" href="{{url_for('games.blackjack', action = '1')}}">HIT</a>
+    <a  class="btn" href="{{url_for('games.blackjack', action = '0')}}">STAY</a>
+    {% else %}
+    <a  class="btn" href="{{url_for('games.blackjack', action = '3')}}">NEXT</a>
     {% endif %}
-    <a  class="btn" href="{{url_for('games.blackjack', action = '0')}}">TEST STAY</a>
 
     <div><p> turn is {{state.turn}}</p></div>
     
-    {% endif %} 
+    {% else %}
+    {% if state.get_winner() == 0 %}
+    <div><p> ITS A TIE</p></div>
+    {% elif state.get_winner() == 1 %}
+    <div><p> YOU WIN</p></div>
+    {% elif state.get_winner() == -1 %}    
+    <div><p> YOU  LOSE</p></div>
+    {% endif %}
+    
+    <div><p>Your Score: {{state.player_score()}}</p></div>
+    <div><p>Dealer Score: {{state.dealer_score()}}</p></div>
+    <a  class="btn" href="{{url_for('games.blackjack', action = 'NEW')}}">NEW GAME</a>
+    
+
+    {% endif %}
+    
+    
+  {% endif %}  
     {% endblock %}
 
 <body class="body-games">
