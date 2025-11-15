@@ -4,6 +4,7 @@ from database import db
 from utils import  isLogged, login_required
 from games import blackjack as bjg
 from time import sleep
+from copy import deepcopy
 
 games_bp = Blueprint(
     'games', __name__,
@@ -87,26 +88,45 @@ def next_turn(state : bjg.GameState, action : int):
     if state.is_over():
         raise ValueError('game is over')
     
+    
+    if state.turn == 0:
+        score = state.player_score()
     else:
-        if state.turn == 0:
-            score = state.player_score()
-        else:
-            score = state.dealer_score()
-        legal_actions = state.actions(score)
+        score = state.dealer_score()
 
-        print('\n\n\n\n\n\n')
-        print(f'{type(action)} == {type(legal_actions[-1])}')
-        print('\n\n\n\n\n\n')
-    if int(action) in legal_actions:
+    legal_actions = state.actions(score)
+
+    if int(action) in legal_actions and state.turn == 0:
 
         print(f'{action} is right')
-        new_state = state.result(action)
+        new_state = deepcopy(state.result(action))
         state = new_state
 
+
+        return state
+    
+    elif state.turn == 1:
+        new_state = deepcopy(state.result(action))
+        state = new_state
         return state
     else:
         raise ValueError(f'wrong action, right ones are {legal_actions},chose {action}')
-    
+def dealers_turn(state : bjg.GameState):
+
+
+    #dealer has won already
+    if state.player_score() > 21 or state.dealer_score() > state.player_score():
+        move = 0
+    else:
+        if state.dealer_score() < 17:
+            move = 0
+        else:
+            move = 1
+
+    print(f'MOVE IS {move}')
+    return move
+
+
     #0 -> stay
     #1 -> hit
     # move = -1 
@@ -161,6 +181,7 @@ def blackjack(action = None):
 
     if bj.is_over():
         
+        print("game is over")
         bj = start_game().state
         
         bj = start_game().state
@@ -173,6 +194,18 @@ def blackjack(action = None):
 
     print(action)
 
+    if bj.turn > 0:
+        print("DEALER IS ACTING")
+        action = str(dealers_turn(bj))
+        print(f"DEALER IS GOING {action}")
+
     if action:
+        print("ACTION FOUND")
         state = next_turn(bj,action)
+        d = state.serialize()
+        session["game_player_hand"] = d["phand"]
+        session["game_dealer_hand"] = d["dhand"]
+        session["game_deck"] = d["deck"]
+        session["game_turn"] = d["turn"]
+        
     return render_template("blackjack.html",state = bj)

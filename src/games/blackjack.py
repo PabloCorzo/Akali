@@ -25,6 +25,11 @@ class Card:
         
         return self.points
 
+    def __str__(self):
+        s  = ""
+        s += self.name
+        return s
+
 class GameState:
 
     def __init__(self):
@@ -180,7 +185,8 @@ class GameState:
 
         #0 -> 1 : player ends, dealer begins
         #1 -> 2 : game ends
-        self.turn = self.turn + 1
+        self.turn += 1
+        print(f"NEW TURN IS {self.turn}")
 
     #breaks if -> GameState
     def result(self,action):
@@ -195,20 +201,22 @@ class GameState:
         if self.is_over():
             raise ValueError("Cannot act on a finished game")
 
-        if action not in self.actions(score):
+        if action not in self.actions(score) and self.turn == 0 :
             raise ValueError(f"Illegal action, actions are {type(self.actions(score))}, got {type(action)}")
-        
 
-        if action == 0:
-            self.stay()
         elif action == 1:
             self.hit()
-
+            
+        #player hits and goes beyond
         if self.turn == 0 and self.player_score() > 21:
             self.turn = self.turn + 1
 
+        #dealer hits and goes beyond
         if self.turn == 1 and self.dealer_score() > 21:
             self.turn = self.turn + 1
+
+        if action == 0:
+            self.stay()
         return self
 class Player(ABC):
     
@@ -265,7 +273,10 @@ class BlackJack:
             self.player = HumanPlayer()
 
             self.state.deal_cards(2,0)
+            print(f"PLAYER HAND = {self.state.player_hand}")
             self.state.deal_cards(2,1)
+            print(f"DEALER HAND = {self.state.dealer_hand}")
+
    
     def play_game(self):
         
