@@ -15,20 +15,22 @@
     {% endfor %}
     <div><p> player score is {{state.player_score()}}</p></div>
     
-
-    {% for card in state.dealer_hand %}
-        <div><p> dealer card is a {{card.name}}</p></div>
-    {% endfor %}
-        <div><p> dealer score is  {{state.dealer_score()}}</p></div>
+    
     
     {% if state.turn == 0 %}
     <a class="btn" href="{{url_for('games.blackjack', action = '1')}}">HIT</a>
     <a  class="btn" href="{{url_for('games.blackjack', action = '0')}}">STAY</a>
-    {% else %}
-    <a  class="btn" href="{{url_for('games.blackjack', action = '3')}}">NEXT</a>
+    <div><p> dealer card is a {{state.dealer_hand[0].name}}</p></div>
+    <div><p> dealer score is  {{state.dealer_score(hide = True)}}</p></div>
+    {% elif state.turn == 1 %}
+      <a  class="btn" href="{{url_for('games.blackjack', action = '3')}}">NEXT</a>
+      {% for card in state.dealer_hand %}
+      <div><p> dealer card is a {{card.name}}</p></div>
+      
+      {% endfor %}
+      <div><p> dealer score is  {{state.dealer_score()}}</p></div>
     {% endif %}
-
-    <div><p> turn is {{state.turn}}</p></div>
+    
     
     {% else %}
     {% if state.get_winner() == 0 %}
