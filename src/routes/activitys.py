@@ -62,4 +62,4 @@ def create_Activity():
             db.session.add(activity)
             db.session.commit()
 
-    return render_template('Activity.html', Activity=activities, errors=errors)
+    return render_template('activity.html', Activity=activities, errors=errors)

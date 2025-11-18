@@ -28,17 +28,18 @@ class Users(db.Model):
         self.coins = coins
 class Task(db.Model):
     _id = db.Column('task_id', db.Integer, primary_key=True,unique = True)
-    name = db.Column('name', db.String(32), unique=False, nullable=False)
+    name = db.Column('name', db.String(32),unique=False, nullable=False)
     completed = db.Column('completed', db.Boolean, unique=False, nullable=True)
-    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    _user_id = db.Column('user_id',db.Integer,db.ForeignKey('users.id'), unique = False, nullable = False)
     def __init__(self,name, user):
         self.name = name
-        self._user_id = Users.query.filter_by(username = user).first()._id
+        # self._user_id = Users.query.filter_by(username = user).first()._id
+        self._user_id = user
         self.completed = 0
         
 class ScheduleItem(db.Model):
     _id = db.Column('id', db.Integer, primary_key=True)
-    _user_id = db.Column('user_id',db.Integer, unique = False, nullable = False)
+    _user_id = db.Column('user_id',db.Integer,db.ForeignKey('users.id'), unique = False, nullable = False)
     title = db.Column('title', db.String(100), unique=False, nullable=False)
     start_time = db.Column('start_time', db.DateTime, unique=False, nullable=False)
     end_time = db.Column('end_time', db.DateTime, unique=False, nullable=False)
@@ -57,7 +58,7 @@ class Activity(db.Model):
     __tablename__ = 'activities'
     _activity_id = db.Column('activity_id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100), unique=False, nullable=False)
-    user_id = db.Column('user_id', db.Integer, unique=False, nullable=True)
+    user_id = db.Column('user_id', db.Integer,db.ForeignKey('users.id'), unique=False, nullable=True)
     satisfaction_level = db.Column('satisfaction_level', db.Integer, nullable=True)
     ability = db.Column('ability', db.String(100), nullable=True)
     time = db.Column('time', db.Float, nullable=True)
@@ -107,7 +108,7 @@ class Workout(db.Model):
     __tablename__ = "workouts"
     id = db.Column(db.Integer, primary_key=True)
     # Relación con usuario (tabla 'users')
-    user_id = db.Column(db.BigInteger, nullable=False, index=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False,index = True)
     date = db.Column(db.Date, default=datetime.utcnow)
     title = db.Column(db.String(120), nullable=False)
     duration_min = db.Column(db.Integer, default=0)
@@ -133,7 +134,7 @@ class NutritionEntry(db.Model):
     __tablename__ = "nutrition_entries"
     id = db.Column(db.Integer, primary_key=True)
     # Relación con usuario (tabla 'users')
-    user_id = db.Column(db.BigInteger, nullable=False, index=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id') , nullable=False, index=True)
     date = db.Column(db.Date, default=datetime.utcnow)
     meal_type = db.Column(db.String(50))  # desayuno/comida/cena/snack
     food = db.Column(db.String(200), nullable=False)
