@@ -149,7 +149,7 @@ class NutritionEntry(db.Model):
 class Flashcard(db.Model):
     __tablename__ = "flashcards"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.BigInteger, nullable=False)
 
     question = db.Column(db.String(500), nullable=False)
     answer = db.Column(db.Text, nullable=False)
