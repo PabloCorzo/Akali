@@ -23,11 +23,10 @@ def tasks():
 @tasks_bp.route("/dashboard/tasks/create", methods = ['POST'])
 @login_required
 def create_task():
-    print("woopwoop")
     
     if request.form['task_name']:
         print(f"\n\nNAME IS {request.form['task_name']}\n\n")
-        new_t = Task(request.form['task_name'],session['username'])
+        new_t = Task(request.form['task_name'],session['id'])
         if not Task.query.filter_by(name = request.form['task_name']).first():
             db.session.add(new_t)
             db.session.commit()
