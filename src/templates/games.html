@@ -6,12 +6,37 @@
 {% endblock %}
 
 {% block body %}
+
+
+
+
 <body class="body-games">
   <div class="games-full">
     <div class="blackjack-box">
-      <img src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img">
+      <img id = 'img1' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-show" >
+      <img id = 'img2' src="{{ url_for('static', filename='imagenes/pergamino.jpeg') }}" alt="Black Jack" class="blackjack-img-hide" >
       <a href="/dashboard/blackjack" class="blackjack-btn">Jugar Black Jack</a>
     </div>
   </div>
+      
+<script type = "text/javascript">
+
+  var activate_image_id = 1;
+  var next_image_id = 1;
+
+  setInterval(function(){
+
+    if (document.getElementById('img1').classList[0] == 'blackjack-img-hide'){
+    
+      document.getElementById('img1').classList.replace("blackjack-img-hide","blackjack-img-show");
+    document.getElementById('img2').classList.replace("blackjack-img-show","blackjack-img-hide");
+    
+  } else {
+
+    document.getElementById('img1').classList.replace("blackjack-img-show","blackjack-img-hide");
+    document.getElementById('img2').classList.replace("blackjack-img-hide","blackjack-img-show");
+  }
+  },1000);
+</script>
 </body>
 {% endblock %}

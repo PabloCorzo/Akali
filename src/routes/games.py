@@ -35,68 +35,7 @@ def start_game() -> bjg.BlackJack:
     return bjg.BlackJack()
 
 
-#FOR REFERENCE
-# def play():
-#     while not bj.state.is_over():
-#         #get score of current player to see valid moves (hit/pass)
-#         if bj.state.turn == 0:
-#             score = bj.state.player_score()
-#         else:
-#             score = bj.state.dealer_score()
-#         legal_actions = bj.state.actions(score)
-#         #show player hand
-#         if bj.state.turn == 0:
-#             for card in bj.state.player_hand:
-#                 print(card.name)
-#             print(f"your score: {bj.state.player_score()}")
-#         #if is players turn, only one dealer card is shown
-#         hide = bj.state.turn == 0
-#         print(f"dealer score: {bj.state.dealer_score(hide = hide)}")
-#         if hide:
-#             sleep(0.5)
-        
-#         #random invalid move which wont work so while loop gets executed
-#         move = -1 
-#         if bj.state.turn == 0:
-#                 while move not in legal_actions:
-#                     move = bj.player.get_move(bj.state)
-#         elif bj.state.turn == 1:
-#             if bj.state.player_score() > 21:
-#                 bj.state.turn = 2
-#                 move = 2
-#             else:
-#                 while move not in legal_actions:
-#                     move = bj.dealer.get_move(bj.state)
-#         if move != 2:
-#             new_state = bj.state.result(move)
-#             bj.state = new_state
-#     #HERE, GAME HAS ENDED
-#         print("final results:")
-#         print(f"your score : {bj.state.player_score()}")
-#         print(f"house score : {bj.state.dealer_score()}")
-#         if bj.state.turn == 1:
-#             print(f"dealer score: {bj.state.dealer_score(hide = False)}")
-#             sleep(0.5)
-#         if bj.state.player_score() > 21 or bj.state.player_score() < bj.state.dealer_score() <= 21:
-#             print("YOU LOSE")
-#         elif 21 >= bj.state.player_score() > bj.state.dealer_score() or bj.state.dealer_score() > 21:
-#             print("YOU WIN")
-#         elif bj.state.player_score() == bj.state.dealer_score():
-#             print("IT'S A TIE")
 
-# def get_winner(state : bjg.GameState) -> int:
-
-#     #either player is above 21 or below dealer, who isnt above 21   
-#     if state.player_score() > 21 or state.player_score() < state.dealer_score() <= 21:
-#         print("YOU LOSE")
-
-#     #player is above dealer, but not 21 or dealer is above 21
-#     elif 21 >= state.player_score() > state.dealer_score() or state.dealer_score() > 21:
-#         print("YOU WIN")
-
-#     #both are tied
-#     elif state.player_score() == state.dealer_score():
-#             print("IT'S A TIE")
 
 
 def get_dealer_move(state : bjg.GameState) -> int:
