@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Casino de Akali</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block body %}
+<body class="body-blackjack-intro">
+  <div class="casino-container">
+    <img src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Casino de Akali" class="casino-image">
+
+    <div id="dialogue-box" class="dialogue-box">
+      <p id="dialogue-text"></p>
+      <p class="click-tip">(Haz clic para continuar...)</p>
+    </div>
+  </div>
+
+  <script>
+    const messages = [
+      "Bienvenido al Casino de Akali...",
+      "Aquí podrás poner a prueba tu suerte y tus monedas.",
+      "Prepárate para el desafío del Black Jack."
+    ];
+
+    let index = 0;
+    const textElement = document.getElementById("dialogue-text");
+    const box = document.getElementById("dialogue-box");
+
+    function showNextMessage() {
+      if (index < messages.length) {
+        textElement.textContent = messages[index];
+        index++;
+      }
+    }
+
+    box.addEventListener("click", showNextMessage);
+
+    // Mostrar el primer mensaje automáticamente
+    showNextMessage();
+  </script>
+</body>
+{% endblock %}
