@@ -18,8 +18,10 @@
     
     
     {% if state.turn == 0 %}
-    <a class="btn" href="{{url_for('games.blackjack', action = '1')}}">HIT</a>
-    <a  class="btn" href="{{url_for('games.blackjack', action = '0')}}">STAY</a>
+    <div class = 'container-games'>
+    <a class="blackjack-btn" href="{{url_for('games.blackjack', action = '1')}}">HIT</a>
+    <a  class="blackjack-btn" href="{{url_for('games.blackjack', action = '0')}}">STAY</a>
+    </div>
     <div><p> dealer card is a {{state.dealer_hand[0].name}}</p></div>
     <div><p> dealer score is  {{state.dealer_score(hide = True)}}</p></div>
     {% elif state.turn == 1 %}

@@ -125,12 +125,12 @@ def blackjack(action = 3):
         mascot_state = "playing"
     else:
         winner = bj.get_winner()
-    if winner == 1:
-        mascot_state = "win"
-    elif winner == -1:
-        mascot_state = "lose"
-    else:
-        mascot_state = "tie"
+        if winner == 1:
+            mascot_state = "win"
+        elif winner == -1:
+            mascot_state = "lose"
+        else:
+            mascot_state = "tie"
 
 
         
