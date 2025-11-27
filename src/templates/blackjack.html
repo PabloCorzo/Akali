@@ -6,14 +6,11 @@
 {% endblock %}
 
     {% block body %}
-
-  {% if state %} 
+    <div class = 'blackjack-playing'>
+    </div> 
+        {% if state %} 
     {% if state.turn < 2 %} 
 
-    {% for card in state.player_hand %}
-    <div><p> card is a {{card.name}}</p></div>
-    {% endfor %}
-    <div><p> player score is {{state.player_score()}}</p></div>
     
     
     
@@ -22,9 +19,27 @@
     <a class="blackjack-btn" href="{{url_for('games.blackjack', action = '1')}}">HIT</a>
     <a  class="blackjack-btn" href="{{url_for('games.blackjack', action = '0')}}">STAY</a>
     </div>
+
+    <div class = 'container-games' style = 'padding : 1%; align-items: center;'>
+    {% for card in state.player_hand %}
+    <p>{{card.name}}</p>
+    {% endfor %}
+</div>
+    <p class = 'container-games'> your score : {{state.player_score()}}</p>
+    
+
     <div><p> dealer card is a {{state.dealer_hand[0].name}}</p></div>
     <div><p> dealer score is  {{state.dealer_score(hide = True)}}</p></div>
     {% elif state.turn == 1 %}
+
+        <div class = 'container-games'>
+        {% for card in state.player_hand %}
+        <p>{{card.name}}</p>
+        {% endfor %}
+    </div>
+    <div class = 'container-games'><p> player score is {{state.player_score()}}</p></div>
+    
+
       <a  class="btn" href="{{url_for('games.blackjack', action = '3')}}">NEXT</a>
       {% for card in state.dealer_hand %}
       <div><p> dealer card is a {{card.name}}</p></div>
@@ -51,7 +66,7 @@
     {% endif %}
     
     
-  {% endif %}  
+  {% endif %} 
     {% endblock %}
 
 <body class="body-games">
