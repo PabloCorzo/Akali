@@ -801,7 +801,7 @@ textarea {
   animation: slideInLeft 0.5s ease;
   display:inline-flex;
   align-self: center;
-  margin-left: 35%;
+  margin-left: 2%;
   margin-top: 1%;
   align-items: flex;
 }
