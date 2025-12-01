@@ -6,8 +6,20 @@
 {% endblock %}
 
     {% block body %}
+    {% if state.turn < 2%}
     <div class = 'blackjack-playing'>
-    </div> 
+    </div>
+    {% elif state.get_winner() == 1 %}
+    <div class = 'blackjack-win'>
+    </div>
+    {% elif state.get_winner() == -1 %}
+    <div class = 'blackjack-loss'>
+    </div>
+    {% elif state.get_winner() == 0 %}
+    <div class = 'blackjack-playing'>
+    </div>
+    {% endif %}
+
         {% if state %} 
     {% if state.turn < 2 %} 
 

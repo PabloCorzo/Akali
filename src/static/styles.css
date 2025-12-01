@@ -93,9 +93,9 @@ body {
   padding-top: var(--navbar-height);
   background-image: url('imagenes/blackjack_play.jpg');
   height:100%;
-  width: 70%;
+  width: 50%;
   background-size: 100% 100%;
-  margin-left: 15%;
+  margin-left: 25%;
   margin-top: 1%;
   padding: 15%;
 }
@@ -110,11 +110,11 @@ body {
   padding-top: var(--navbar-height);
   background-image: url('imagenes/blackjack_win.jpg');
   height:100%;
-  width: 70%;
+  width: 50%;
   background-size: 100% 100%;
-  margin-left: 15%;
+  margin-left: 25%;
   margin-top: 1%;
-  padding: 20%;
+  padding: 15%;
 
 }
 .blackjack-loss{
@@ -128,11 +128,11 @@ body {
   padding-top: var(--navbar-height);
   background-image: url('imagenes/blackjack_lose.jpg');
   height:100%;
-  width: 70%;
+  width: 45%;
   background-size: 100% 100%;
-  margin-left: 15%;
+  margin-left: 27%;
   margin-top: 1%;
-  padding: 20%;
+  padding: 15%;
 }
 
 h1 {
