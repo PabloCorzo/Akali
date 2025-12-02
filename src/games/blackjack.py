@@ -349,6 +349,8 @@ class BlackJack:
             print("YOU WIN")
         elif self.state.player_score() == self.state.dealer_score():
             print("IT'S A TIE")
+    
+        
 
 if __name__ == '__main__':
     bj = BlackJack()

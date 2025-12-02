@@ -120,5 +120,18 @@ def blackjack(action = 3):
         session["game_deck"] = d["deck"]
         session["game_turn"] = d["turn"]
 
+    # Determinar estado de la mascota
+    if bj.turn < 2:
+        mascot_state = "playing"
+    else:
+        winner = bj.get_winner()
+        if winner == 1:
+            mascot_state = "win"
+        elif winner == -1:
+            mascot_state = "lose"
+        else:
+            mascot_state = "tie"
+
+
         
-    return render_template("blackjack.html",state = bj)
+    return render_template("blackjack.html",state = bj, mascot_state=mascot_state)
