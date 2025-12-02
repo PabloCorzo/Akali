@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Skins</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<h1 class="titulo-skins">Skins disponibles </h1>
+
+<div class="skins-grid">
+
+    {% for skin in skins %}
+    <div class="skin-card">
+
+        <img src="{{ url_for('static', filename='skins/' + skin.imagenes[0]) }}"
+             class="skin-img"
+             id="img-{{ skin.id }}"
+             data-images="{{ ','.join(skin.imagenes) }}"
+        >
+
+        <h3>{{ skin.nombre }}</h3>
+
+        {% if skin.comprada %}
+            <p class="skin-price comprado">✔ Comprada</p>
+            <button class="btn-skin equipar">Equipar</button>
+        {% else %}
+            <p class="skin-price">💰 {{ skin.precio }} monedas</p>
+            <button class="btn-skin comprar">Comprar</button>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+// --- ROTACIÓN DE IMÁGENES AL HOVER ---
+const timers = {};
+
+document.querySelectorAll(".skin-img").forEach(img => {
+    const id = img.id;
+    const images = img.dataset.images.split(",");
+    let index = 0;
+
+    img.addEventListener("mouseover", () => {
+        timers[id] = setInterval(() => {
+            index = (index + 1) % images.length;
+            img.src = "/static/skins/" + images[index];
+        }, 500);
+    });
+
+    img.addEventListener("mouseout", () => {
+        clearInterval(timers[id]);
+        img.src = "/static/skins/" + images[0];  // vuelve a la principal
+        index = 0;
+    });
+});
+</script>
+
+{% endblock %}

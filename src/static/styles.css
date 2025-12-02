@@ -651,6 +651,30 @@ textarea {
 }
 
 /* ========================================
+   WORKOUT - EJERCICIOS (Bloques separados)
+   ======================================== */
+
+.exercise-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+
+  padding: 1.2rem 1rem;
+  margin-bottom: 1.5rem;
+
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e5d4be;
+  margin-bottom: 1%;
+}
+
+.exercise-row:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ========================================
    NUTRITION - NUTRICIÓN (Mismo layout)
    ======================================== */
 .body-nutrition {
@@ -1801,7 +1825,278 @@ tbody tr:last-child td {
 }
 
 
-
 /* ========================================
-   ACCESIBILIDAD
+   Skins mascota
    ======================================== */
+
+.pet-actions {
+    margin-top: 1.5rem;
+}
+
+.closet-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: white;
+    font-size: 1.2rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+    transition: .2s;
+}
+
+.closet-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+
+/* TARJETA DEL ARMARIO CERRADO */
+.wardrobe-card {
+    width: 60%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.armario-cerrado-img {
+    width: 100%;
+    max-width: 600px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.armario-cerrado-img:hover {
+    transform: scale(1.02);
+}
+
+.click-text {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #8a6548;
+}
+
+/* ARMARIO ABIERTO */
+.armario-abierto-img {
+    width: 60%;
+    max-width: 650px;
+}
+
+.animation-open {
+    animation: faseAbrir 0.6s ease-out;
+}
+
+@keyframes faseAbrir {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* GRID DE SKINS */
+.skins-grid {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 22px;
+}
+
+/* TARJETAS DE SKINS */
+.skin-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.skin-img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+/* BOTÓN EQUIPAR */
+.equip-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    background: #c98a4d;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.equip-btn:hover {
+    background: #b37842;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.armario-hover {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.armario-img {
+    width: 60%;
+    max-width: 800px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.armario-img:hover {
+    transform: scale(1.03);
+}
+
+
+/* TITULO */
+.titulo-skins {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #744f2c;
+}
+
+/* GRID DE SKINS */
+.skins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    padding: 20px 40px;
+}
+
+/* TARJETA INDIVIDUAL */
+.skin-card {
+    background-color: #fff7e9;
+    border: 2px solid #d6b389;
+    border-radius: 15px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease;
+}
+
+.skin-card:hover {
+    transform: scale(1.03);
+}
+
+/* IMAGEN DE SKIN */
+.skin-img {
+    width: 140px;
+    margin-bottom: 12px;
+}
+
+/* TEXTO */
+.skin-desc {
+    color: #6e5738;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.skin-price {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* BOTÓN */
+.btn-skin {
+    background-color: #d8a05f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s;
+}
+
+.btn-skin:hover {
+    background-color: #c08c50;
+    transform: scale(1.05);
+}
+
+
+
+.titulo-skins {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #744f2c;
+}
+
+.skins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+    padding: 20px 40px;
+}
+
+.skin-card {
+    background-color: #fff7e9;
+    border: 2px solid #d6b389;
+    border-radius: 15px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease;
+}
+
+.skin-card:hover {
+    transform: scale(1.05);
+}
+
+.skin-img {
+    width: 200px;              
+    height: auto;              
+    margin-bottom: 15px;
+    border-radius: 12px;       
+    background: white;         
+    padding: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.skin-img:hover {
+    transform: scale(1.05);    
+}
+
+.skin-card {
+    padding: 24px; 
+}
+
+
+.skin-price {
+    font-weight: bold;
+}
+
+.comprado {
+    color: #2da44e;
+    font-weight: bold;
+}
+
+.btn-skin {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-skin.comprar {
+    background-color: #d8a05f;
+    color: white;
+}
+
+.btn-skin.equipar {
+    background-color: #4caf50;
+    color: white;
+}
+
+
