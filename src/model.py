@@ -90,16 +90,26 @@ class Movie(db.Model):
         self.user_id = user_id
 
 ##########################
-
+#PARA MANTENER UNA SOLA PARTIDA CONCURRENTE DE BLACKJACK POR CUENTA
 class Game(db.Model):
     __tablename__ = 'games'
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False,index = True)
+    player_hand = db.Column(db.String(64))
+    dealer_hand = db.Column(db.String(64))
+    turn = db.Column(db.Integer)
+    deck = db.Column(db.String(64))
 
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, uid):
+        self.title = 'Blackjack state'
+        self.user_id = uid
 
+        #CHANGED BY LOGIC
+        self.player_hand = ''
+        self.dealer_hand = ''
+        self.deck = ''
+        self.turn = -1
 
 
 # -------------------- NUEVOS: ENTRENAMIENTOS + NUTRICIÓN --------------------

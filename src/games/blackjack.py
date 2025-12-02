@@ -71,7 +71,6 @@ class GameState:
         
         return player_score
 
-
     def serialize(self) -> dict[str: any]:
         
         pcards = []
@@ -202,7 +201,7 @@ class GameState:
             raise ValueError("Cannot act on a finished game")
 
         if action not in self.actions(score) and self.turn == 0 :
-            raise ValueError(f"Illegal action, actions are {type(self.actions(score))}, got {type(action)}")
+            raise ValueError(f"Illegal action, actions are {type(self.actions(score)[0])}, got {type(action)} : {action} -> {self.actions(score)}")
 
         elif action == 1:
             self.hit()
