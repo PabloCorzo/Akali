@@ -18,33 +18,33 @@ def main():
 @login_required
 def wardrobe():
     skins = [
-        {"name": "Básico", "img": "basico.jpg"},
-        {"name": "Básico Llorar", "img": "basico_llorar.jpg"},
-        {"name": "Básico Think", "img": "basico_think.jpg"},
-        {"name": "Pijo", "img": "pijo.jpg"},
-        {"name": "Pijo Llorar", "img": "pijo_llorar.jpg"},
-        {"name": "Pijo Think", "img": "pijo_think.jpg"},
-        {"name": "Cowboy", "img": "cowboy.jpg"},
-        {"name": "Cowboy Llorar", "img": "cowboy_llorar.jpg"},
-        {"name": "Cowboy Think", "img": "cowboy_think.jpg"},
-        {"name": "Navidad", "img": "navidad.jpg"},
-        {"name": "Navidad Llorar", "img": "navidad_llorar.jpg"},
-        {"name": "Navidad Think", "img": "navidad_think.jpg"},
-        {"name": "Pijama", "img": "pijama.jpg"},
-        {"name": "Pijama Llorar", "img": "pijama_llorar.jpg"},
-        {"name": "Pijama Think", "img": "pijama_think.jpg"},
-        {"name": "Sheldon", "img": "sheldon.jpg"},
-        {"name": "Sheldon Llorar", "img": "sheldon_llorar.jpg"},
-        {"name": "Sheldon Think", "img": "sheldon_think.jpg"},
-        {"name": "Traje", "img": "traje.jpg"},
-        {"name": "Traje Llorar", "img": "traje_llorar.jpg"},
-        {"name": "Traje Think", "img": "traje_think.jpg"},
-        {"name": "Pirata", "img": "pirata.jpg"},
-        {"name": "Pirata Think", "img": "pirata_think.jpg"},
-        {"name": "Pirata Llorar", "img": "pirata_llorar.jpg"},
+        {"name": "Básico", "img": "basico.png"},
+        {"name": "Básico Llorar", "img": "basico_llorar.png"},
+        {"name": "Básico Think", "img": "basico_think.png"},
+        {"name": "Pijo", "img": "pijo.png"},
+        {"name": "Pijo Llorar", "img": "pijo_llorar.png"},
+        {"name": "Pijo Think", "img": "pijo_think.png"},
+        {"name": "Cowboy", "img": "cowboy.png"},
+        {"name": "Cowboy Llorar", "img": "cowboy_llorar.png"},
+        {"name": "Cowboy Think", "img": "cowboy_think.png"},
+        {"name": "Navidad", "img": "navidad.png"},
+        {"name": "Navidad Llorar", "img": "navidad_llorar.png"},
+        {"name": "Navidad Think", "img": "navidad_think.png"},
+        {"name": "Pijama", "img": "pijama.png"},
+        {"name": "Pijama Llorar", "img": "pijama_llorar.png"},
+        {"name": "Pijama Think", "img": "pijama_think.png"},
+        {"name": "Sheldon", "img": "sheldon.png"},
+        {"name": "Sheldon Llorar", "img": "sheldon_llorar.png"},
+        {"name": "Sheldon Think", "img": "sheldon_think.png"},
+        {"name": "Traje", "img": "traje.png"},
+        {"name": "Traje Llorar", "img": "traje_llorar.png"},
+        {"name": "Traje Think", "img": "traje_think.png"},
+        {"name": "Pirata", "img": "pirata.png"},
+        {"name": "Pirata Think", "img": "pirata_think.png"},
+        {"name": "Pirata Llorar", "img": "pirata_llorar.png"},
         {"name": "Dune", "img": "dune.png"},
         {"name": "Dune 2", "img": "dune2.png"},
-        {"name": "Enfadado", "img": "enfado.jpg"}
+        {"name": "Enfadado", "img": "enfado.png"}
     ]
     return render_template("wardrobe.html", skins=skins)
 
@@ -53,34 +53,34 @@ def wardrobe():
 # =============================
 skins_data = [
     {"id": "basico", "nombre": "Básico", "precio": 0, "comprada": True,
-     "imagenes": ["basico.jpg", "basico_think.jpg", "basico_llorar.jpg"]},
+     "imagenes": ["basico.png", "basico_think.png", "basico_llorar.png"]},
 
     {"id": "cowboy", "nombre": "Cowboy", "precio": 60, "comprada": False,
-     "imagenes": ["cowboy.jpg", "cowboy_think.jpg", "cowboy_llorar.jpg"]},
+     "imagenes": ["cowboy.png", "cowboy_think.png", "cowboy_llorar.png"]},
 
     {"id": "dune", "nombre": "Dune", "precio": 100, "comprada": False,
      "imagenes": ["dune.png", "dune2.png"]},
 
     {"id": "enfado", "nombre": "Enfado", "precio": 40, "comprada": False,
-     "imagenes": ["enfado.jpg"]},
+     "imagenes": ["enfado.png"]},
 
     {"id": "navidad", "nombre": "Navidad", "precio": 80, "comprada": False,
-     "imagenes": ["navidad.jpg", "navidad_think.jpg", "navidad_llorar.jpg"]},
+     "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
 
     {"id": "pijama", "nombre": "Pijama", "precio": 50, "comprada": False,
-     "imagenes": ["pijama.jpg", "pijama_think.jpg", "pijama_llorar.jpg"]},
+     "imagenes": ["pijama.png", "pijama_think.png", "pijama_llorar.png"]},
 
     {"id": "pijo", "nombre": "Pijo", "precio": 80, "comprada": False,
-     "imagenes": ["pijo.jpg", "pijo_think.jpg", "pijo_llorar.jpg"]},
+     "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
 
     {"id": "pirata", "nombre": "Pirata", "precio": 70, "comprada": False,
-     "imagenes": ["pirata.jpg", "pirata_think.jpg", "pirata_llorar.jpg"]},
+     "imagenes": ["pirata.png", "pirata_think.png", "pirata_llorar.png"]},
 
     {"id": "sheldon", "nombre": "Sheldon", "precio": 120, "comprada": False,
-     "imagenes": ["sheldon.jpg", "sheldon_think.jpg", "sheldon_llorar.jpg"]},
+     "imagenes": ["sheldon.png", "sheldon_think.png", "sheldon_llorar.png"]},
 
     {"id": "traje", "nombre": "Traje", "precio": 90, "comprada": False,
-     "imagenes": ["traje.jpg", "traje_think.jpg", "traje_llorar.jpg"]}
+     "imagenes": ["traje.png", "traje_think.png", "traje_llorar.png"]}
 ]
 
 # =============================
@@ -111,14 +111,14 @@ def buy_skin():
 
 current_skin = "basico"   # la que tenga equipada el usuario
 skin_main_image = {
-    "basico": "basico.jpg",
-    "cowboy": "cowboy.jpg",
-    "dune": "dune.jpg",
-    "enfado": "enfado.jpg",
-    "navidad": "navidad.jpg",
-    "pijama": "pijama.jpg",
-    "pijo": "pijo.jpg",
-    "pirata": "pirata.jpg",
-    "sheldon": "sheldon.jpg",
-    "traje": "traje.jpg"
+    "basico": "basico.png",
+    "cowboy": "cowboy.png",
+    "dune": "dune.png",
+    "enfado": "enfado.png",
+    "navidad": "navidad.png",
+    "pijama": "pijama.png",
+    "pijo": "pijo.png",
+    "pirata": "pirata.png",
+    "sheldon": "sheldon.png",
+    "traje": "traje.png"
 }
