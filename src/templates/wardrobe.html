@@ -21,15 +21,17 @@
 
 <script>
 function abrirArmario() {
-    document.getElementById("armarioImagen").src = "{{ url_for('static', filename='imagenes/armario_abierto.jpg') }}";
+    document.getElementById("armarioImagen").src =
+        "{{ url_for('static', filename='imagenes/armario_abierto.jpg') }}";
 }
 
 function cerrarArmario() {
-    document.getElementById("armarioImagen").src = "{{ url_for('static', filename='imagenes/armario_cerrado.png') }}";
+    document.getElementById("armarioImagen").src =
+        "{{ url_for('static', filename='imagenes/armario_cerrado.png') }}";
 }
 
 function entrarArmario() {
-    window.location.href = "{{ url_for('pet.skins') }}"; 
+    window.location.href = "{{ url_for('pet.skins') }}";
 }
 </script>
 

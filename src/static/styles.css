@@ -2100,3 +2100,19 @@ tbody tr:last-child td {
 }
 
 
+/* Mascota fija en página de inicio */
+/* Mascota centrada debajo del saludo */
+.inicio-mascota {
+    width: 100%;
+    display: flex;
+    justify-content: center;   /* CENTRADA */
+    margin-top: -5px;          /* Ajusta distancia hacia arriba */
+    margin-bottom: 20px;        /* Espacio antes de "Tu Día" */
+}
+
+.inicio-mascota-img {
+    width: 230px;
+    height: 260px;
+    object-fit: contain;
+}
+

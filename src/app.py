@@ -16,6 +16,7 @@ from routes.workout import workout_bp
 from routes.flashcards import flashcards_bp
 from utils import inject_user_coins
 from routes.pet import pet_bp
+from flask import session, request, redirect, url_for, flash
 
 
 sys.path.append("../src")
@@ -55,11 +56,8 @@ app.context_processor(inject_user_coins)
 
 
 @app.context_processor
-def inject_pet_skin():
-    from routes.pet import current_skin, skin_main_image
-    return {
-        "pet_skin_image": skin_main_image[current_skin]
-    }
+def inject_equipped_skin():
+    return {"equipped_skin": session.get("equipped_skin", "basico")}
 
 
 if __name__ == "__main__":

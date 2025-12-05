@@ -1,124 +1,163 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from utils import login_required
+from database import db
+from model import OwnedSkin, Users
+
 
 pet_bp = Blueprint('pet', __name__, template_folder='../templates')
 
-# =============================
-#  PÁGINA PRINCIPAL PET
-# =============================
-@pet_bp.route('/dashboard/pet')
-@login_required
-def main():
-    return render_template('wardrobe.html')
+# -------------------------
+# SKINS DEFINIDAS
+# -------------------------
+skins_data= [
+    {"id": 1, "nombre": "Basico", "precio": 0,
+     "imagenes": ["basico.png", "basico_think.png", "basico_llorar.png"]},
 
-# =============================
-#  ARMARIO
-# =============================
+    {"id": 2, "nombre": "Pijama", "precio": 50,
+     "imagenes": ["pijama.png", "pijama_think.png", "pijama_llorar.png"]},
+
+    {"id": 3, "nombre": "Cowboy", "precio": 60,
+     "imagenes": ["cowboy.png", "cowboy_think.png", "cowboy_llorar.png"]},
+
+    {"id": 4, "nombre": "Pirata", "precio": 70,
+     "imagenes": ["pirata.png", "pirata_think.png", "pirata_llorar.png"]},
+
+    {"id": 5, "nombre": "Pijo", "precio": 80,
+     "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
+
+    {"id": 6, "nombre": "Dune", "precio": 90,
+     "imagenes": ["dune.png", "dune2.png"]},
+
+    {"id": 7, "nombre": "Navidad", "precio": 100,
+     "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
+
+    {"id": 8, "nombre": "Traje", "precio": 120,
+     "imagenes": ["traje.png", "traje_think.png", "traje_llorar.png"]},
+
+    {"id": 9, "nombre": "Sheldon", "precio": 120,
+     "imagenes": ["sheldon.png", "sheldon_think.png", "sheldon_llorar.png"]},
+
+    {"id": 10, "nombre": "Enfado", "precio": 10,
+     "imagenes": ["enfado.png"]}
+]
+
+
+#Hace que `equipped_skin` esté disponible en TODAS las plantillas
+@pet_bp.app_context_processor
+def inject_equipped_skin():
+    return {
+        "equipped_skin": session.get("equipped_skin", "basico")
+    }
+
+# -------------------------
+# ARMARIO (pagina donde está el mueble)
+# -------------------------
 @pet_bp.route('/dashboard/pet/wardrobe')
 @login_required
 def wardrobe():
-    skins = [
-        {"name": "Básico", "img": "basico.png"},
-        {"name": "Básico Llorar", "img": "basico_llorar.png"},
-        {"name": "Básico Think", "img": "basico_think.png"},
-        {"name": "Pijo", "img": "pijo.png"},
-        {"name": "Pijo Llorar", "img": "pijo_llorar.png"},
-        {"name": "Pijo Think", "img": "pijo_think.png"},
-        {"name": "Cowboy", "img": "cowboy.png"},
-        {"name": "Cowboy Llorar", "img": "cowboy_llorar.png"},
-        {"name": "Cowboy Think", "img": "cowboy_think.png"},
-        {"name": "Navidad", "img": "navidad.png"},
-        {"name": "Navidad Llorar", "img": "navidad_llorar.png"},
-        {"name": "Navidad Think", "img": "navidad_think.png"},
-        {"name": "Pijama", "img": "pijama.png"},
-        {"name": "Pijama Llorar", "img": "pijama_llorar.png"},
-        {"name": "Pijama Think", "img": "pijama_think.png"},
-        {"name": "Sheldon", "img": "sheldon.png"},
-        {"name": "Sheldon Llorar", "img": "sheldon_llorar.png"},
-        {"name": "Sheldon Think", "img": "sheldon_think.png"},
-        {"name": "Traje", "img": "traje.png"},
-        {"name": "Traje Llorar", "img": "traje_llorar.png"},
-        {"name": "Traje Think", "img": "traje_think.png"},
-        {"name": "Pirata", "img": "pirata.png"},
-        {"name": "Pirata Think", "img": "pirata_think.png"},
-        {"name": "Pirata Llorar", "img": "pirata_llorar.png"},
-        {"name": "Dune", "img": "dune.png"},
-        {"name": "Dune 2", "img": "dune2.png"},
-        {"name": "Enfadado", "img": "enfado.png"}
-    ]
-    return render_template("wardrobe.html", skins=skins)
+    return render_template("wardrobe.html")
 
-# =============================
-#  DATOS DE TODAS LAS SKINS
-# =============================
-skins_data = [
-    {"id": "basico", "nombre": "Básico", "precio": 0, "comprada": True,
-     "imagenes": ["basico.png", "basico_think.png", "basico_llorar.png"]},
-
-    {"id": "cowboy", "nombre": "Cowboy", "precio": 60, "comprada": False,
-     "imagenes": ["cowboy.png", "cowboy_think.png", "cowboy_llorar.png"]},
-
-    {"id": "dune", "nombre": "Dune", "precio": 100, "comprada": False,
-     "imagenes": ["dune.png", "dune2.png"]},
-
-    {"id": "enfado", "nombre": "Enfado", "precio": 40, "comprada": False,
-     "imagenes": ["enfado.png"]},
-
-    {"id": "navidad", "nombre": "Navidad", "precio": 80, "comprada": False,
-     "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
-
-    {"id": "pijama", "nombre": "Pijama", "precio": 50, "comprada": False,
-     "imagenes": ["pijama.png", "pijama_think.png", "pijama_llorar.png"]},
-
-    {"id": "pijo", "nombre": "Pijo", "precio": 80, "comprada": False,
-     "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
-
-    {"id": "pirata", "nombre": "Pirata", "precio": 70, "comprada": False,
-     "imagenes": ["pirata.png", "pirata_think.png", "pirata_llorar.png"]},
-
-    {"id": "sheldon", "nombre": "Sheldon", "precio": 120, "comprada": False,
-     "imagenes": ["sheldon.png", "sheldon_think.png", "sheldon_llorar.png"]},
-
-    {"id": "traje", "nombre": "Traje", "precio": 90, "comprada": False,
-     "imagenes": ["traje.png", "traje_think.png", "traje_llorar.png"]}
-]
-
-# =============================
-#  TIENDA DE SKINS (ÚNICA FUNCIÓN)
-# =============================
+# -------------------------
+# PÁGINA DE SKINS
+# -------------------------
 @pet_bp.route('/dashboard/pet/skins')
 @login_required
 def skins():
-    return render_template('skins.html', skins=skins_data)
+    user_id = session["id"]
 
-# =============================
-#  COMPRA DE SKINS
-# =============================
-@pet_bp.route('/dashboard/pet/buy_skin', methods=['POST'])
+    # Skins que el usuario tiene en la BD
+    owned_ids = {s.skin_id for s in OwnedSkin.query.filter_by(user_id=user_id).all()}
+
+    # Skin equipada actualmente
+    equipped_id = session.get("equipped_skin", 1)
+
+    # Preparar skins con info extra para el HTML
+    skins_preparadas = []
+    for s in skins_data:
+        s_copy = s.copy()
+        s_copy["comprada"] = s["id"] in owned_ids
+        s_copy["equipped"] = (s["id"] == equipped_id)
+        skins_preparadas.append(s_copy)
+
+    return render_template("skins.html", skins=skins_preparadas)
+
+# -------------------------
+# COMPRAR SKIN
+# -------------------------
+@pet_bp.route("/buy_skin", methods=["POST"])
 @login_required
 def buy_skin():
-    data = request.get_json()
-    skin_id = data['skin_id']
-    price = data['price']
+    skin_id = int(request.form.get("skin_id"))
 
-    coins = 70  # ejemplo
-    if coins < price:
-        return {"ok": False}
+    # Buscar skin en la lista
+    skin = next((s for s in skins_data if s["id"] == skin_id), None)
 
-    return {"ok": True}
+    if not skin:
+        flash("Skin no encontrada", "danger")
+        return redirect(url_for("pet.skins"))
+
+    # Obtener usuario
+    user = Users.query.get(session["id"])
+
+    # Verificar si ya la tiene
+    owned = OwnedSkin.query.filter_by(user_id=session["id"], skin_id=skin_id).first()
+    if owned:
+        flash("Ya tienes esta skin", "info")
+        return redirect(url_for("pet.skins"))
+
+    # Verificar monedas
+    if user.coins < skin["precio"]:
+        flash("No tienes suficientes monedas", "danger")
+        return redirect(url_for("pet.skins"))
+
+    # Restar monedas
+    user.coins -= skin["precio"]
+
+    # Guardar skin
+    new_owned = OwnedSkin(user_id=session["id"], skin_id=skin_id)
+    db.session.add(new_owned)
+    db.session.commit()
+
+    flash("Compraste la skin correctamente 🎉", "success")
+    return redirect(url_for("pet.skins"))
+
+
+# -------------------------
+# EQUIPAR SKIN
+# -------------------------
+@pet_bp.route("/equip_skin", methods=["POST"])
+@login_required
+def equip_skin():
+    skin_id = int(request.form.get("skin_id"))
+
+    # Confirmar que el usuario la tiene
+    owned = OwnedSkin.query.filter_by(
+        user_id=session["id"],
+        skin_id=skin_id
+    ).first()
+
+    if not owned:
+        flash("No tienes esta skin", "danger")
+        return redirect(url_for("pet.skins"))
+
+    # Guardar skin equipada
+    session["equipped_skin"] = skin_id
+    flash("Skin equipada correctamente ⭐", "success")
+    return redirect(url_for("pet.skins"))
 
 
 
-current_skin = "basico"   # la que tenga equipada el usuario
-skin_main_image = {
-    "basico": "basico.png",
-    "cowboy": "cowboy.png",
-    "dune": "dune.png",
-    "enfado": "enfado.png",
-    "navidad": "navidad.png",
-    "pijama": "pijama.png",
-    "pijo": "pijo.png",
-    "pirata": "pirata.png",
-    "sheldon": "sheldon.png",
-    "traje": "traje.png"
-}
+
+@pet_bp.app_context_processor
+def inject_equipped_skin():
+    skin_id = session.get("equipped_skin", 1)  # por defecto 1 = Básico
+
+    # Buscar skin en datos
+    skin = next((s for s in skins_data if s["id"] == skin_id), None)
+
+    if skin:
+        main_image = skin["imagenes"][0]   # imagen principal
+    else:
+        main_image = "basico.png"
+
+    return {"equipped_skin_img": main_image, "equipped_skin_id": skin_id}

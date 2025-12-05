@@ -1,41 +1,60 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Skins</title>
+<title>Skins disponibles</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock %}
 
 {% block body %}
 
-<h1 class="titulo-skins">Skins disponibles </h1>
+<h1 class="titulo-skins">Skins disponibles</h1>
 
 <div class="skins-grid">
 
     {% for skin in skins %}
     <div class="skin-card">
 
+        <!-- Imagen principal -->
         <img src="{{ url_for('static', filename='skins/' + skin.imagenes[0]) }}"
              class="skin-img"
              id="img-{{ skin.id }}"
-             data-images="{{ ','.join(skin.imagenes) }}"
-        >
+             data-images="{{ ','.join(skin.imagenes) }}">
 
         <h3>{{ skin.nombre }}</h3>
 
-        {% if skin.comprada %}
+        {% if skin.equipped %}
+            <!-- ⭐ SKIN EQUIPADA ⭐ -->
+            <p class="skin-price comprado" style="color:#d4a017; font-weight:bold;">
+                ⭐ EQUIPADA
+            </p>
+
+        {% elif skin.comprada %}
+            <!-- ✔ SKIN COMPRADA — PERMITE EQUIPAR -->
             <p class="skin-price comprado">✔ Comprada</p>
-            <button class="btn-skin equipar">Equipar</button>
+
+            <form method="POST" action="{{ url_for('pet.equip_skin') }}">
+                <input type="hidden" name="skin_id" value="{{ skin.id }}">
+                <button class="btn-skin equipar">Equipar</button>
+            </form>
+
         {% else %}
+            <!-- 💰 SKIN SIN COMPRAR -->
             <p class="skin-price">💰 {{ skin.precio }} monedas</p>
-            <button class="btn-skin comprar">Comprar</button>
+
+            <form method="POST" action="{{ url_for('pet.buy_skin') }}">
+                <input type="hidden" name="skin_id" value="{{ skin.id }}">
+                <button class="btn-skin comprar">Comprar</button>
+            </form>
+
         {% endif %}
+
     </div>
     {% endfor %}
 
 </div>
 
+<!-- Animación hover -->
 <script>
-// --- ROTACIÓN DE IMÁGENES AL HOVER ---
 const timers = {};
 
 document.querySelectorAll(".skin-img").forEach(img => {
@@ -52,7 +71,7 @@ document.querySelectorAll(".skin-img").forEach(img => {
 
     img.addEventListener("mouseout", () => {
         clearInterval(timers[id]);
-        img.src = "/static/skins/" + images[0];  // vuelve a la principal
+        img.src = "/static/skins/" + images[0];
         index = 0;
     });
 });
