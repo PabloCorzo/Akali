@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
-from model import Users, Task, ScheduleItem
+from model import Users, Task, ScheduleItem,OwnedSkin
 from database import db
 from utils import isLogged, login_required
 from datetime import datetime, date, timedelta
+from routes.pet import skins_data
 
 dashboard_bp = Blueprint(
     'dashboard', __name__,
@@ -63,8 +64,24 @@ def dashboard():
             'events_count': day_events_count
         })
     
+    equipped_skin = OwnedSkin.query.filter_by(user_id = session['id'], equipped= 1).first()
+
+    if not equipped_skin:
+        skin = OwnedSkin(user_id = user_id, skin_id = 1, equipped = 1)
+        db.session.add(skin)
+        db.session.commit()
+        equipped_skin = OwnedSkin.query.filter_by(equipped = 1).first()
+
+    # equipped_skin = [s['name'] for s in skins_data if s['id'] == equipped_skin.skin_id]
+    for skin in skins_data:
+        if skin['id'] == equipped_skin.skin_id:
+            print(f'FOUND SKIN : {skin}')
+            equipped_skin = skin['nombre']
+            break
+
+    print(f'\n\nSKIN NAME IS {equipped_skin}\n\n')
     return render_template('dashboard.html', tasks=tasks, events=events, 
-                         week_days=week_days, today=today)
+                         week_days=week_days, today=today, equipped_skin = equipped_skin)
 
 
    

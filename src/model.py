@@ -180,8 +180,10 @@ class OwnedSkin(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    skin_id = db.Column(db.String(50), nullable=False)
+    skin_id = db.Column(db.Integer, nullable=False)
+    equipped = db.Column(db.Boolean, unique=False, nullable=True)
 
-    def __init__(self, user_id, skin_id):
+    def __init__(self, user_id, skin_id, equipped = 0):
         self.user_id = user_id
         self.skin_id = skin_id
+        self.equipped = equipped

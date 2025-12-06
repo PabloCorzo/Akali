@@ -65,20 +65,28 @@ def wardrobe():
 def skins():
     user_id = session["id"]
 
-    # Skins que el usuario tiene en la BD
-    owned_ids = {s.skin_id for s in OwnedSkin.query.filter_by(user_id=user_id).all()}
 
+    equipped_skin = OwnedSkin.query.filter_by(user_id = user_id, equipped = 1).first()
+
+    #On first request per user, user wont have a skin
+    if not equipped_skin:
+        skin = OwnedSkin(user_id = user_id, skin_id = 1, equipped = 1)
+        db.session.add(skin)
+        db.session.commit()
+        equipped_skin = OwnedSkin.query.filter_by(equipped = 1).first()
+
+    # Skins que el usuario tiene en la BD
+    owned_ids = [skin.skin_id for skin in OwnedSkin.query.filter_by(user_id = user_id)]
     # Skin equipada actualmente
-    equipped_id = session.get("equipped_skin", 1)
 
     # Preparar skins con info extra para el HTML
     skins_preparadas = []
     for s in skins_data:
         s_copy = s.copy()
-        s_copy["comprada"] = s["id"] in owned_ids
-        s_copy["equipped"] = (s["id"] == equipped_id)
+        s_copy["comprada"] = OwnedSkin.query.filter_by(skin_id = s['id']).first() is not None
+        s_copy["equipped"] = (s["id"] == equipped_skin.skin_id)
         skins_preparadas.append(s_copy)
-
+        # print(f'\n\n\nskins preparadas is {skins_preparadas}')
     return render_template("skins.html", skins=skins_preparadas)
 
 # -------------------------
@@ -129,7 +137,7 @@ def buy_skin():
 @login_required
 def equip_skin():
     skin_id = int(request.form.get("skin_id"))
-
+    print(f'TRIED TO BUY {skin_id}')
     # Confirmar que el usuario la tiene
     owned = OwnedSkin.query.filter_by(
         user_id=session["id"],
@@ -141,7 +149,9 @@ def equip_skin():
         return redirect(url_for("pet.skins"))
 
     # Guardar skin equipada
-    session["equipped_skin"] = skin_id
+    OwnedSkin.query.filter_by(user_id = session['id'], equipped = 1).update({'equipped':0})
+    OwnedSkin.query.filter_by(user_id = session['id'], skin_id = skin_id).update({'equipped':1})
+    db.session.commit()
     flash("Skin equipada correctamente ⭐", "success")
     return redirect(url_for("pet.skins"))
 
