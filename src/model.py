@@ -20,6 +20,7 @@ class Users(db.Model):
     email = db.Column('email', db.String(32), unique=True, nullable=True)
     password = db.Column('password', db.String(64), nullable=False)
     coins = db.Column('coins', db.Integer, default=0, nullable=False)
+    last_daily_claim = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, username, email, password,coins =  0):
         self.username = username
