@@ -17,7 +17,7 @@
       <img id = 'img2' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-hide" >
       <div class="input-group">
           <label for="password">Apuesta</label>
-          <input type="number" id="bet" name="bet" placeholder="Apuesta por defecto : 10" required>
+          <input type="number" id="bet" name="bet" placeholder="Apuesta por defecto : 10" required value="10" min="10">
         </div>
       <button  href="/dashboard/blackjack" class="blackjack-btn" type="submit">Jugar Black Jack</a>
     </form>
