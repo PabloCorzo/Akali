@@ -72,7 +72,7 @@ def blackjack(action = None):
         print('\n\nGAME NOT FOUND ON DB\n\n')
         db_state = Game(session['id'])
         db.session.add(db_state)
-    
+        db.session.commit()
     
     bj = start_game().state
     stats = {}    
@@ -83,20 +83,7 @@ def blackjack(action = None):
     bj.to_state(stats)
     print(f'\n\n GAMESTATE ACQUIRED FROM DB:\n {stats}  \n\n')
     print(bj.turn)
-    #Game was created by sqlalchemy, so initialize
-    if bj.turn == -1:
-        
-        dhand = [card.name for card in bj.dealer_hand]
-        phand = [card.name for card in bj.player_hand]
-        deck = [card.name for card in bj.deck]
-        Game.query.filter_by(user_id = session['id']).update({
-            'dealer_hand' : ''.join(dhand),
-            'player_hand' : ''.join(phand),
-            'deck' : ''.join(deck),
-            'turn' : bj.turn,
-             })
-        db.session.commit()
-        
+    
     #game is ongoing
     print(f'\n\nDBS  TURN RECORD MARKS {db_state.turn}\n\n')
     action = request.args.get('action')

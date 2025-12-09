@@ -5,6 +5,8 @@ Este módulo contiene todos los modelos de base de datos de la aplicación.
 
 from database import db
 import hashlib
+from games import blackjack as bjg
+
 ################3
 from datetime import datetime
 
@@ -102,16 +104,28 @@ class Game(db.Model):
     turn = db.Column(db.Integer)
     deck = db.Column(db.String(64))
 
+    def initialize_game(self):
+        state = bjg.BlackJack().state
+        return state
+
     def __init__(self, uid):
         self.title = 'Blackjack state'
         self.user_id = uid
+        
 
+        s = self.initialize_game()
+        stats = s.serialize()
         #CHANGED BY LOGIC
-        self.player_hand = ''
-        self.dealer_hand = ''
-        self.deck = ''
-        self.turn = -1
-
+        self.player_hand = ''.join(stats['phand'])
+        self.dealer_hand = ''.join(stats['dhand'])
+        self.deck = ''.join(stats['deck'])
+        self.turn = 0
+# Game.query.filter_by(user_id = session['id']).update({
+            # 'dealer_hand' : ''.join(dhand),
+            # 'player_hand' : ''.join(phand),
+            # 'deck' : ''.join(deck),
+            # 'turn' : bj.turn,
+            #  })
 
 # -------------------- NUEVOS: ENTRENAMIENTOS + NUTRICIÓN --------------------
 

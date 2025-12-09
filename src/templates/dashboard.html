@@ -21,7 +21,7 @@
 
         <!-- Header de Bienvenida -->
         <div class="dashboard-header">
-            <h1>Bienvenido de vuelta</h1>
+            <h1>Bienvenido de vuelta, {{ username }}</h1>
             <p>Aquí tienes un resumen de tu día</p>
         </div>
 
@@ -93,7 +93,7 @@
             <!-- Widget 3: Mini Calendario Semanal -->
             <div class="dashboard-card">
                 <div class="card-header">
-                    <h2>📆 Esta Semana</h2>
+                    <h2> Esta Semana</h2>
                     <a href="{{ url_for('schedule.create_schedule_item') }}" class="card-link">Ver calendario →</a>
                 </div>
                 <div class="card-content">

@@ -67,7 +67,7 @@ def skins():
         skin = OwnedSkin(user_id = user_id, skin_id = 1, equipped = 1)
         db.session.add(skin)
         db.session.commit()
-        equipped_skin = OwnedSkin.query.filter_by(equipped = 1).first()
+        equipped_skin = OwnedSkin.query.filter_by(user_id=user_id, equipped=1).first()
 
     # Skins que el usuario tiene en la BD
     owned_ids = [skin.skin_id for skin in OwnedSkin.query.filter_by(user_id = user_id)]
@@ -77,7 +77,7 @@ def skins():
     skins_preparadas = []
     for s in skins_data:
         s_copy = s.copy()
-        s_copy["comprada"] = OwnedSkin.query.filter_by(skin_id = s['id']).first() is not None
+        s_copy["comprada"] = OwnedSkin.query.filter_by(user_id=user_id, skin_id=s['id']).first() is not None
         s_copy["equipped"] = (s["id"] == equipped_skin.skin_id)
         skins_preparadas.append(s_copy)
         # print(f'\n\n\nskins preparadas is {skins_preparadas}')

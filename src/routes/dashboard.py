@@ -17,6 +17,7 @@ dashboard_bp = Blueprint(
 def dashboard():
 
     user_id = session['id']
+    username = session.get('username', 'Usuario')
 
     # Obtener las 5 tareas pendientes más recientes
     tasks = Task.query.filter_by(
@@ -68,7 +69,7 @@ def dashboard():
         skin = OwnedSkin(user_id = user_id, skin_id = 1, equipped = 1)
         db.session.add(skin)
         db.session.commit()
-        equipped_skin = OwnedSkin.query.filter_by(equipped = 1).first()
+        equipped_skin = OwnedSkin.query.filter_by(user_id=user_id, equipped=1).first()
 
     # equipped_skin = [s['name'] for s in skins_data if s['id'] == equipped_skin.skin_id]
     for skin in skins_data:
@@ -79,7 +80,7 @@ def dashboard():
 
     print(f'\n\nSKIN NAME IS {equipped_skin}\n\n')
     return render_template('dashboard.html', tasks=tasks, events=events,
-                         week_days=week_days, today=today, equipped_skin = equipped_skin)
+                         week_days=week_days, today=today, equipped_skin=equipped_skin, username=username)
 
 
    
