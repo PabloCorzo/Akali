@@ -35,7 +35,13 @@ def login():
             # session['email'] = user.email
             session['id'] = user._id
 
-            CoinsManager.add_coins(user._id, 10)
+            # Intentar reclamar monedas diarias
+            success, message = CoinsManager.claim_daily_coins(user._id, 10)
+            if success:
+                flash(message, "success")
+            else:
+                flash(message, "info")
+
             session['show_coins_message'] = True
             session["game"] = None
             return redirect(url_for('dashboard.dashboard'))

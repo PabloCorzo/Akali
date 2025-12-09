@@ -25,6 +25,18 @@
             <p>Aquí tienes un resumen de tu día</p>
         </div>
 
+        <div class="inicio-mascota">
+            <img 
+                src="{{ url_for('static', filename='skins/' + equipped_skin + '.png') }}"
+                class="inicio-mascota-img"
+                onclick="window.location.href='{{ url_for("pet.wardrobe") }}';"
+                alt="Mascota"
+            >
+
+        </div>
+
+
+
         <!-- Grid Principal del Dashboard -->
         <div class="dashboard-grid">
             

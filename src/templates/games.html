@@ -12,11 +12,15 @@
 
 <body class="body-games">
   <div class="games-full">
-    <div class="blackjack-box">
+    <form class="blackjack-box" action = "/dashboard/blackjack" method="post">
       <img id = 'img1' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-show" >
       <img id = 'img2' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-hide" >
-      <a href="/dashboard/blackjack" class="blackjack-btn">Jugar Black Jack</a>
-    </div>
+      <div class="input-group">
+          <label for="password">Apuesta</label>
+          <input type="number" id="bet" name="bet" placeholder="Apuesta por defecto : 10" required value="10" min="10">
+        </div>
+      <button  href="/dashboard/blackjack" class="blackjack-btn" type="submit">Jugar Black Jack</a>
+    </form>
   </div>
       
 <script type = "text/javascript">
@@ -36,7 +40,7 @@
     document.getElementById('img1').classList.replace("blackjack-img-show","blackjack-img-hide");
     document.getElementById('img2').classList.replace("blackjack-img-hide","blackjack-img-show");
   }
-  },1000);
+  },1);
 </script>
 </body>
 {% endblock %}

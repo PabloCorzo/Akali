@@ -20,16 +20,15 @@ def movies():
     searched = any([q_title, q_director, q_actor])
 
     movies = []
+    query = Movie.query.filter(Movie.user_id == session['id'])
     if searched:
-        query = Movie.query.filter(Movie.user_id == session['id'])
         if q_title:
             query = query.filter(Movie.title.ilike(f"%{q_title}%"))
         if q_director:
             query = query.filter(Movie.director.ilike(f"%{q_director}%"))
         if q_actor:
             query = query.filter(Movie.actors.ilike(f"%{q_actor}%"))
-        movies = query.order_by(Movie.id.desc()).all()
-
+    movies = query.order_by(Movie.id.desc()).all()
     return render_template("movies.html", movies=movies, searched=searched)
 
 @movies_bp.route("/dashboard/movies/create", methods=["POST"])

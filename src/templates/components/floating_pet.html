@@ -1,0 +1,22 @@
+<div id="floating-pet">
+    <img src="{{ url_for('static', filename='skins/basico.png') }}" class="floating-pet-img">
+</div>
+
+<style>
+#floating-pet {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+.floating-pet-img {
+    width: 130px;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.floating-pet-img:hover {
+    transform: scale(1.07);
+}
+</style>

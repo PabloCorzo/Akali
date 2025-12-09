@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Armario</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="armario-hover">
+    <img 
+        src="{{ url_for('static', filename='imagenes/armario_cerrado.png') }}"
+        alt="Armario"
+        class="armario-img"
+        id="armarioImagen"
+        onclick="entrarArmario()"
+        onmouseover="abrirArmario()"
+        onmouseout="cerrarArmario()"
+    >
+</div>
+
+<script>
+function abrirArmario() {
+    document.getElementById("armarioImagen").src =
+        "{{ url_for('static', filename='imagenes/armario_abierto.jpg') }}";
+}
+
+function cerrarArmario() {
+    document.getElementById("armarioImagen").src =
+        "{{ url_for('static', filename='imagenes/armario_cerrado.png') }}";
+}
+
+function entrarArmario() {
+    window.location.href = "{{ url_for('pet.skins') }}";
+}
+</script>
+
+{% endblock %}

@@ -15,6 +15,8 @@ from routes.study import study_bp
 from routes.workout import workout_bp
 from routes.flashcards import flashcards_bp
 from utils import inject_user_coins
+from routes.pet import pet_bp
+from flask import session, request, redirect, url_for, flash
 
 
 sys.path.append("../src")
@@ -47,13 +49,23 @@ app.register_blueprint(study_bp)
 app.register_blueprint(nutrition_bp)
 app.register_blueprint(workout_bp)
 app.register_blueprint(flashcards_bp)
+app.register_blueprint(pet_bp)
 
 
 app.context_processor(inject_user_coins)
 
+
+@app.context_processor
+def inject_equipped_skin():
+    return {"equipped_skin": session.get("equipped_skin", "basico")}
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug = True,host = '0.0.0.0')
+
+
+
+
+

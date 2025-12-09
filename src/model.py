@@ -5,6 +5,8 @@ Este módulo contiene todos los modelos de base de datos de la aplicación.
 
 from database import db
 import hashlib
+from games import blackjack as bjg
+
 ################3
 from datetime import datetime
 
@@ -20,6 +22,7 @@ class Users(db.Model):
     email = db.Column('email', db.String(32), unique=True, nullable=True)
     password = db.Column('password', db.String(64), nullable=False)
     coins = db.Column('coins', db.Integer, default=0, nullable=False)
+    last_daily_claim = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, username, email, password,coins =  0):
         self.username = username
@@ -90,17 +93,39 @@ class Movie(db.Model):
         self.user_id = user_id
 
 ##########################
-
+#PARA MANTENER UNA SOLA PARTIDA CONCURRENTE DE BLACKJACK POR CUENTA
 class Game(db.Model):
     __tablename__ = 'games'
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False,index = True)
+    player_hand = db.Column(db.String(64))
+    dealer_hand = db.Column(db.String(64))
+    turn = db.Column(db.Integer)
+    deck = db.Column(db.String(64))
 
-    def __init__(self, title):
-        self.title = title
+    def initialize_game(self):
+        state = bjg.BlackJack().state
+        return state
 
+    def __init__(self, uid):
+        self.title = 'Blackjack state'
+        self.user_id = uid
+        
 
+        s = self.initialize_game()
+        stats = s.serialize()
+        #CHANGED BY LOGIC
+        self.player_hand = ''.join(stats['phand'])
+        self.dealer_hand = ''.join(stats['dhand'])
+        self.deck = ''.join(stats['deck'])
+        self.turn = 0
+# Game.query.filter_by(user_id = session['id']).update({
+            # 'dealer_hand' : ''.join(dhand),
+            # 'player_hand' : ''.join(phand),
+            # 'deck' : ''.join(deck),
+            # 'turn' : bj.turn,
+            #  })
 
 # -------------------- NUEVOS: ENTRENAMIENTOS + NUTRICIÓN --------------------
 
@@ -161,3 +186,19 @@ class Flashcard(db.Model):
         self.question = question
         self.answer = answer
         self.category = category
+
+
+
+# -------------------- SKINS OWNED BY USER --------------------
+class OwnedSkin(db.Model):
+    __tablename__ = "owned_skins"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    skin_id = db.Column(db.Integer, nullable=False)
+    equipped = db.Column(db.Boolean, unique=False, nullable=True)
+
+    def __init__(self, user_id, skin_id, equipped = 0):
+        self.user_id = user_id
+        self.skin_id = skin_id
+        self.equipped = equipped
