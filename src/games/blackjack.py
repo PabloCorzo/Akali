@@ -125,14 +125,16 @@ class GameState:
 
         for i in range(0,len(pcard_names)-1):
             if pcard_names[i] == '1' and pcard_names[i+1] =='0':
+                print(f'pcard has a 10 on pos {i} and {i+1}')
                 pcards.append(Card('10'))
-            elif deck_names[i] != '0':
+            elif pcard_names[i] != '0':
+                print('appended card ')
                 pcards.append(Card(pcard_names[i]))
 
         for i in range(0,len(dcard_names)-1):
             if dcard_names[i] == '1' and dcard_names[i+1] =='0':
                dcards.append(Card('10'))
-            elif deck_names[i] != '0':
+            elif dcard_names[i] != '0':
               dcards.append(Card(dcard_names[i]))
 
         print(f'dcard len is {len(dcard_names)}')
