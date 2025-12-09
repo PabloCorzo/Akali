@@ -49,13 +49,14 @@
             </div>
         </div>
         
-        <div style="display: flex; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px;">
             <span class="navbar-title">AKALI</span>
             {% if user_coins is not none and user_name %}
                 <span class="coins-display">
                     🪙 {{ user_coins }}
                 </span>
             {% endif %}
+            <a href="{{ url_for('auth.logout') }}" class="logout-btn">Cerrar sesión</a>
         </div>
     </nav>
     {% block body %}{% endblock %}
