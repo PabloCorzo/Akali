@@ -6,7 +6,15 @@
 {% endblock %}
 
 {% block body %}
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 <h1 class="titulo-skins">Skins disponibles</h1>
 
 <div class="skins-grid">
