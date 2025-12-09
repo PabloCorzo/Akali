@@ -9,7 +9,7 @@ pet_bp = Blueprint('pet', __name__, template_folder='../templates')
 # -------------------------
 # SKINS DEFINIDAS
 # -------------------------
-skins_data= [
+skins_data = [
     {"id": 1, "nombre": "basico", "precio": 0,
      "imagenes": ["basico.png", "basico_think.png", "basico_llorar.png"]},
 
@@ -26,7 +26,7 @@ skins_data= [
      "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
 
     {"id": 6, "nombre": "dune", "precio": 90,
-     "imagenes": ["dune.png", "dune2.png"]},
+     "imagenes": ["dune.png", "dune2.png", "dune_llorar.png"]},
 
     {"id": 7, "nombre": "navidad", "precio": 100,
      "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
@@ -38,16 +38,10 @@ skins_data= [
      "imagenes": ["sheldon.png", "sheldon_think.png", "sheldon_llorar.png"]},
 
     {"id": 10, "nombre": "enfado", "precio": 10,
-     "imagenes": ["enfado.png"]}
+     "imagenes": ["enfado.png"]}  # esta solo tiene una, usará la misma para todo
 ]
 
 
-#Hace que `equipped_skin` esté disponible en TODAS las plantillas
-@pet_bp.app_context_processor
-def inject_equipped_skin():
-    return {
-        "equipped_skin": session.get("equipped_skin", "basico")
-    }
 
 # -------------------------
 # ARMARIO (pagina donde está el mueble)
@@ -156,18 +150,40 @@ def equip_skin():
     return redirect(url_for("pet.skins"))
 
 
-
-
 @pet_bp.app_context_processor
 def inject_equipped_skin():
-    skin_id = session.get("equipped_skin", 1)  # por defecto 1 = Básico
+    user_id = session.get("id")
 
-    # Buscar skin en datos
-    skin = next((s for s in skins_data if s["id"] == skin_id), None)
+    # Si no hay usuario logueado → usar básico
+    if not user_id:
+        return {
+            "equipped_skin_img": "basico.png",
+            "equipped_skin_think": "basico_think.png",
+            "equipped_skin_cry": "basico_llorar.png",
+            "equipped_skin_id": 1
+        }
+
+    # Buscar skin equipada en la base de datos
+    equipped = OwnedSkin.query.filter_by(user_id=user_id, equipped=1).first()
+    equipped_skin_id = equipped.skin_id if equipped else 1
+
+    # Buscar datos de esa skin en skins_data
+    skin = next((s for s in skins_data if s["id"] == equipped_skin_id), None)
 
     if skin:
-        main_image = skin["imagenes"][0]   # imagen principal
+        # 0 = normal, 1 = pensar, 2 = llorar (si existen)
+        normal = skin["imagenes"][0]
+        think  = skin["imagenes"][1] if len(skin["imagenes"]) > 1 else skin["imagenes"][0]
+        cry    = skin["imagenes"][2] if len(skin["imagenes"]) > 2 else skin["imagenes"][0]
     else:
-        main_image = "basico.png"
+        # Fallback por si algo va mal
+        normal = "basico.png"
+        think  = "basico_think.png"
+        cry    = "basico_llorar.png"
 
-    return {"equipped_skin_img": main_image, "equipped_skin_id": skin_id}
+    return {
+        "equipped_skin_img": normal,
+        "equipped_skin_think": think,
+        "equipped_skin_cry": cry,
+        "equipped_skin_id": equipped_skin_id
+    }

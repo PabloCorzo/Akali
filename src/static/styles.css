@@ -2116,3 +2116,15 @@ tbody tr:last-child td {
     object-fit: contain;
 }
 
+/* ========================================
+   mascota en flashcards
+   ======================================== */
+.flash-mascota-think {
+    position: fixed;
+    bottom: -70px;
+    right: -100px;
+    width: 400px;     /* Aumenta si la quieres más grande */
+    height: 400px;
+    object-fit: contain; /* Hace que todas las skins usen el mismo tamaño */
+    z-index: 999;
+}

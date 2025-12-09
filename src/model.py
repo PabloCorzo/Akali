@@ -167,6 +167,8 @@ class Flashcard(db.Model):
     answer = db.Column(db.Text, nullable=False)
     category = db.Column(db.String(100), default="General")
 
+    bad = db.Column(db.Boolean, default=False)
+
     def __init__(self, user_id, question, answer, category="General"):
         self.user_id = user_id
         self.question = question

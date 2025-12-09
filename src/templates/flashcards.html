@@ -111,6 +111,29 @@
         </div>
     </div>
 
+
+        <div class="mascota-flashcards">
+        <img
+          class="flash-mascota-think"
+          src="{{ url_for(
+                   'static',
+                   filename='skins/' + (equipped_skin_cry if last_has_bad else equipped_skin_think)
+               ) }}"
+          alt="Mascota"
+        >
+    </div>
+
+
+
+    {% if bad_flashcard %}
+    <img src="{{ url_for('static', filename='skins/' + equipped_skin_cry) }}" class="flash-mascota-think">
+    {% else %}
+    <img src="{{ url_for('static', filename='skins/' + equipped_skin_think) }}" class="flash-mascota-think">
+    {% endif %}
+
+
+
+
     <script>
         function toggleAnswer(element) {
             const cardElement = element.closest('.flashcard');

@@ -2,6 +2,20 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from model import Flashcard  # Importa la clase del modelo
 from database import db
 from utils import login_required
+
+BAD_WORDS = [
+    "violación", "violador", "violar", "vi0lar", "v1olar",
+    "incesto", "pederastia", "pedo", "abuso", "abusar",
+    "violando", "violada", "pornografía infantil",
+    "menor", "niño", "niña", "abuso infantil"
+]
+def contains_bad_word(text: str) -> bool:
+    if not text:
+        return False
+    t = text.lower()
+    return any(bad in t for bad in BAD_WORDS)
+
+
 flashcards_bp = Blueprint(
     'flashcards', __name__,
     template_folder='../templates',
@@ -13,10 +27,24 @@ flashcards_bp = Blueprint(
 @flashcards_bp.route("/dashboard/flashcards", methods=["GET"])
 @login_required
 def list_flashcards():
-    """Muestra todas las flashcards del usuario actual."""
     user_id = session['id']
-    flashcard_list = Flashcard.query.filter_by(user_id=user_id).order_by(Flashcard.id.desc()).all()
-    return render_template('flashcards.html', flashcards=flashcard_list)
+
+    flashcard_list = (Flashcard.query
+                      .filter_by(user_id=user_id)
+                      .order_by(Flashcard.id.desc())
+                      .all())
+
+    # ¿La última tarjeta tiene contenido prohibido?
+    last_has_bad = False
+    if flashcard_list:
+        last = flashcard_list[0]
+        last_has_bad = contains_bad_word(last.question) or contains_bad_word(last.answer)
+
+    return render_template(
+        'flashcards.html',
+        flashcards=flashcard_list,
+        last_has_bad=last_has_bad
+    )
 
 
 # RUTA 2: CREAR FLASHCARD
@@ -48,8 +76,14 @@ def create_flashcard():
         answer=answer,
         category=category
     )
+
+    new_card.bad = contains_bad_word(question) or contains_bad_word(answer)
+
     db.session.add(new_card)
     db.session.commit()
+
+    new_card.bad = contains_bad_word(question) or contains_bad_word(answer)
+
     flash('¡Flashcard creada con éxito!', 'success')
     return redirect(url_for('flashcards.list_flashcards'))
 
