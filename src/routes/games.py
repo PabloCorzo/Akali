@@ -72,7 +72,7 @@ def blackjack(action = None):
         print('\n\nGAME NOT FOUND ON DB\n\n')
         db_state = Game(session['id'])
         db.session.add(db_state)
-    
+        db.session.commit()
     
     bj = start_game().state
     stats = {}    

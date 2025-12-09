@@ -135,12 +135,14 @@ class GameState:
             elif deck_names[i] != '0':
               dcards.append(Card(dcard_names[i]))
 
+        print(f'dcard len is {len(dcard_names)}')
         if dcard_names[-1] != '0':
             dcards.append(Card(dcard_names[-1]))
+        print(f'pcard len is {len(pcard_names)}')
 
         if pcard_names[-1] != '0':
             pcards.append(Card(pcard_names[-1]))
-
+        print(f'deck len is {len(deck_names)}')
         if deck_names[-1] != '0':
             deck.append(Card(deck_names[-1]))
 
