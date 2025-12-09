@@ -144,11 +144,11 @@ class GameState:
         if deck_names[-1] != '0':
             deck.append(Card(deck_names[-1]))
 
-        print(f'\n\ndeck is now: ')
-        for card in deck:
-          print(card)
-        print(f'\n\nplayer_deck is now {pcards}')
-        print(f'\n\ndealer_deck is now {dcards}')
+        # print(f'\n\ndeck is now: ')
+        # for card in deck:
+        #   print(card)
+        # print(f'\n\nplayer_deck is now {pcards}')
+        # print(f'\n\ndealer_deck is now {dcards}')
         self.turn = turn
         self.deck = deck
         self.player_hand = pcards

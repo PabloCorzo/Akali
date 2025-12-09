@@ -58,6 +58,13 @@ def blackjack(action = None):
 
     #add action var to the state object to pass it here and apply result
 
+    print(request.method)
+    if request.method == "POST":
+        bet = request.form["bet"].strip()
+    else:
+        bet = None
+    print(f'\n\n\n\nBET IS {bet}\n\n\n\n')
+
     db_state = Game.query.filter_by(user_id = session['id']).first()
     print(f'ACTION IS {action}')
     #create game if its first time (with default/invalid values)
@@ -74,6 +81,8 @@ def blackjack(action = None):
     stats["deck"] = list(db_state.deck)
     stats["turn"] = db_state.turn
     bj.to_state(stats)
+    print(f'\n\n GAMESTATE ACQUIRED FROM DB:\n {stats}  \n\n')
+    print(bj.turn)
     #Game was created by sqlalchemy, so initialize
     if bj.turn == -1:
         
@@ -89,25 +98,9 @@ def blackjack(action = None):
         db.session.commit()
         
     #game is ongoing
-    elif db_state:
-
-        # phand = list(db_state.player_hand)
-        # dhand = list(db_state.dealer_hand)
-        # deck = list(db_state.deck)
-        # turn = db_state.turn
-        # stats = {}    
-        # stats["phand"] = phand
-        # stats["dhand"] = dhand
-        # stats["deck"] = deck
-        # stats["turn"] = turn
-
-        # bj = start_game().state
-        # bj.to_state(stats)
-
-        print(f'\n\nDBS  TURN RECORD MARKS {db_state.turn}\n\n')
-    print(f'\n\n GAMESTATE ACQUIRED FROM DB:\n {stats}  \n\n')
+    print(f'\n\nDBS  TURN RECORD MARKS {db_state.turn}\n\n')
     action = request.args.get('action')
-
+    print(action)
 
     if action == "NEW":
         
