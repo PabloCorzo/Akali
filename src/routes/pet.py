@@ -10,34 +10,34 @@ pet_bp = Blueprint('pet', __name__, template_folder='../templates')
 # SKINS DEFINIDAS
 # -------------------------
 skins_data= [
-    {"id": 1, "nombre": "Basico", "precio": 0,
+    {"id": 1, "nombre": "basico", "precio": 0,
      "imagenes": ["basico.png", "basico_think.png", "basico_llorar.png"]},
 
-    {"id": 2, "nombre": "Pijama", "precio": 50,
+    {"id": 2, "nombre": "pijama", "precio": 50,
      "imagenes": ["pijama.png", "pijama_think.png", "pijama_llorar.png"]},
 
-    {"id": 3, "nombre": "Cowboy", "precio": 60,
+    {"id": 3, "nombre": "cowboy", "precio": 60,
      "imagenes": ["cowboy.png", "cowboy_think.png", "cowboy_llorar.png"]},
 
-    {"id": 4, "nombre": "Pirata", "precio": 70,
+    {"id": 4, "nombre": "pirata", "precio": 70,
      "imagenes": ["pirata.png", "pirata_think.png", "pirata_llorar.png"]},
 
-    {"id": 5, "nombre": "Pijo", "precio": 80,
+    {"id": 5, "nombre": "pijo", "precio": 80,
      "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
 
-    {"id": 6, "nombre": "Dune", "precio": 90,
+    {"id": 6, "nombre": "dune", "precio": 90,
      "imagenes": ["dune.png", "dune2.png"]},
 
-    {"id": 7, "nombre": "Navidad", "precio": 100,
+    {"id": 7, "nombre": "navidad", "precio": 100,
      "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
 
-    {"id": 8, "nombre": "Traje", "precio": 120,
+    {"id": 8, "nombre": "traje", "precio": 120,
      "imagenes": ["traje.png", "traje_think.png", "traje_llorar.png"]},
 
-    {"id": 9, "nombre": "Sheldon", "precio": 120,
+    {"id": 9, "nombre": "sheldon", "precio": 120,
      "imagenes": ["sheldon.png", "sheldon_think.png", "sheldon_llorar.png"]},
 
-    {"id": 10, "nombre": "Enfado", "precio": 10,
+    {"id": 10, "nombre": "enfado", "precio": 10,
      "imagenes": ["enfado.png"]}
 ]
 

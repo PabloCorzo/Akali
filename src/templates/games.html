@@ -12,11 +12,15 @@
 
 <body class="body-games">
   <div class="games-full">
-    <div class="blackjack-box">
+    <form class="blackjack-box">
       <img id = 'img1' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-show" >
       <img id = 'img2' src="{{ url_for('static', filename='imagenes/casino_racoon.jpg') }}" alt="Black Jack" class="blackjack-img-hide" >
+      <div class="input-group">
+          <label for="password">Apuesta</label>
+          <input type="bet" id="bet" name="apuesta" placeholder="Aposto, seu pão-duro de merda" required>
+        </div>
       <a href="/dashboard/blackjack" class="blackjack-btn">Jugar Black Jack</a>
-    </div>
+    </form>
   </div>
       
 <script type = "text/javascript">

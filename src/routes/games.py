@@ -65,11 +65,18 @@ def blackjack(action = None):
         print('\n\nGAME NOT FOUND ON DB\n\n')
         db_state = Game(session['id'])
         db.session.add(db_state)
-
+    
+    
+    bj = start_game().state
+    stats = {}    
+    stats["phand"] = list(db_state.player_hand)
+    stats["dhand"] = list(db_state.dealer_hand)
+    stats["deck"] = list(db_state.deck)
+    stats["turn"] = db_state.turn
+    bj.to_state(stats)
     #Game was created by sqlalchemy, so initialize
-    if db_state.turn == -1:
+    if bj.turn == -1:
         
-        bj = start_game().state
         dhand = [card.name for card in bj.dealer_hand]
         phand = [card.name for card in bj.player_hand]
         deck = [card.name for card in bj.deck]
@@ -84,20 +91,21 @@ def blackjack(action = None):
     #game is ongoing
     elif db_state:
 
-        phand = list(db_state.player_hand)
-        dhand = list(db_state.dealer_hand)
-        deck = list(db_state.deck)
-        turn = db_state.turn
-        stats = {}    
-        stats["phand"] = phand
-        stats["dhand"] = dhand
-        stats["deck"] = deck
-        stats["turn"] = turn
+        # phand = list(db_state.player_hand)
+        # dhand = list(db_state.dealer_hand)
+        # deck = list(db_state.deck)
+        # turn = db_state.turn
+        # stats = {}    
+        # stats["phand"] = phand
+        # stats["dhand"] = dhand
+        # stats["deck"] = deck
+        # stats["turn"] = turn
 
-        bj = start_game().state
-        bj.to_state(stats)
+        # bj = start_game().state
+        # bj.to_state(stats)
 
-    print(f'\n\nDBS  TURN RECORD MARKS {db_state.turn}\n\n')
+        print(f'\n\nDBS  TURN RECORD MARKS {db_state.turn}\n\n')
+    print(f'\n\n GAMESTATE ACQUIRED FROM DB:\n {stats}  \n\n')
     action = request.args.get('action')
 
 
@@ -115,30 +123,6 @@ def blackjack(action = None):
              })
         db.session.commit()
         action = 3
-
-    # if not session["game"]:
-
-    #     bj = start_game().state
-    #     d = bj.serialize()
-    #     session["game"] = True
-    #     session["game_player_hand"] = d["phand"]
-    #     session["game_dealer_hand"] = d["dhand"]
-    #     session["game_deck"] = d["deck"]
-    #     session["game_turn"] = d["turn"]
-        
-    # else:
-    #     phand = session["game_player_hand"]
-    #     dhand = session["game_dealer_hand"]
-    #     deck = session["game_deck"]
-    #     turn = session["game_turn"]
-    #     stats = {}    
-    #     bj = start_game().state
-    #     stats["phand"] = phand
-    #     stats["dhand"] = dhand
-    #     stats["deck"] = deck
-    #     stats["turn"] = turn
-
-    #     bj.to_state(stats)
 
         
     if bj.turn != 0:
@@ -190,6 +174,13 @@ def blackjack(action = None):
         else:
             mascot_state = "tie"
 
+    new_db_state = Game.query.filter_by(user_id = session['id']).first()
+    stats = {}    
+    stats["phand"] = list(new_db_state.player_hand)
+    stats["dhand"] = list(new_db_state.dealer_hand)
+    stats["deck"] = list(new_db_state.deck)
+    stats["turn"] = new_db_state.turn
+    print(f'\n\n GAMESTATE GIVEN TO DB:\n {stats}  \n\n')
 
         
     return render_template("blackjack.html",state = bj, mascot_state=mascot_state)

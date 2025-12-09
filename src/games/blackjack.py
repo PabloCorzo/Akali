@@ -106,15 +106,49 @@ class GameState:
         pcards = []
         dcards = []
 
-        for name in deck_names:
-            deck.append(Card(name))
+        # for name in deck_names:
+        #     deck.append(Card(name))
 
-        for name in pcard_names:
-            pcards.append(Card(name))
+        # for name in pcard_names:
+        #     pcards.append(Card(name))
 
-        for name in dcard_names:
-            dcards.append(Card(name)) 
-    
+        # for name in dcard_names:
+        #     dcards.append(Card(name))
+
+
+
+        for i in range(0,len(deck_names)-1):
+            if deck_names[i] == '1' and deck_names[i+1] =='0':
+                deck.append(Card('10'))
+            elif deck_names[i] != '0':
+                deck.append(Card(deck_names[i]))
+
+        for i in range(0,len(pcard_names)-1):
+            if pcard_names[i] == '1' and pcard_names[i+1] =='0':
+                pcards.append(Card('10'))
+            elif deck_names[i] != '0':
+                pcards.append(Card(pcard_names[i]))
+
+        for i in range(0,len(dcard_names)-1):
+            if dcard_names[i] == '1' and dcard_names[i+1] =='0':
+               dcards.append(Card('10'))
+            elif deck_names[i] != '0':
+              dcards.append(Card(dcard_names[i]))
+
+        if dcard_names[-1] != '0':
+            dcards.append(Card(dcard_names[-1]))
+
+        if pcard_names[-1] != '0':
+            pcards.append(Card(pcard_names[-1]))
+
+        if deck_names[-1] != '0':
+            deck.append(Card(deck_names[-1]))
+
+        print(f'\n\ndeck is now: ')
+        for card in deck:
+          print(card)
+        print(f'\n\nplayer_deck is now {pcards}')
+        print(f'\n\ndealer_deck is now {dcards}')
         self.turn = turn
         self.deck = deck
         self.player_hand = pcards
