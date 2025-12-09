@@ -69,7 +69,7 @@ def dashboard():
         skin = OwnedSkin(user_id = user_id, skin_id = 1, equipped = 1)
         db.session.add(skin)
         db.session.commit()
-        equipped_skin = OwnedSkin.query.filter_by(equipped = 1).first()
+        equipped_skin = OwnedSkin.query.filter_by(user_id=user_id, equipped=1).first()
 
     # equipped_skin = [s['name'] for s in skins_data if s['id'] == equipped_skin.skin_id]
     for skin in skins_data:
