@@ -61,18 +61,21 @@ def blackjack(action = None):
     db_state = Game.query.filter_by(user_id = session['id']).first()
     if not db_state:
         print('\n\nGAME NOT FOUND ON DB\n\n')
-        
+
         db_state = Game(session['id'],bet = request.form['bet'].strip())
         db.session.add(db_state)
         db.session.commit()
     if request.method == 'POST':
         try:
             bet = int(request.form["bet"].strip())
+            home_page = True
         except:
             bet = db_state.bet
+            home_page = False
         refresh = False
     else:
         refresh = True
+        home_page = False
         bet = db_state.bet
     print(f'\n\n\n\nBET IS {bet}\n\n\n\n')
 
@@ -160,7 +163,7 @@ def blackjack(action = None):
         if winner == 1:
             mascot_state = "win"
 
-            if refresh:
+            if refresh or home_page:
                 pass
 
             elif coins > 0:
@@ -175,11 +178,14 @@ def blackjack(action = None):
         elif winner == -1:
             mascot_state = "lose"
 
-            if refresh:
+            if refresh or home_page:
                 pass
             else:
+                amt = coins - bet
+                if amt < -100:
+                    amt = -100
                 Users.query.filter_by(_id = session['id']).update({
-                        'coins' : coins - bet,
+                        'coins' : amt,
                     })            
                 db.session.commit()
         else:
@@ -194,4 +200,5 @@ def blackjack(action = None):
     print(f'\n\n GAMESTATE GIVEN TO DB:\n {stats}  \n\n')
 
     print(f'refresh is {refresh} given method {request.method}')
+    print(f'home page  is {home_page} given method {request.method}')
     return render_template("blackjack.html",state = bj, mascot_state=mascot_state)
