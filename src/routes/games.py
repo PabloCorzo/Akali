@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, session, redirect, url_for
-from model import Game
+from model import Game, Users
 from database import db
 from utils import  isLogged, login_required
 from games import blackjack as bjg
@@ -58,21 +58,26 @@ def blackjack(action = None):
 
     #add action var to the state object to pass it here and apply result
 
-    print(request.method)
-    if request.method == "POST":
-        bet = request.form["bet"].strip()
-    else:
-        bet = None
-    print(f'\n\n\n\nBET IS {bet}\n\n\n\n')
-
     db_state = Game.query.filter_by(user_id = session['id']).first()
-    print(f'ACTION IS {action}')
-    #create game if its first time (with default/invalid values)
     if not db_state:
         print('\n\nGAME NOT FOUND ON DB\n\n')
-        db_state = Game(session['id'])
+        
+        db_state = Game(session['id'],bet = request.form['bet'].strip())
         db.session.add(db_state)
         db.session.commit()
+    if request.method == 'POST':
+        try:
+            bet = int(request.form["bet"].strip())
+        except:
+            bet = db_state.bet
+        refresh = False
+    else:
+        refresh = True
+        bet = db_state.bet
+    print(f'\n\n\n\nBET IS {bet}\n\n\n\n')
+
+    print(f'ACTION IS {action}')
+    #create game if its first time (with default/invalid values)
     
     bj = start_game().state
     stats = {}    
@@ -100,6 +105,7 @@ def blackjack(action = None):
             'player_hand' : ''.join(phand),
             'deck' : ''.join(deck),
             'turn' : bj.turn,
+            'bet' :  request.form['bet'].strip(),
              })
         db.session.commit()
         action = 3
@@ -142,6 +148,10 @@ def blackjack(action = None):
              })
         db.session.commit()
 
+
+    #Consultar las monedas del usuario
+    coins = Users.query.filter_by(_id = session['id']).first().coins
+
     # Determinar estado de la mascota
     if bj.turn < 2:
         mascot_state = "playing"
@@ -149,8 +159,29 @@ def blackjack(action = None):
         winner = bj.get_winner()
         if winner == 1:
             mascot_state = "win"
+
+            if refresh:
+                pass
+
+            elif coins > 0:
+                Users.query.filter_by(_id = session['id']).update({
+                    'coins' : coins + bet,
+                })
+            else:
+                Users.query.filter_by(_id = session['id']).update({
+                    'coins' : coins + 1,
+                })
+            db.session.commit()
         elif winner == -1:
             mascot_state = "lose"
+
+            if refresh:
+                pass
+            else:
+                Users.query.filter_by(_id = session['id']).update({
+                        'coins' : coins - bet,
+                    })            
+                db.session.commit()
         else:
             mascot_state = "tie"
 
@@ -162,5 +193,5 @@ def blackjack(action = None):
     stats["turn"] = new_db_state.turn
     print(f'\n\n GAMESTATE GIVEN TO DB:\n {stats}  \n\n')
 
-        
+    print(f'refresh is {refresh} given method {request.method}')
     return render_template("blackjack.html",state = bj, mascot_state=mascot_state)

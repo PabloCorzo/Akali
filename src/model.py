@@ -103,14 +103,16 @@ class Game(db.Model):
     dealer_hand = db.Column(db.String(64))
     turn = db.Column(db.Integer)
     deck = db.Column(db.String(64))
+    bet = db.Column(db.Integer,nullable = False)
 
     def initialize_game(self):
         state = bjg.BlackJack().state
         return state
 
-    def __init__(self, uid):
+    def __init__(self, uid,bet):
         self.title = 'Blackjack state'
         self.user_id = uid
+        self.bet = bet
         
 
         s = self.initialize_game()
