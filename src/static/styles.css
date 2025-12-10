@@ -2111,8 +2111,8 @@ tbody tr:last-child td {
 }
 
 .inicio-mascota-img {
-    width: 230px;
-    height: 260px;
+    width: 530px;
+    height: 400px;
     object-fit: contain;
 }
 
@@ -2122,9 +2122,9 @@ tbody tr:last-child td {
 .flash-mascota-think {
     position: fixed;
     bottom: -70px;
-    right: -100px;
-    width: 400px;     /* Aumenta si la quieres más grande */
-    height: 400px;
+    right: -120px;
+    width: 600px;     /* Aumenta si la quieres más grande */
+    height: 600px;
     object-fit: contain; /* Hace que todas las skins usen el mismo tamaño */
     z-index: 999;
 }
