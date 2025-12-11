@@ -76,7 +76,7 @@
       <form class="blackjack-box" style="height: 100%; width: 100%;" action = "{{url_for('games.blackjack', action = 'NEW')}}" method="post">
       <div class="form-group">
           <label for="password">Apuesta</label>
-          <input type="number" id="bet" name="bet" placeholder="Aposto, seu pão-duro de merda" required min = '10'>
+          <input type="number" id="bet" name="bet" placeholder="Aposto, seu pão-duro de merda" required min = '5  '>
         </div>
       <button  class="btn" href="{{url_for('games.blackjack', action = 'NEW')}}" type="submit" style = 'height : 1%;' >NEW GAME</a>
       </form>
