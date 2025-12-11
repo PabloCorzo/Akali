@@ -69,6 +69,9 @@ def blackjack(action = None):
         try:
             bet = int(request.form["bet"].strip())
             home_page = True
+            if bet >= 1000000:
+                bet = 1000000
+            print(f'\n\n\n\n\n\n\nbet exceeded! is {bet >= 1000000} for {bet} of type {type(bet)}\n\n\n\n\n\n\n')
         except:
             bet = db_state.bet
             home_page = False
@@ -103,12 +106,15 @@ def blackjack(action = None):
         dhand = [card.name for card in bj.dealer_hand]
         phand = [card.name for card in bj.player_hand]
         deck = [card.name for card in bj.deck]
+        bet = int(request.form['bet'].strip())
+        if bet >= 1000000:
+            bet = 1000000
         Game.query.filter_by(user_id = session['id']).update({
             'dealer_hand' : ''.join(dhand),
             'player_hand' : ''.join(phand),
             'deck' : ''.join(deck),
             'turn' : bj.turn,
-            'bet' :  request.form['bet'].strip(),
+            'bet' :  bet,
              })
         db.session.commit()
         action = 3
