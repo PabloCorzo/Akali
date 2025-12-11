@@ -45,6 +45,8 @@ BAD_WORDS = [
   "f0ll4r-obf",
   "f0ll4r-enc", "follar niños"
 ]
+
+
 def contains_bad_word(text: str) -> bool:
     if not text:
         return False

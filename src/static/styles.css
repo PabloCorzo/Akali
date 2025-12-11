@@ -2099,9 +2099,9 @@ tbody tr:last-child td {
     color: white;
 }
 
-
-/* Mascota fija en página de inicio */
-/* Mascota centrada debajo del saludo */
+/* ========================================
+   Mascota fija en página de inicio
+   ======================================== */
 .inicio-mascota {
     width: 100%;
     display: flex;
@@ -2121,10 +2121,37 @@ tbody tr:last-child td {
    ======================================== */
 .flash-mascota-think {
     position: fixed;
-    bottom: -70px;
-    right: -120px;
-    width: 600px;     /* Aumenta si la quieres más grande */
-    height: 600px;
-    object-fit: contain; /* Hace que todas las skins usen el mismo tamaño */
+    bottom: -20px;
+    right: -10px;
+    width: 750px; 
+    height: 750px;
+    object-fit: contain;
     z-index: 999;
 }
+
+/* ========================================
+   mascota en actividades
+   ======================================== */
+.mascota-activity {
+    position: fixed;
+    bottom: -20px;
+    right: -120px;
+    width: 450px; 
+    height: 350px;
+    object-fit: contain;
+    z-index: 999;
+}
+
+.mascota-activity img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.flash-mascota-think {
+    width: 350px;       /* tamaño uniforme para todas las skins */
+    height: auto;
+    object-fit: contain;
+}
+

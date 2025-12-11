@@ -2,6 +2,12 @@ from flask import Blueprint, render_template, request, flash, session, redirect,
 from database import db
 from utils import  isLogged, login_required
 from model import Activity
+from bad_words import BAD_WORDS
+
+
+def contains_bad_word(text):
+    text = text.lower()
+    return any(bad in text for bad in BAD_WORDS)
 
 activity_bp = Blueprint(
     'activity', __name__,
@@ -15,7 +21,6 @@ activity_bp = Blueprint(
 def create_Activity():
 
     errors = []
-    
     user_id = session['id']
     
     name = request.args.get("b_name")
@@ -36,6 +41,11 @@ def create_Activity():
         ability = request.form["ability"].strip()
         time = request.form["time"].strip()
 
+        # --- AQUI VA EL BLOQUE PARA LA MASCOTA ---
+        is_bad = contains_bad_word(name)
+        session["activity_bad"] = is_bad
+        # -------------------------
+
         if not name:
             errors.append("Campo nombre requerido")
         elif not satisfaction_level:
@@ -50,16 +60,24 @@ def create_Activity():
             errors.append("Nivel de satisfaccion debe estar entre 0 y 10")
 
         if errors:
-            return render_template('Activity.html', errors=errors, Activity=activities)
+            return render_template('activity.html', errors=errors, Activity=activities)
 
         existing_activity = Activity.query.filter_by(name=name, user_id=user_id).first()
         if existing_activity:
             flash("La actividad ya existe", "danger")
             errors.append("La actividad ya existe")
-            return render_template('Activity.html', errors=errors, Activity=activities)
+            return render_template('activity.html', errors=errors, Activity=activities)
         else:
+            activity = Activity(name, user_id, satisfaction_level, ability, time)
             activity = Activity(name, user_id, satisfaction_level, ability, time)
             db.session.add(activity)
             db.session.commit()
 
-    return render_template('activity.html', Activity=activities, errors=errors)
+            #Recargar actividades después de crear una nueva
+            activities = activity.query.filter_by(user_id=user_id).all()
+
+
+    return render_template('activity.html',
+                           Activity=activities,
+                           errors=errors,
+                           activity_bad=session.get("activity_bad", False))
