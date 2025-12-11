@@ -1172,6 +1172,158 @@ tbody tr:last-child td {
 }
 
 /* ========================================
+   MODAL DE CONFIRMACIÓN DE DURACIÓN
+   ======================================== */
+.duration-confirm-modal {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  width: 90%;
+  max-width: 550px;
+  animation: slideInDown 0.3s ease;
+}
+
+.duration-confirm-modal h2 {
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.duration-change-info {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.duration-change-info strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.duration-question {
+  margin-bottom: 1.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.duration-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.duration-buttons .btn {
+  flex: 1;
+  min-width: 150px;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-confirm-yes {
+  background-color: var(--success);
+  color: white;
+}
+
+.btn-confirm-yes:hover {
+  background-color: var(--success-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-confirm-no {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-confirm-no:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-confirm-cancel {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-confirm-cancel:hover {
+  background-color: var(--danger-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   MODAL DE ACCIONES DEL EVENTO
+   ======================================== */
+.event-actions-modal {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  width: 90%;
+  max-width: 450px;
+  animation: slideInDown 0.3s ease;
+  margin: auto;
+  position: relative;
+}
+
+.event-actions-modal h2 {
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.event-actions-modal p {
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.event-actions-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-actions-buttons .btn {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-action {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-action:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ========================================
    MENSAJES FLASH
    ======================================== */
 .flash-container {

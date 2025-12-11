@@ -49,6 +49,10 @@ class ScheduleItem(db.Model):
     item_type = db.Column('item_type', db.String(50), unique=False, nullable=False)
     item_id = db.Column('item_id', db.Integer, unique=False, nullable=False)
     
+    @property
+    def id(self):
+        return self._id
+    
     def __init__(self, user_id, title, start_time, end_time, item_type, item_id):
         self._user_id = user_id
         self.title = title

@@ -23,12 +23,18 @@
         },
         selectedActivity: null,
         selectedTask: null,
+        selectedWorkout: null,
+        workoutTempDuration: null,
+        showDurationConfirm: false,
+        selectedEvent: null,
+        showEventActions: false,
+        editingEvent: null,
         calendar: null,
         timeOptions: (() => {
             const options = [];
-            for (let i = 0; i < 48; i++) {
-                const hours = Math.floor(i / 2).toString().padStart(2, '0');
-                const minutes = (i % 2 === 0 ? '00' : '30');
+            for (let i = 0; i < 96; i++) {
+                const hours = Math.floor(i / 4).toString().padStart(2, '0');
+                const minutes = ((i % 4) * 15).toString().padStart(2, '0');
                 options.push(`${hours}:${minutes}`);
             }
             return options;
@@ -48,6 +54,17 @@
             this.calendar = new FullCalendar.Calendar(calendarEl, {
                 height: '100%',
                 initialView: 'timeGridDay',
+                locale: 'es',
+                slotLabelFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
                 customButtons: {
                     createEvent: {
                         text: 'Crear Evento',
@@ -64,6 +81,17 @@
                 },
                 events: '/dashboard/schedule/events',
                 editable: true,
+                eventOverlap: true,
+                slotEventOverlap: false,
+                eventClick: (info) => {
+                    this.handleEventClick(info.event);
+                },
+                eventDrop: (info) => {
+                    this.updateEvent(info.event);
+                },
+                eventResize: (info) => {
+                    this.updateEvent(info.event);
+                }
             });
             this.calendar.render();
         },
@@ -89,10 +117,9 @@
                     this.calendar.refetchEvents();
                     alert('¡Evento guardado!');
                     this.showModal = false;
-                    this.newEvent.title = '';
-                    this.newEvent.date = '';
-                    this.newEvent.startTime = '';
-                    this.newEvent.duration = '';
+                    this.modalMode = '';
+                    this.selectedEventType = '';
+                    this.newEvent = { title: '', date: '', startTime: '', duration: '' };
                 }
             });
         },
@@ -118,9 +145,10 @@
                     this.calendar.refetchEvents();
                     alert('¡Actividad añadida al calendario!');
                     this.showModal = false;
-                    this.newEvent.date = '';
-                    this.newEvent.startTime = '';
-                    this.newEvent.duration = '';
+                    this.modalMode = '';
+                    this.selectedEventType = '';
+                    this.selectedActivity = null;
+                    this.newEvent = { title: '', date: '', startTime: '', duration: '' };
                 }
             });
         },
@@ -146,10 +174,215 @@
                     this.calendar.refetchEvents();
                     alert('¡Tarea añadida al calendario!');
                     this.showModal = false;
-                    this.newEvent.date = '';
-                    this.newEvent.startTime = '';
-                    this.newEvent.duration = '';
+                    this.modalMode = '';
+                    this.selectedEventType = '';
+                    this.selectedTask = null;
+                    this.newEvent = { title: '', date: '', startTime: '', duration: '' };
                 }
+            });
+        },
+        addWorkoutToCalendar(workout) {
+            // Validar que tenga duración
+            const finalDuration = this.workoutTempDuration || workout.duration;
+            if (!finalDuration || finalDuration === 0) {
+                alert('Es obligatorio introducir eventos con duración');
+                return;
+            }
+
+            // Si se modificó la duración, preguntar si quiere actualizarla permanentemente
+            if (this.workoutTempDuration && this.workoutTempDuration !== workout.duration) {
+                this.showDurationConfirm = true;
+                return;
+            }
+
+            this.executeAddWorkout(workout, finalDuration, false);
+        },
+        executeAddWorkout(workout, duration, updatePermanent) {
+            const endTime = this.calculateEndTime(workout.startTime, duration);
+            var newEventData = {
+                title: workout.title,
+                start: `${workout.date}T${workout.startTime}`,
+                end: `${workout.date}T${endTime}`,
+                item_type: 'Workout',
+                item_id: workout.id
+            };
+
+            fetch('{{ url_for('schedule.create_schedule_item') }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newEventData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Si se debe actualizar permanentemente, hacer petición al backend
+                    if (updatePermanent && duration) {
+                        fetch('/fitness/workouts/' + workout.id + '/update-duration', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ duration: parseInt(duration) }),
+                        })
+                        .then(response => response.json())
+                        .then(updateData => {
+                            if (updateData.status === 'success') {
+                                console.log('Duración actualizada permanentemente:', updateData);
+                                // Actualizar el objeto workout localmente
+                                workout.duration = parseInt(duration);
+                                alert(`Duración actualizada de ${updateData.old_duration} a ${updateData.new_duration} minutos`);
+                            } else {
+                                console.error('Error actualizando duración:', updateData.message);
+                                alert('Error al actualizar la duración permanentemente: ' + updateData.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error en la petición de actualización:', error);
+                            alert('Error al actualizar la duración permanentemente');
+                        });
+                    }
+                    
+                    this.calendar.refetchEvents();
+                    alert('¡Entrenamiento añadido al calendario!');
+                    this.showModal = false;
+                    this.modalMode = '';
+                    this.selectedEventType = '';
+                    this.showDurationConfirm = false;
+                    this.selectedWorkout = null;
+                    this.workoutTempDuration = null;
+                }
+            })
+            .catch(error => {
+                console.error('Error añadiendo entrenamiento:', error);
+                alert('Error al añadir el entrenamiento');
+            });
+        },
+        handleEventClick(event) {
+            this.selectedEvent = event;
+            this.showEventActions = true;
+        },
+        updateEvent(event) {
+            // Formatear las fechas sin conversión de zona horaria
+            const startDate = new Date(event.start);
+            const endDate = new Date(event.end);
+            
+            const formatDateTime = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+            };
+            
+            fetch(`/dashboard/schedule/events/${event.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: event.title,
+                    start: formatDateTime(startDate),
+                    end: formatDateTime(endDate)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Evento actualizado');
+                    this.calendar.refetchEvents();
+                } else {
+                    alert('Error al actualizar el evento: ' + data.message);
+                    this.calendar.refetchEvents();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar el evento');
+                this.calendar.refetchEvents();
+            });
+        },
+        deleteEvent() {
+            if (!this.selectedEvent) return;
+            
+            if (!confirm('¿Estás seguro de que quieres eliminar este evento?')) {
+                return;
+            }
+            
+            fetch(`/dashboard/schedule/events/${this.selectedEvent.id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.refetchEvents();
+                    this.showEventActions = false;
+                    this.selectedEvent = null;
+                    alert('Evento eliminado correctamente');
+                } else {
+                    alert('Error al eliminar el evento');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar el evento');
+            });
+        },
+        editEvent() {
+            if (!this.selectedEvent) return;
+            
+            this.editingEvent = this.selectedEvent;
+            const startDate = new Date(this.selectedEvent.start);
+            const endDate = new Date(this.selectedEvent.end);
+            const duration = Math.round((endDate - startDate) / (1000 * 60));
+            
+            // Formatear fecha y hora sin problemas de zona horaria
+            const year = startDate.getFullYear();
+            const month = String(startDate.getMonth() + 1).padStart(2, '0');
+            const day = String(startDate.getDate()).padStart(2, '0');
+            const hours = String(startDate.getHours()).padStart(2, '0');
+            const minutes = String(startDate.getMinutes()).padStart(2, '0');
+            
+            this.newEvent = {
+                title: this.selectedEvent.title,
+                date: `${year}-${month}-${day}`,
+                startTime: `${hours}:${minutes}`,
+                duration: duration.toString()
+            };
+            
+            this.modalMode = 'custom';
+            this.showEventActions = false;
+            this.showModal = true;
+        },
+        saveEditedEvent() {
+            const endTime = this.calculateEndTime(this.newEvent.startTime, this.newEvent.duration);
+            
+            // Construir las fechas en formato ISO sin conversión de zona horaria
+            const startISO = `${this.newEvent.date}T${this.newEvent.startTime}:00`;
+            const endISO = `${this.newEvent.date}T${endTime}:00`;
+            
+            fetch(`/dashboard/schedule/events/${this.editingEvent.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: this.newEvent.title,
+                    start: startISO,
+                    end: endISO
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.calendar.refetchEvents();
+                    this.showModal = false;
+                    this.modalMode = '';
+                    this.selectedEventType = '';
+                    this.editingEvent = null;
+                    this.newEvent = { title: '', date: '', startTime: '', duration: '' };
+                } else {
+                    alert('Error al actualizar el evento: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar el evento');
             });
         }
     }" x-init="initializeCalendar()">
@@ -164,14 +397,15 @@
                         <option value="custom">Evento personalizado</option>
                         <option value="activity">Actividad</option>
                         <option value="task">Tarea</option>
+                        <option value="workout">Entrenamiento</option>
                     </select>
                 </div>
                 <button type="button" @click="showModal = false" class="btn">Cancelar</button>
             </div>
 
             <div x-show="modalMode === 'custom'">
-                <h2>Nuevo Evento</h2>
-                <form @submit.prevent="createEvent()">
+                <h2 x-text="editingEvent ? 'Editar Evento' : 'Nuevo Evento'"></h2>
+                <form @submit.prevent="editingEvent ? saveEditedEvent() : createEvent()">
                     <div class="form-group">
                         <label for="event-title">Título</label>
                         <input type="text" id="event-title" x-model="newEvent.title" required>
@@ -205,8 +439,8 @@
                             <span x-text="calculateEndTime(newEvent.startTime, newEvent.duration)"></span>
                         </div>
                     </div>
-                    <button type="submit" class="btn">Guardar</button>
-                    <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+                    <button type="submit" class="btn" x-text="editingEvent ? 'Actualizar' : 'Guardar'"></button>
+                    <button type="button" @click="if(editingEvent) { showModal = false; editingEvent = null; modalMode = ''; selectedEventType = ''; } else { modalMode = ''; selectedEventType = ''; }" class="btn">Volver</button>
                 </form>
             </div>
 
@@ -316,6 +550,124 @@
                     <button type="submit" class="btn">Guardar</button>
                     <button type="button" @click="modalMode = 'task'" class="btn">Volver</button>
                 </form>
+            </div>
+
+            <div x-show="modalMode === 'workout'">
+                <h2>Añadir Entrenamiento al Calendario</h2>
+                <div class="workout-list">
+                    <ul>
+                        {% for workout in workouts %}
+                            <li>
+                                {{ workout.title }} - {{ workout.date.strftime('%d/%m/%Y') }} 
+                                {% if workout.duration_min > 0 %}
+                                    ({{ workout.duration_min }} min)
+                                {% else %}
+                                    <span style="color: #ff6b6b;">(⚠️ Sin duración)</span>
+                                {% endif %}
+                                <button @click="selectedWorkout = { 
+                                    title: '{{ workout.title }}', 
+                                    id: {{ workout.id }},
+                                    date: '{{ workout.date.strftime('%Y-%m-%d') }}',
+                                    duration: {{ workout.duration_min }},
+                                    startTime: '09:00',
+                                    endTime: ''
+                                }; workoutTempDuration = null; modalMode = 'workout-form'"
+                                        class="btn">Seleccionar
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button type="button" @click="modalMode = ''; selectedEventType = ''" class="btn">Volver</button>
+            </div>
+
+            <div x-show="modalMode === 'workout-form' && !showDurationConfirm">
+                <h2>Añadir Entrenamiento: <span x-text="selectedWorkout ? selectedWorkout.title : ''"></span></h2>
+                <form @submit.prevent="addWorkoutToCalendar(selectedWorkout)">
+                    <div class="form-group">
+                        <label>Fecha del entrenamiento</label>
+                        <input type="date" x-model="selectedWorkout.date" disabled style="background-color: #f0f0f0;">
+                    </div>
+                    <div class="form-group">
+                        <label for="workout-duration">Duración (minutos)</label>
+                        <template x-if="selectedWorkout.duration === 0">
+                            <div>
+                                <select id="workout-duration" x-model="workoutTempDuration" required>
+                                    <option value="">⚠️ Selecciona duración (obligatorio)</option>
+                                    <template x-for="duration in durationOptions" :key="duration">
+                                        <option :value="duration" x-text="duration + ' min'"></option>
+                                    </template>
+                                </select>
+                                <small style="color: #ff6b6b; display: block; margin-top: 5px;">Este entrenamiento no tiene duración asignada</small>
+                            </div>
+                        </template>
+                        <template x-if="selectedWorkout.duration > 0">
+                            <div>
+                                <select id="workout-duration" x-model="workoutTempDuration">
+                                    <option :value="null" x-text="selectedWorkout.duration + ' min (duración actual)'"></option>
+                                    <template x-for="duration in durationOptions" :key="duration">
+                                        <option :value="duration" x-text="duration + ' min'"></option>
+                                    </template>
+                                </select>
+                                <small style="color: #666; display: block; margin-top: 5px;">Puedes cambiar la duración solo para este evento</small>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="form-group">
+                        <label for="workout-start-time">Hora de Inicio</label>
+                        <select id="workout-start-time" x-model="selectedWorkout.startTime" required>
+                            <option value="">Selecciona una hora</option>
+                            <template x-for="time in timeOptions" :key="time">
+                                <option :value="time" x-text="time"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div class="form-group" x-show="selectedWorkout.startTime && (workoutTempDuration || selectedWorkout.duration > 0)">
+                        <label>Hora de Fin</label>
+                        <div style="padding: 12px; background-color: #f5f5f5; border: 2px solid #d0d0d0; border-radius: 6px; color: #333; font-weight: bold; font-size: 16px; text-align: center;">
+                            <span x-text="calculateEndTime(selectedWorkout.startTime, workoutTempDuration || selectedWorkout.duration)"></span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Añadir al calendario</button>
+                    <button type="button" @click="modalMode = 'workout'; workoutTempDuration = null" class="btn">Volver</button>
+                </form>
+            </div>
+
+            <div x-show="showDurationConfirm" class="duration-confirm-modal">
+                <h2>Confirmar cambio de duración</h2>
+                <p class="duration-change-info">Has cambiado la duración de <strong x-text="selectedWorkout.duration"></strong> a <strong x-text="workoutTempDuration"></strong> minutos.</p>
+                <p class="duration-question">¿Deseas actualizar la duración permanentemente en el entrenamiento original?</p>
+                <div class="duration-buttons">
+                    <button @click="executeAddWorkout(selectedWorkout, workoutTempDuration, true)" class="btn btn-confirm-yes">
+                        Sí, actualizar permanentemente
+                    </button>
+                    <button @click="executeAddWorkout(selectedWorkout, workoutTempDuration, false)" class="btn btn-confirm-no">
+                        No, solo para este evento
+                    </button>
+                    <button @click="showDurationConfirm = false" class="btn btn-confirm-cancel">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de acciones del evento -->
+        <div x-show="showEventActions" @click.self="showEventActions = false" 
+             style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+            <div class="event-actions-modal" @click.stop>
+                <h2>Acciones del Evento</h2>
+                <p><strong x-text="selectedEvent ? selectedEvent.title : ''"></strong></p>
+                <div class="event-actions-buttons">
+                    <button @click="editEvent()" class="btn btn-action">
+                        Editar
+                    </button>
+                    <button @click="deleteEvent()" class="btn btn-action">
+                        Eliminar
+                    </button>
+                    <button @click="showEventActions = false" class="btn btn-action">
+                        Cancelar
+                    </button>
+                </div>
             </div>
         </div>
 
