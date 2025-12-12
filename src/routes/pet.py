@@ -26,7 +26,7 @@ skins_data = [
      "imagenes": ["pijo.png", "pijo_think.png", "pijo_llorar.png"]},
 
     {"id": 6, "nombre": "dune", "precio": 90,
-     "imagenes": ["dune.png", "dune2.png", "dune_llorar.png"]},
+     "imagenes": ["dune.png", "dune_think.png", "dune_llorar.png"]},
 
     {"id": 7, "nombre": "navidad", "precio": 100,
      "imagenes": ["navidad.png", "navidad_think.png", "navidad_llorar.png"]},
