@@ -18,6 +18,7 @@ def checkPassword(username, password):
 def inject_user_coins():
     """Hace que las monedas del usuario estén disponibles en todos los templates"""
     if 'id' in session:
+        # user = Users.query.filter_by(_id = session['id']).first()
         user = Users.query.get(session['id'])
         if user:
             return {'user_coins': user.coins, 'user_name': user.username}
